@@ -1,5 +1,7 @@
 Flask
 flask_pymongo
+flask_cors
 python-dotenv
-certifi
 gunicorn
+dnspython
+certifi
