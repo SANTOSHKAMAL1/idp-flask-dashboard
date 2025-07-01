@@ -30,14 +30,13 @@ def dashboard():
         sec["_id"] = str(sec["_id"])
     return render_template("dashboard.html", sections=sections)
 
-# View specific section
 @app.route("/section/<section_id>")
 def view_section(section_id):
-    section = collection.find_one({"sectionId": section_id})
-    if section:
-        section["_id"] = str(section["_id"])
-        return render_template("dashboard.html", sections=[section])
-    return render_template("dashboard.html", sections=[])
+    sections = list(collection.find({"sectionId": section_id}))
+    for sec in sections:
+        sec["_id"] = str(sec["_id"])
+    return render_template("dashboard.html", sections=sections)
+
 
 # Add form page
 @app.route("/index")

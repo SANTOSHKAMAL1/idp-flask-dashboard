@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <title>IDP Dashboard</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -51,7 +49,7 @@
       border-right: 2px solid #eee;
       overflow-y: auto;
       flex-shrink: 0;
-      min-height: calc(100vh - 80px); /* height excluding header */
+      min-height: calc(100vh - 80px);
     }
 
     .sidebar h2 {
@@ -114,6 +112,7 @@
       border-radius: 10px;
       margin-bottom: 25px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      position: relative;
     }
 
     .card h3 {
@@ -122,17 +121,45 @@
     }
 
     .card-actions {
-      margin-top: 15px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
     }
 
-    .card-actions a {
-      margin-right: 10px;
-      text-decoration: none;
-      font-size: 14px;
-      padding: 6px 12px;
+    .dots-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dots-button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 25px;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
       border-radius: 6px;
-      background-color: #e74c3c;
-      color: white;
+      z-index: 1;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #e74c3c;
+      font-weight: 500;
+    }
+
+    .dropdown a:hover {
+      background-color: #f8f8f8;
     }
 
     footer {
@@ -147,6 +174,7 @@
       .main {
         flex-direction: column;
       }
+
       .sidebar {
         width: 100%;
         border-right: none;
@@ -161,7 +189,6 @@
   <header>
     <div style="display: flex; align-items: center;">
       <img src="/static/images/santhu123.png" alt="JAIN University Logo" />
-
       <h2>Institutional Development Plan</h2>
     </div>
     <div class="university">JAIN (Deemed-to-be University)</div>
@@ -197,14 +224,19 @@
       {% if sections %}
         {% for section in sections %}
           <div class="card">
+            <div class="card-actions">
+              <div class="dots-menu">
+                <button class="dots-button" onclick="toggleDropdown(this)">⋮</button>
+                <div class="dropdown">
+                  <a href="#" onclick="deleteSection('{{ section._id }}')">Delete</a>
+                </div>
+              </div>
+            </div>
             <h3>{{ section.name }}</h3>
             <p>{{ section.content }}</p>
             {% if section.pdfPath %}
               <a href="/{{ section.pdfPath }}" target="_blank" class="btn">📄 View PDF</a>
             {% endif %}
-            <div class="card-actions">
-              <a href="#" onclick="deleteSection('{{ section._id }}')">Delete</a>
-            </div>
           </div>
         {% endfor %}
       {% else %}
@@ -219,7 +251,7 @@
     <small>Institutional Development Plan Framework</small>
   </footer>
 
-  <!-- JS for Delete -->
+  <!-- JS -->
   <script>
     function deleteSection(id) {
       if (confirm('Are you sure you want to delete this section?')) {
@@ -228,6 +260,20 @@
         }).then(() => window.location.reload());
       }
     }
+
+    function toggleDropdown(btn) {
+      const dropdown = btn.nextElementSibling;
+      document.querySelectorAll('.dropdown').forEach(d => {
+        if (d !== dropdown) d.style.display = 'none';
+      });
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.dots-menu')) {
+        document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+      }
+    });
   </script>
 
 </body>
