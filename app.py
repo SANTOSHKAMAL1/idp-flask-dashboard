@@ -76,6 +76,16 @@ def add_section():
     inserted = collection.insert_one(new_section)
     new_section["_id"] = str(inserted.inserted_id)
     return jsonify(new_section), 201
+# Update section (Edit)
+@app.route("/api/sections/<id>", methods=["PUT"])
+def update_section(id):
+    data = request.get_json()
+    result = collection.update_one(
+        {"_id": ObjectId(id)},
+        {"$set": {"name": data["name"], "content": data["content"]}}
+    )
+    return jsonify({"updated": result.modified_count})
+
 
 # Delete section
 @app.route("/api/sections/<id>", methods=["DELETE"])
