@@ -79,12 +79,25 @@ def add_section():
 # Update section (Edit)
 @app.route("/api/sections/<id>", methods=["PUT"])
 def update_section(id):
-    data = request.get_json()
+    name = request.form.get("name")
+    content = request.form.get("content")
+    pdf = request.files.get("pdf")
+
+    update_data = {"name": name, "content": content}
+
+    if pdf:
+        filename = secure_filename(pdf.filename)
+        pdf_path = f"uploads/{filename}"
+        pdf.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        update_data["pdfPath"] = pdf_path
+
     result = collection.update_one(
         {"_id": ObjectId(id)},
-        {"$set": {"name": data["name"], "content": data["content"]}}
+        {"$set": update_data}
     )
+
     return jsonify({"updated": result.modified_count})
+
 
 
 # Delete section

@@ -32,9 +32,7 @@
       color: #a020f0;
       font-weight: 500;
     }
-    .main {
-      display: flex;
-    }
+    .main { display: flex; }
     .sidebar {
       width: 260px;
       background: #fff;
@@ -44,9 +42,18 @@
       flex-shrink: 0;
       min-height: calc(100vh - 80px);
     }
-    .sidebar h2 { margin-bottom: 25px; font-size: 22px; }
-    .sidebar ul { list-style: none; padding: 0; margin: 0; }
-    .sidebar ul li { margin-bottom: 15px; }
+    .sidebar h2 {
+      margin-bottom: 25px;
+      font-size: 22px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar ul li {
+      margin-bottom: 15px;
+    }
     .sidebar ul li a {
       text-decoration: none;
       color: #222;
@@ -60,10 +67,7 @@
       background: #ece6ff;
       color: #5b47f0;
     }
-    .content {
-      flex: 1;
-      padding: 40px;
-    }
+    .content { flex: 1; padding: 40px; }
     .top-bar {
       text-align: right;
       margin-bottom: 30px;
@@ -77,8 +81,9 @@
       transition: 0.2s;
       font-weight: bold;
     }
-    .btn:hover { background: #4034bb; }
-
+    .btn:hover {
+      background: #4034bb;
+    }
     .card {
       background: #fff;
       padding: 25px;
@@ -88,75 +93,61 @@
       position: relative;
     }
     .card h3 { margin-top: 0; margin-bottom: 10px; }
-
     .card-actions {
       position: absolute;
-      top: 15px;
-      right: 15px;
+      top: 20px;
+      right: 20px;
     }
-
-    .dots-menu {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dots-button {
-      background: none;
-      border: none;
-      font-size: 20px;
+    .menu-dot {
       cursor: pointer;
+      font-size: 22px;
+      padding: 2px 6px;
+      border-radius: 50%;
     }
-
     .dropdown {
-      display: none;
       position: absolute;
-      top: 25px;
       right: 0;
+      top: 28px;
       background: white;
       border: 1px solid #ccc;
       border-radius: 6px;
-      z-index: 1;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 100;
     }
-
     .dropdown a {
       display: block;
       padding: 8px 12px;
+      color: #333;
       text-decoration: none;
-      font-weight: 500;
     }
-
     .dropdown a:hover {
-      background-color: #f8f8f8;
+      background-color: #eee;
     }
-
     .edit-form {
-      display: none;
-      position: relative;
-      background: #f9f9ff;
-      padding: 15px;
-      border-radius: 8px;
       margin-top: 15px;
-      border: 1px solid #ccc;
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 6px;
     }
-
-    .edit-form input, .edit-form textarea {
+    .edit-form input[type="text"],
+    .edit-form textarea {
       width: 100%;
       margin-bottom: 10px;
-      padding: 8px;
-      border: 1px solid #bbb;
-      border-radius: 5px;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
     }
-
+    .edit-form input[type="file"] {
+      margin-bottom: 10px;
+    }
     .edit-form button {
-      background: #28a745;
+      padding: 8px 16px;
+      background-color: #3B2CF5;
       color: white;
       border: none;
-      padding: 8px 14px;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
     }
-
     footer {
       background-color: #1e2833;
       color: #fff;
@@ -167,7 +158,11 @@
 
     @media screen and (max-width: 768px) {
       .main { flex-direction: column; }
-      .sidebar { width: 100%; border-right: none; border-bottom: 2px solid #eee; }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #eee;
+      }
     }
   </style>
 </head>
@@ -211,24 +206,25 @@
 
       {% if sections %}
         {% for section in sections %}
-          <div class="card" id="card-{{ section._id }}">
-            <div class="card-actions">
-              <div class="dots-menu">
-                <button class="dots-button" onclick="toggleDropdown(this)">⋮</button>
-                <div class="dropdown">
-                  <a href="#" onclick="showEditForm('{{ section._id }}', '{{ section.name }}', `{{ section.content | replace('`', '\\`') }}`)">Edit</a>
-                  <a href="#" onclick="deleteSection('{{ section._id }}')">Delete</a>
-                </div>
-              </div>
-            </div>
+          <div class="card">
             <h3>{{ section.name }}</h3>
             <p>{{ section.content }}</p>
             {% if section.pdfPath %}
               <a href="/{{ section.pdfPath }}" target="_blank" class="btn">📄 View PDF</a>
             {% endif %}
-            <div class="edit-form" id="edit-{{ section._id }}">
+
+            <div class="card-actions">
+              <div class="menu-dot" onclick="toggleDropdown('{{ section._id }}')">⋮</div>
+              <div class="dropdown" id="dropdown-{{ section._id }}">
+                <a href="#" onclick="deleteSection('{{ section._id }}')">Delete</a>
+                <a href="#" onclick="toggleEdit('{{ section._id }}')">Edit</a>
+              </div>
+            </div>
+
+            <div class="edit-form" id="edit-{{ section._id }}" style="display:none;">
               <input type="text" id="edit-name-{{ section._id }}" placeholder="Title" value="{{ section.name }}">
               <textarea id="edit-content-{{ section._id }}" rows="4" placeholder="Content">{{ section.content }}</textarea>
+              <input type="file" id="edit-pdf-{{ section._id }}" />
               <button onclick="saveEdit('{{ section._id }}')">Save</button>
             </div>
           </div>
@@ -247,12 +243,10 @@
 
   <!-- JS -->
   <script>
-    function toggleDropdown(btn) {
-      const dropdown = btn.nextElementSibling;
-      document.querySelectorAll('.dropdown').forEach(d => {
-        if (d !== dropdown) d.style.display = 'none';
-      });
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    function toggleDropdown(id) {
+      document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
+      const dropdown = document.getElementById("dropdown-" + id);
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     }
 
     function deleteSection(id) {
@@ -263,28 +257,35 @@
       }
     }
 
-    function showEditForm(id, name, content) {
-      document.querySelectorAll('.edit-form').forEach(f => f.style.display = 'none');
-      document.getElementById(`edit-${id}`).style.display = 'block';
+    function toggleEdit(id) {
+      document.getElementById("edit-" + id).style.display = "block";
+      document.getElementById("dropdown-" + id).style.display = "none";
     }
 
     function saveEdit(id) {
       const name = document.getElementById(`edit-name-${id}`).value;
       const content = document.getElementById(`edit-content-${id}`).value;
+      const pdfFile = document.getElementById(`edit-pdf-${id}`).files[0];
+
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("content", content);
+      if (pdfFile) {
+        formData.append("pdf", pdfFile);
+      }
 
       fetch(`/api/sections/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, content })
+        method: "PUT",
+        body: formData
       }).then(() => window.location.reload());
     }
 
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.dots-menu')) {
-        document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+    // Close dropdowns if clicked outside
+    window.onclick = function(event) {
+      if (!event.target.matches('.menu-dot')) {
+        document.querySelectorAll(".dropdown").forEach(d => d.style.display = "none");
       }
-    });
+    }
   </script>
-
 </body>
 </html>
