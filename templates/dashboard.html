@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IDP Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f3fe;
+      color: #333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    header img {
+      height: 50px;
+      margin-right: 15px;
+    }
+
+    header h2 {
+      margin: 0;
+      font-weight: bold;
+      color: #3B2CF5;
+    }
+
+    header .university {
+      color: #a020f0;
+      font-weight: 500;
+    }
+
+    .main {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: #fff;
+      padding: 30px 20px;
+      border-right: 2px solid #eee;
+      overflow-y: auto;
+      flex-shrink: 0;
+      min-height: calc(100vh - 80px); /* height excluding header */
+    }
+
+    .sidebar h2 {
+      margin-bottom: 25px;
+      font-size: 22px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #222;
+      font-weight: 500;
+      padding: 10px 15px;
+      display: block;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar ul li a:hover {
+      background: #ece6ff;
+      color: #5b47f0;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .top-bar {
+      text-align: right;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      background: #5b47f0;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: 0.2s;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #4034bb;
+    }
+
+    .card {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .card-actions {
+      margin-top: 15px;
+    }
+
+    .card-actions a {
+      margin-right: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    footer {
+      background-color: #1e2833;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 40px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #eee;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div style="display: flex; align-items: center;">
+      <img src="/static/images/santhu123.png" alt="JAIN University Logo" />
+
+      <h2>Institutional Development Plan</h2>
+    </div>
+    <div class="university">JAIN (Deemed-to-be University)</div>
+  </header>
+
+  <!-- Main Area -->
+  <div class="main">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>IDP Sections</h2>
+      <ul>
+        <li><a href="/">All</a></li>
+        <li><a href="/section/overview">Overview</a></li>
+        <li><a href="/section/committees">IDP Committees</a></li>
+        <li><a href="/section/enablerA">Enabler A</a></li>
+        <li><a href="/section/enablerB">Enabler B</a></li>
+        <li><a href="/section/enablerC">Enabler C</a></li>
+        <li><a href="/section/enablerD">Enabler D</a></li>
+        <li><a href="/section/enablerE">Enabler E</a></li>
+        <li><a href="/section/enablerF">Enabler F</a></li>
+        <li><a href="/section/enablerG">Enabler G</a></li>
+        <li><a href="/section/enablerH">Enabler H</a></li>
+      </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="top-bar">
+        <a href="/index" class="btn">+ Add New Section</a>
+      </div>
+
+      {% if sections %}
+        {% for section in sections %}
+          <div class="card">
+            <h3>{{ section.name }}</h3>
+            <p>{{ section.content }}</p>
+            {% if section.pdfPath %}
+              <a href="/{{ section.pdfPath }}" target="_blank" class="btn">📄 View PDF</a>
+            {% endif %}
+            <div class="card-actions">
+              <a href="#" onclick="deleteSection('{{ section._id }}')">Delete</a>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No section data found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p style="margin: 0;">© 2025 JAIN (Deemed-to-be University). All rights reserved.</p>
+    <small>Institutional Development Plan Framework</small>
+  </footer>
+
+  <!-- JS for Delete -->
+  <script>
+    function deleteSection(id) {
+      if (confirm('Are you sure you want to delete this section?')) {
+        fetch(`/api/sections/${id}`, {
+          method: 'DELETE'
+        }).then(() => window.location.reload());
+      }
+    }
+  </script>
+
+</body>
+</html>

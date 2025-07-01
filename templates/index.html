@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Section - IDP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <h2 class="text-primary text-center mb-4">Add New IDP Section</h2>
+    <div class="card">
+      <div class="card-body">
+        <form id="entryForm">
+          <div class="mb-3">
+            <label class="form-label">Section</label>
+            <select id="sectionId" class="form-select" required>
+              <option value="">Select Section</option>
+              <option value="overview">Overview</option>
+              <option value="committees">IDP Committees</option>
+              <option value="enablerA">Enabler A</option>
+              <option value="enablerB">Enabler B</option>
+              <option value="enablerC">Enabler C</option>
+              <option value="enablerD">Enabler D</option>
+              <option value="enablerE">Enabler E</option>
+              <option value="enablerF">Enabler F</option>
+              <option value="enablerG">Enabler G</option>
+              <option value="enablerH">Enabler H</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <input type="text" id="name" class="form-control" placeholder="Title" required />
+          </div>
+          <div class="mb-3">
+            <textarea id="content" class="form-control" rows="4" placeholder="Content" required></textarea>
+          </div>
+          <div class="mb-3">
+            <input type="file" id="pdf" class="form-control" accept="application/pdf" />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="/" class="btn btn-outline-secondary">View All Sections</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('entryForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append('sectionId', document.getElementById('sectionId').value);
+      formData.append('name', document.getElementById('name').value);
+      formData.append('content', document.getElementById('content').value);
+      const file = document.getElementById('pdf').files[0];
+      if (file) formData.append('pdf', file);
+
+      await fetch('/api/sections', {
+        method: 'POST',
+        body: formData
+      });
+
+      window.location.href = '/';
+    });
+  </script>
+</body>
+</html>
