@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 import certifi
 
-# Load env variables
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__, template_folder="templates")
@@ -18,9 +18,11 @@ app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
-# MongoDB
+# MongoDB connection
 mongo = PyMongo(app, tlsCAFile=certifi.where())
 collection = mongo.db.sections
+
+# Routes
 
 # Dashboard - view all
 @app.route("/")
@@ -30,6 +32,7 @@ def dashboard():
         sec["_id"] = str(sec["_id"])
     return render_template("dashboard.html", sections=sections)
 
+# View individual section by sectionId
 @app.route("/section/<section_id>")
 def view_section(section_id):
     sections = list(collection.find({"sectionId": section_id}))
@@ -37,13 +40,20 @@ def view_section(section_id):
         sec["_id"] = str(sec["_id"])
     return render_template("dashboard.html", sections=sections)
 
+# Static HTML pages
+@app.route("/enablers")
+def enablers():
+    return render_template("enablers.html")
 
-# Add form page
+@app.route("/enablersA")
+def enablersA():
+    return render_template("enablersA.html")
+
 @app.route("/index")
 def index():
     return render_template("index.html")
 
-# API: Get all sections (optional)
+# API: Get all sections
 @app.route("/api/sections", methods=["GET"])
 def get_sections():
     sections = []
@@ -76,7 +86,8 @@ def add_section():
     inserted = collection.insert_one(new_section)
     new_section["_id"] = str(inserted.inserted_id)
     return jsonify(new_section), 201
-# Update section (Edit)
+
+# API: Update section
 @app.route("/api/sections/<id>", methods=["PUT"])
 def update_section(id):
     name = request.form.get("name")
@@ -91,25 +102,20 @@ def update_section(id):
         pdf.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
         update_data["pdfPath"] = pdf_path
 
-    result = collection.update_one(
-        {"_id": ObjectId(id)},
-        {"$set": update_data}
-    )
-
+    result = collection.update_one({"_id": ObjectId(id)}, {"$set": update_data})
     return jsonify({"updated": result.modified_count})
 
-
-
-# Delete section
+# API: Delete section
 @app.route("/api/sections/<id>", methods=["DELETE"])
 def delete_section(id):
     result = collection.delete_one({"_id": ObjectId(id)})
     return jsonify({"deleted": result.deleted_count})
 
-# Serve uploaded PDF
+# Serve uploaded PDFs
 @app.route("/uploads/<filename>")
 def serve_pdf(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
+# Run the app
 if __name__ == "__main__":
     app.run(debug=True)

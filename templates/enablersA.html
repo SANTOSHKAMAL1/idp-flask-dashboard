@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Governance Enablers - IDP Committees</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    .gradient-header {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    }
+    
+    .card-hover {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-left: 2rem;
+    }
+    
+    .timeline-item:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #4f46e5;
+    }
+    
+    .timeline-item:after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 12px;
+      width: 2px;
+      height: 100%;
+      background: #e0e7ff;
+    }
+    
+    .timeline-item:last-child:after {
+      display: none;
+    }
+    
+    .swoc-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .swoc-strength {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    
+    .swoc-weakness {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .swoc-opportunity {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .swoc-challenge {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    .pill-button {
+      border-radius: 9999px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .pill-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+    
+    .interaction-card {
+      border-left: 4px solid #4f46e5;
+      transition: all 0.3s ease;
+    }
+    
+    .interaction-card:hover {
+      background-color: #f8fafc;
+      transform: translateX(5px);
+    }
+    
+    .vertical-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    
+    @media (max-width: 768px) {
+      .vertical-text {
+        writing-mode: horizontal-tb;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans">
+  <!-- Navigation Header -->
+  <nav class="bg-white p-4 text-blue-900 shadow-md sticky top-0 z-50 border-b border-blue-100">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <!-- Logo + Title -->
+      <div class="flex items-center gap-4">
+        <div class="h-14 w-14 bg-blue-100 rounded-full flex items-center justify-center">
+          <i class="fas fa-landmark text-blue-600 text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold text-blue-900">Governance Enablers</h2>
+          <p class="text-sm text-gray-700">IDP - JAIN (Deemed-to-be University)</p>
+        </div>
+      </div>
+      <!-- Back to Dashboard -->
+      <div>
+        <a href="/enablers" class="text-blue-900 hover:text-blue-600 text-sm font-medium whitespace-nowrap flex items-center">
+          <i class="fas fa-arrow-left mr-2"></i> Back to Enablers
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Hero Section -->
+    <section class="gradient-header text-white rounded-xl p-8 mb-12 shadow-lg animate-fade-in">
+      <div class="flex flex-col md:flex-row items-center gap-8">
+        <div class="flex-1">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">Governance Framework for IDP Implementation</h1>
+          <p class="text-blue-100 text-lg mb-6">
+            The Governance Enabler serves as the cornerstone of all enablers in the IDP document, focusing on Centralized Leadership, Policy Management, Strategic Oversight, and Digital Growth.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">NEP 2020</span>
+            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">UGC Compliance</span>
+            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">NAAC Standards</span>
+            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">Digital Transformation</span>
+          </div>
+        </div>
+        <div class="w-full md:w-96">
+          <canvas id="governancePieChart" height="250"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Focus Areas -->
+    <section class="mb-16 animate-fade-in" style="animation-delay: 0.2s">
+      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
+        <i class="fas fa-bullseye mr-3"></i> Key Focus Areas
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+          <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+            <i class="fas fa-eye text-blue-600 text-xl"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Transparency & Accountability</h3>
+          <p class="text-gray-600">Ensuring open decision-making through grievance redressal, compliance tracking, and stakeholder engagement.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+          <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+            <i class="fas fa-users text-purple-600 text-xl"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Stakeholder Engagement</h3>
+          <p class="text-gray-600">Involving faculty, students, alumni, and external partners in participatory governance.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+          <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+            <i class="fas fa-laptop-code text-green-600 text-xl"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Digital Transformation</h3>
+          <p class="text-gray-600">Enhancing administrative efficiency using ERP systems, AI-based decision support, and paperless workflows.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+          <div class="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+            <i class="fas fa-balance-scale text-yellow-600 text-xl"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Policy & Framework</h3>
+          <p class="text-gray-600">Establishing regulatory guidelines and governance structures for effective decision-making.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+          <div class="h-12 w-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+            <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Compliance & Risk</h3>
+          <p class="text-gray-600">Maintaining quality assurance, accreditation readiness, and institutional risk assessment.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
+          <div class="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+            <i class="fas fa-leaf text-indigo-600 text-xl"></i>
+          </div>
+          <h3 class="font-bold text-lg mb-2">Sustainability</h3>
+          <p class="text-gray-600">Developing self-sustaining governance models and integrating ESG practices.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Governance Verticals -->
+    <section class="mb-16 animate-fade-in" style="animation-delay: 0.4s">
+      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
+        <i class="fas fa-sitemap mr-3"></i> Governance Verticals
+      </h2>
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Vertical</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Purpose</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Key Metrics</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td class="px-6 py-4 font-medium">Policy & Framework Development</td>
+                <td class="px-6 py-4 text-gray-600">Establishes regulatory guidelines, institutional policies, and governance structures</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 mb-1">Policy adoption rate</span>
+                  <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 mb-1">Compliance score</span>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td class="px-6 py-4 font-medium">Digital Governance & Automation</td>
+                <td class="px-6 py-4 text-gray-600">Enhances administrative efficiency using ERP systems and AI-based decision support</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mr-1 mb-1">Process efficiency</span>
+                  <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mr-1 mb-1">Digital adoption</span>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td class="px-6 py-4 font-medium">Transparency & Accountability</td>
+                <td class="px-6 py-4 text-gray-600">Ensures open decision-making through grievance redressal and compliance tracking</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-1 mb-1">Stakeholder trust</span>
+                  <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-1 mb-1">Grievance resolution</span>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td class="px-6 py-4 font-medium">Capacity Building & Leadership</td>
+                <td class="px-6 py-4 text-gray-600">Strengthens governance through training programs and leadership pipelines</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-1 mb-1">Training hours</span>
+                  <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-1 mb-1">Leadership readiness</span>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td class="px-6 py-4 font-medium">Stakeholder Engagement</td>
+                <td class="px-6 py-4 text-gray-600">Involves faculty, students, industry, and alumni in governance</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-1 mb-1">Participation rate</span>
+                  <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-1 mb-1">Satisfaction score</span>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td class="px-6 py-4 font-medium">Audit, Compliance & Risk</td>
+                <td class="px-6 py-4 text-gray-600">Maintains quality assurance and institutional risk assessment</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded mr-1 mb-1">Audit findings</span>
+                  <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded mr-1 mb-1">Risk mitigation</span>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition-colors">
+                <td class="px-6 py-4 font-medium">Sustainability & Autonomy</td>
+                <td class="px-6 py-4 text-gray-600">Develops self-sustaining governance models and ESG practices</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded mr-1 mb-1">Financial autonomy</span>
+                  <span class="inline-block bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded mr-1 mb-1">ESG score</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enabler Interactions -->
+    <section class="mb-16 animate-fade-in" style="animation-delay: 0.6s">
+      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
+        <i class="fas fa-project-diagram mr-3"></i> Interaction with Other IDP Enablers
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
+          <div class="flex items-start mb-4">
+            <div class="bg-blue-100 text-blue-800 rounded-lg p-3 mr-4">
+              <i class="fas fa-book-open text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg">Academic Enabler</h3>
+              <p class="text-gray-600">Defines academic policies (curriculum, faculty recruitment) and establishes research ethics frameworks</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Policy Alignment</span>
+            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Curriculum Standards</span>
+            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Faculty Development</span>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
+          <div class="flex items-start mb-4">
+            <div class="bg-purple-100 text-purple-800 rounded-lg p-3 mr-4">
+              <i class="fas fa-flask text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg">Research & IP</h3>
+              <p class="text-gray-600">Oversees research integrity & financial transparency, manages research project risk assessment</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">IP Governance</span>
+            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Ethics Compliance</span>
+            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Funding Audits</span>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
+          <div class="flex items-start mb-4">
+            <div class="bg-green-100 text-green-800 rounded-lg p-3 mr-4">
+              <i class="fas fa-money-bill-wave text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg">Financial Enablers</h3>
+              <p class="text-gray-600">Develops infrastructure guidelines & resource allocation policies, ensures financial sustainability</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Budget Governance</span>
+            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Resource Allocation</span>
+            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Funding Models</span>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
+          <div class="flex items-start mb-4">
+            <div class="bg-yellow-100 text-yellow-800 rounded-lg p-3 mr-4">
+              <i class="fas fa-users text-xl"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg">HRM Enablers</h3>
+              <p class="text-gray-600">Trains faculty & administrators in governance best practices, ensures transparent faculty recruitment</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Leadership Training</span>
+            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Faculty Evaluation</span>
+            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Administrative Development</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SWOC Analysis -->
+    <section class="mb-16 animate-fade-in" style="animation-delay: 0.8s">
+      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
+        <i class="fas fa-chart-pie mr-3"></i> Governance SWOC Analysis
+      </h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <div class="bg-white rounded-xl shadow-md p-6 h-full">
+            <h3 class="font-bold text-lg mb-4">Stakeholder Survey Results</h3>
+            <canvas id="stakeholderChart" height="250"></canvas>
+          </div>
+        </div>
+        <div>
+          <div class="bg-white rounded-xl shadow-md p-6 h-full">
+            <h3 class="font-bold text-lg mb-4">Key Findings</h3>
+            <div class="space-y-4">
+              <div>
+                <span class="swoc-badge swoc-strength">Strength</span>
+                <p class="mt-2">Strong implementation of decision-making frameworks and digital governance ecosystem</p>
+              </div>
+              <div>
+                <span class="swoc-badge swoc-weakness">Weakness</span>
+                <p class="mt-2">Need for improvement in faculty development and participatory governance</p>
+              </div>
+              <div>
+                <span class="swoc-badge swoc-opportunity">Opportunity</span>
+                <p class="mt-2">Global academic partnerships and technology integration in learning</p>
+              </div>
+              <div>
+                <span class="swoc-badge swoc-challenge">Challenge</span>
+                <p class="mt-2">Shifts in regulations, dependent funding, and new academic models</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Implementation Timeline -->
+    <section class="mb-16 animate-fade-in" style="animation-delay: 1s">
+      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
+        <i class="fas fa-road mr-3"></i> Implementation Roadmap
+      </h2>
+      <div class="bg-white rounded-xl shadow-md overflow-hidden">
+        <div class="p-6">
+          <div class="flex overflow-x-auto pb-4">
+            <div class="flex space-x-8">
+              <!-- Short Term -->
+              <div class="flex-shrink-0 w-72">
+                <div class="bg-blue-100 text-blue-900 rounded-lg p-4 mb-4">
+                  <h3 class="font-bold text-lg">Short-term (0-2 Years)</h3>
+                  <p class="text-sm">Foundation Building</p>
+                </div>
+                <div class="space-y-4">
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Establish University Court</h4>
+                    <p class="text-sm text-gray-600">Oversee institutional progress and policy direction</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Departmental Development Plans</h4>
+                    <p class="text-sm text-gray-600">Align with Institutional Development Plan</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">360-degree Feedback System</h4>
+                    <p class="text-sm text-gray-600">Evaluate faculty, administration, and student experiences</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Research & Innovation Council</h4>
+                    <p class="text-sm text-gray-600">Improve research quality and interdisciplinary collaboration</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Mid Term -->
+              <div class="flex-shrink-0 w-72">
+                <div class="bg-purple-100 text-purple-900 rounded-lg p-4 mb-4">
+                  <h3 class="font-bold text-lg">Mid-term (3-5 Years)</h3>
+                  <p class="text-sm">Consolidation & Growth</p>
+                </div>
+                <div class="space-y-4">
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Establish Senate & Syndicate</h4>
+                    <p class="text-sm text-gray-600">Incorporate diverse perspectives in governance</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Centers of Excellence</h4>
+                    <p class="text-sm text-gray-600">Promote AI, Indian Knowledge Systems, and emerging technologies</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">External Academic Audits</h4>
+                    <p class="text-sm text-gray-600">Ensure quality and maintain high educational standards</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Expand Funding Models</h4>
+                    <p class="text-sm text-gray-600">Include endowments, CSR funding, and IP revenue</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Long Term -->
+              <div class="flex-shrink-0 w-72">
+                <div class="bg-green-100 text-green-900 rounded-lg p-4 mb-4">
+                  <h3 class="font-bold text-lg">Long-term (5+ Years)</h3>
+                  <p class="text-sm">Sustainable Excellence</p>
+                </div>
+                <div class="space-y-4">
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Policy Review Mechanism</h4>
+                    <p class="text-sm text-gray-600">Update and render accountable governance policies</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Digital Resource Optimization</h4>
+                    <p class="text-sm text-gray-600">Integrate technologies for institutional resource management</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">Global Alumni Network</h4>
+                    <p class="text-sm text-gray-600">Strengthen engagement and collaboration</p>
+                  </div>
+                  <div class="timeline-item">
+                    <h4 class="font-medium">International Research Pathways</h4>
+                    <p class="text-sm text-gray-600">Strengthen global knowledge-sharing networks</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Metrics Dashboard -->
+    <section class="mb-16 animate-fade-in" style="animation-delay: 1.2s">
+      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
+        <i class="fas fa-chart-line mr-3"></i> Governance Performance Metrics
+      </h2>
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-blue-50 rounded-lg p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm text-blue-800 font-medium">Policy Compliance</p>
+                <h3 class="text-2xl font-bold text-blue-900">92%</h3>
+              </div>
+              <div class="bg-blue-100 p-2 rounded-lg">
+                <i class="fas fa-check-circle text-blue-600"></i>
+              </div>
+            </div>
+            <div class="mt-2 h-2 bg-blue-200 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-600 rounded-full" style="width: 92%"></div>
+            </div>
+          </div>
+          <div class="bg-purple-50 rounded-lg p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm text-purple-800 font-medium">Digital Adoption</p>
+                <h3 class="text-2xl font-bold text-purple-900">78%</h3>
+              </div>
+              <div class="bg-purple-100 p-2 rounded-lg">
+                <i class="fas fa-laptop-code text-purple-600"></i>
+              </div>
+            </div>
+            <div class="mt-2 h-2 bg-purple-200 rounded-full overflow-hidden">
+              <div class="h-full bg-purple-600 rounded-full" style="width: 78%"></div>
+            </div>
+          </div>
+          <div class="bg-green-50 rounded-lg p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm text-green-800 font-medium">Stakeholder Satisfaction</p>
+                <h3 class="text-2xl font-bold text-green-900">85%</h3>
+              </div>
+              <div class="bg-green-100 p-2 rounded-lg">
+                <i class="fas fa-smile text-green-600"></i>
+              </div>
+            </div>
+            <div class="mt-2 h-2 bg-green-200 rounded-full overflow-hidden">
+              <div class="h-full bg-green-600 rounded-full" style="width: 85%"></div>
+            </div>
+          </div>
+          <div class="bg-yellow-50 rounded-lg p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm text-yellow-800 font-medium">Risk Mitigation</p>
+                <h3 class="text-2xl font-bold text-yellow-900">88%</h3>
+              </div>
+              <div class="bg-yellow-100 p-2 rounded-lg">
+                <i class="fas fa-shield-alt text-yellow-600"></i>
+              </div>
+            </div>
+            <div class="mt-2 h-2 bg-yellow-200 rounded-full overflow-hidden">
+              <div class="h-full bg-yellow-600 rounded-full" style="width: 88%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="h-80">
+          <canvas id="performanceTrendChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="animate-fade-in" style="animation-delay: 1.4s">
+      <div class="bg-blue-900 text-white rounded-xl p-8 shadow-lg">
+        <h2 class="text-2xl font-bold mb-4">Conclusion</h2>
+        <p class="mb-6 text-blue-100">
+          Governance is not simply an administrative function, but the pillar of institutional quality. It guides academic policies, research funding, digital transformation, financial sustainability, and participatory decision-making. The IDP offers a systematic path for governance excellence through short-term, mid-term and long-term reforms.
+       
+      </div>
+    </section>
+  </div>
+
+  <footer class="bg-gray-100 border-t border-gray-200 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-4 md:mb-0">
+          <h3 class="text-lg font-bold text-gray-900">Enablers A</h3>
+          <p class="text-gray-600 mt-1">Institutional Development Plan - JAIN (Deemed-to-be University)</p>
+        </div>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-600 hover:text-blue-600 transition-colors">
+            <i class="fab fa-twitter text-xl"></i>
+          </a>
+          <a href="#" class="text-gray-600 hover:text-blue-800 transition-colors">
+            <i class="fab fa-linkedin text-xl"></i>
+          </a>
+          <a href="#" class="text-gray-600 hover:text-red-600 transition-colors">
+            <i class="fas fa-envelope text-xl"></i>
+          </a>
+        </div>
+      </div>
+      <div class="border-t border-gray-200 mt-6 pt-6 text-center text-gray-500 text-sm">
+        <p>© 2025 IDP Committees Dashboard. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Governance Focus Areas Pie Chart
+    const governancePieCtx = document.getElementById('governancePieChart').getContext('2d');
+    const governancePieChart = new Chart(governancePieCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Policy Framework', 'Digital Governance', 'Transparency', 'Capacity Building', 'Stakeholder Engagement', 'Compliance', 'Sustainability'],
+        datasets: [{
+          data: [22, 18, 15, 12, 14, 11, 8],
+          backgroundColor: [
+            '#4f46e5',
+            '#7c3aed',
+            '#10b981',
+            '#f59e0b',
+            '#ef4444',
+            '#6366f1',
+            '#14b8a6'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '70%',
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              color: '#fff',
+              font: {
+                family: "'Inter', sans-serif"
+              },
+              padding: 20
+            }
+          },
+          tooltip: {
+            bodyFont: {
+              family: "'Inter', sans-serif"
+            },
+            titleFont: {
+              family: "'Inter', sans-serif"
+            }
+          }
+        },
+        animation: {
+          animateScale: true,
+          animateRotate: true
+        }
+      }
+    });
+
+    // Stakeholder Survey Chart
+    const stakeholderCtx = document.getElementById('stakeholderChart').getContext('2d');
+    const stakeholderChart = new Chart(stakeholderCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Administrators', 'Campus Directors', 'Faculty', 'Students', 'Alumni', 'Industry'],
+        datasets: [{
+          label: 'Satisfaction Level',
+          data: [88, 82, 75, 79, 85, 81],
+          backgroundColor: '#4f46e5',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+            grid: {
+              drawBorder: false
+            },
+            ticks: {
+              color: '#6b7280'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              color: '#6b7280'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: '#1f2937',
+            titleFont: {
+              family: "'Inter', sans-serif"
+            },
+            bodyFont: {
+              family: "'Inter', sans-serif"
+            }
+          }
+        }
+      }
+    });
+
+    // Performance Trend Chart
+    const trendCtx = document.getElementById('performanceTrendChart').getContext('2d');
+    const trendChart = new Chart(trendCtx, {
+      type: 'line',
+      data: {
+        labels: ['2021', '2022', '2023', '2024 (Projected)', '2025 (Target)'],
+        datasets: [
+          {
+            label: 'Policy Compliance',
+            data: [75, 82, 88, 90, 95],
+            borderColor: '#4f46e5',
+            backgroundColor: 'rgba(79, 70, 229, 0.05)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: 'Digital Adoption',
+            data: [55, 65, 75, 82, 90],
+            borderColor: '#7c3aed',
+            backgroundColor: 'rgba(124, 58, 237, 0.05)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.3
+          },
+          {
+            label: 'Stakeholder Satisfaction',
+            data: [72, 78, 83, 86, 90],
+            borderColor: '#10b981',
+            backgroundColor: 'rgba(16, 185, 129, 0.05)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            min: 50,
+            max: 100,
+            grid: {
+              drawBorder: false
+            },
+            ticks: {
+              color: '#6b7280'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              color: '#6b7280'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              color: '#111827',
+              font: {
+                family: "'Inter', sans-serif"
+              },
+              padding: 20,
+              usePointStyle: true
+            }
+          },
+          tooltip: {
+            backgroundColor: '#1f2937',
+            titleFont: {
+              family: "'Inter', sans-serif"
+            },
+            bodyFont: {
+              family: "'Inter', sans-serif"
+            }
+          }
+        }
+      }
+    });
+
+    // Animation on scroll
+    document.addEventListener('DOMContentLoaded', () => {
+      const animatedElements = document.querySelectorAll('.animate-fade-in');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      animatedElements.forEach(el => {
+        el.style.opacity = 0;
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
