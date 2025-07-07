@@ -49,6 +49,38 @@ def enablers():
 def enablersA():
     return render_template("enablersA.html")
 
+@app.route("/enablersb")
+def enablersb():
+    return render_template("enablersb.html")
+
+@app.route("/enablersc")
+def enablersc():
+    return render_template("enablersc.html")
+
+
+@app.route("/enablersd")
+def enablersd():
+    return render_template("enablersd.html")
+
+@app.route("/enablerse")
+def enablerse():
+    return render_template("enablerse.html")
+
+@app.route("/enablersf")
+def enablersf():
+    return render_template("enablersf.html")
+
+
+@app.route("/enablersg")
+def enablersg():
+    return render_template("enablersg.html")
+
+
+
+@app.route("/enablersh")
+def enablersh():
+    return render_template("enablersh.html")
+
 @app.route("/index")
 def index():
     return render_template("index.html")
