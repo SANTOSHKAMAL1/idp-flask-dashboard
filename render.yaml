@@ -3,7 +3,7 @@ services:
     name: idp-dashboard
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: gunicorn app:app --timeout 120
     envVars:
       - key: MONGO_URI
 
