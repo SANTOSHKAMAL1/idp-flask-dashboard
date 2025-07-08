@@ -10,10 +10,11 @@ import certifi
 # Load environment variables
 load_dotenv()
 
+# Flask app setup
 app = Flask(__name__, template_folder="templates")
 CORS(app)
 
-# Config
+# Configurations
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
@@ -22,9 +23,11 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 mongo = PyMongo(app, tlsCAFile=certifi.where())
 collection = mongo.db.sections
 
-# Routes
+# -------------------------------
+# ROUTES
+# -------------------------------
 
-# Dashboard - view all
+# Dashboard - view all sections
 @app.route("/")
 def dashboard():
     sections = list(collection.find())
@@ -40,52 +43,42 @@ def view_section(section_id):
         sec["_id"] = str(sec["_id"])
     return render_template("dashboard.html", sections=sections)
 
-# Static HTML pages
+# Static Enabler Pages
 @app.route("/enablers")
-def enablers():
-    return render_template("enablers.html")
+def enablers(): return render_template("enablers.html")
 
 @app.route("/enablersA")
-def enablersA():
-    return render_template("enablersA.html")
+def enablersA(): return render_template("enablersA.html")
 
 @app.route("/enablersb")
-def enablersb():
-    return render_template("enablersb.html")
+def enablersb(): return render_template("enablersb.html")
 
 @app.route("/enablersc")
-def enablersc():
-    return render_template("enablersc.html")
-
+def enablersc(): return render_template("enablersc.html")
 
 @app.route("/enablersd")
-def enablersd():
-    return render_template("enablersd.html")
+def enablersd(): return render_template("enablersd.html")
 
 @app.route("/enablerse")
-def enablerse():
-    return render_template("enablerse.html")
+def enablerse(): return render_template("enablerse.html")
 
 @app.route("/enablersf")
-def enablersf():
-    return render_template("enablersf.html")
-
+def enablersf(): return render_template("enablersf.html")
 
 @app.route("/enablersg")
-def enablersg():
-    return render_template("enablersg.html")
-
-
+def enablersg(): return render_template("enablersg.html")
 
 @app.route("/enablersh")
-def enablersh():
-    return render_template("enablersh.html")
+def enablersh(): return render_template("enablersh.html")
 
 @app.route("/index")
-def index():
-    return render_template("index.html")
+def index(): return render_template("index.html")
 
-# API: Get all sections
+# -------------------------------
+# APIs
+# -------------------------------
+
+# Get all sections
 @app.route("/api/sections", methods=["GET"])
 def get_sections():
     sections = []
@@ -94,7 +87,7 @@ def get_sections():
         sections.append(sec)
     return jsonify(sections)
 
-# API: Add section
+# Add new section
 @app.route("/api/sections", methods=["POST"])
 def add_section():
     name = request.form.get("name")
@@ -119,7 +112,7 @@ def add_section():
     new_section["_id"] = str(inserted.inserted_id)
     return jsonify(new_section), 201
 
-# API: Update section
+# Update section by ID
 @app.route("/api/sections/<id>", methods=["PUT"])
 def update_section(id):
     name = request.form.get("name")
@@ -137,17 +130,20 @@ def update_section(id):
     result = collection.update_one({"_id": ObjectId(id)}, {"$set": update_data})
     return jsonify({"updated": result.modified_count})
 
-# API: Delete section
+# Delete section by ID
 @app.route("/api/sections/<id>", methods=["DELETE"])
 def delete_section(id):
     result = collection.delete_one({"_id": ObjectId(id)})
     return jsonify({"deleted": result.deleted_count})
 
-# Serve uploaded PDFs
+# Serve uploaded PDF
 @app.route("/uploads/<filename>")
 def serve_pdf(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
-# Run the app
+# -------------------------------
+# Local Run Support
+# -------------------------------
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
