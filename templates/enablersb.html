@@ -1,1598 +1,469 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Enablers - JAIN University</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #032441;
-            --secondary-color: #e74c3c;
-            --accent-color: #3498db;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --nav-text-color: #003366;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.7;
-            color: #444;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f7fa;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Navigation Header */
-        .nav-header {
-            background-color: white;
-            padding: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
-            transition: var(--transition);
-        }
-        
-        .nav-header.scrolled {
-            padding: 0.5rem 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-            flex: 1;
-            min-width: 250px;
-            transition: var(--transition);
-        }
-        
-        .nav-logo:hover {
-            transform: translateX(5px);
-        }
-        
-        .logo-icon {
-            height: 3.5rem;
-            width: 3.5rem;
-            background: linear-gradient(135deg, rgba(0, 51, 102, 0.1) 0%, rgba(0, 51, 102, 0.2) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
-        }
-        
-        .logo-icon i {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-        }
-        
-        .logo-text h2 {
-            margin: 0;
-            font-size: 1.25rem;
-            color: var(--nav-text-color);
-            font-weight: 700;
-            line-height: 1.3;
-            transition: var(--transition);
-        }
-        
-        .logo-text p {
-            margin: 0.25rem 0 0;
-            font-size: 0.875rem;
-            color: var(--nav-text-color);
-            opacity: 0.8;
-            transition: var(--transition);
-        }
-        
-        .nav-back-link {
-            color: var(--nav-text-color);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-            white-space: nowrap;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            background-color: rgba(0, 51, 102, 0.05);
-        }
-        
-        .nav-back-link:hover {
-            color: white;
-            background-color: var(--accent-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
-        }
-        
-        .nav-back-link i {
-            margin-right: 0.5rem;
-        }
-        
-        header {
-            background:  #0a4881 100%;
-            color: white;
-            padding: 60px 0 40px;
-            text-align: center;
-            margin-bottom: 40px;
-            
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
-            opacity: 0.5;
-        }
-        
-        h1, h2, h3, h4 {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        h1 {
-            margin: 0;
-            font-size: 2.8rem;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 15px;
-        }
-        
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--secondary-color);
-            border-radius: 2px;
-        }
-        
-        h2 {
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 12px;
-            margin-top: 50px;
-            font-size: 2rem;
-            position: relative;
-        }
-        
-        h2::before {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 50px;
-            height: 4px;
-            background-color: var(--secondary-color);
-            border-radius: 2px;
-        }
-        
-        h3 {
-            color: var(--secondary-color);
-            margin-top: 30px;
-            font-size: 1.5rem;
-        }
-        
-        h4 {
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            padding: 30px;
-            margin-bottom: 40px;
-            transition: var(--transition);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
-            transition: var(--transition);
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-        
-        .card:hover::before {
-            width: 8px;
-        }
-        
-        .goal-section {
-            margin-bottom: 50px;
-        }
-        
-        .goal-timeline {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .timeline-item {
-            flex: 1;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-            cursor: pointer;
-            min-width: 200px;
-            box-sizing: border-box;
-            background-color: white;
-            border-radius: 8px;
-            transition: var(--transition);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-        }
-        
-        .timeline-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .timeline-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: -10px;
-            width: 20px;
-            height: 2px;
-            background: var(--accent-color);
-            z-index: 1;
-        }
-        
-        .timeline-item.active {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0 8px 20px rgba(3, 36, 65, 0.3);
-        }
-        
-        .timeline-item h4 {
-            margin: 0 0 10px 0;
-            font-size: 1.2rem;
-            transition: var(--transition);
-        }
-        
-        .timeline-item p {
-            margin: 0;
-            font-size: 0.95rem;
-            opacity: 0.9;
-            transition: var(--transition);
-        }
-        
-        .timeline-item.active h4,
-        .timeline-item.active p {
-            color: white;
-        }
-        
-        .goal-content {
-            display: none;
-            padding: 25px;
-            background-color: white;
-            border-radius: 8px;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            animation: fadeIn 0.5s ease forwards;
-            opacity: 0;
-        }
-        
-        .goal-content.active {
-            display: block;
-            opacity: 1;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        ul {
-            padding-left: 20px;
-            list-style-type: none;
-        }
-        
-        li {
-            margin-bottom: 15px;
-            position: relative;
-            padding-left: 30px;
-            line-height: 1.6;
-        }
-        
-        li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 8px;
-            width: 12px;
-            height: 12px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            transform: scale(0.8);
-            transition: var(--transition);
-        }
-        
-        li:hover::before {
-            transform: scale(1.1);
-            background-color: var(--secondary-color);
-        }
-        
-        .chart-container {
-            margin: 40px auto;
-            max-width: 100%;
-            height: 450px;
-            position: relative;
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: var(--transition);
-        }
-        
-        .chart-container:hover {
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transform: translateY(-5px);
-        }
-        
-        .info-box {
-            background: linear-gradient(to right, rgba(231, 244, 255, 0.8) 0%, rgba(231, 244, 255, 0.95) 100%);
-            border-left: 4px solid var(--accent-color);
-            padding: 20px;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-        
-        .info-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgwLCAxMDIsIDIwNCwgMC4wNSkiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiLz48L3N2Zz4=');
-            opacity: 0.3;
-        }
-        
-        .info-box:hover {
-            transform: translateX(5px);
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .info-box h4 {
-            color: var(--primary-color);
-            margin-top: 0;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .info-box h4::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--secondary-color);
-        }
-        
-        .info-box p {
-            margin-bottom: 0;
-        }
-        
-        footer {
-            background: linear-gradient(135deg, var(--dark-color) 0%, #212529 100%);
-            color: white;
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 80px;
-            position: relative;
-        }
-        
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, var(--primary-color), var(--accent-color), var(--secondary-color));
-        }
-        
-        footer p {
-            margin: 10px 0;
-            opacity: 0.9;
-        }
-        
-        .tab-container {
-            margin-bottom: 40px;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-            flex-wrap: wrap;
-            gap: 5px;
-        }
-        
-        .tab-btn {
-            padding: 12px 25px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 3px solid transparent;
-            transition: var(--transition);
-            white-space: nowrap;
-            position: relative;
-            border-radius: 5px 5px 0 0;
-        }
-        
-        .tab-btn:hover {
-            color: var(--primary-color);
-            background-color: rgba(0, 51, 102, 0.05);
-        }
-        
-        .tab-btn.active {
-            border-bottom: 3px solid var(--secondary-color);
-            color: var(--primary-color);
-            font-weight: 600;
-            background-color: rgba(0, 51, 102, 0.05);
-        }
-        
-        .tab-content {
-            display: none;
-            padding: 30px;
-            background: white;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            animation: fadeIn 0.5s ease forwards;
-            opacity: 0;
-        }
-        
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-        }
-        
-        /* Floating action button */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 25px rgba(3, 36, 65, 0.3);
-            cursor: pointer;
-            z-index: 99;
-            transition: var(--transition);
-            border: none;
-            font-size: 24px;
-        }
-        
-        .fab:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 15px 30px rgba(3, 36, 65, 0.4);
-        }
-        
-        /* Progress bars */
-        .progress-container {
-            margin: 30px 0;
-        }
-        
-        .progress-title {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
-            border-radius: 5px;
-            transition: width 1.5s ease;
-            width: 0;
-        }
-        
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted var(--accent-color);
-            cursor: help;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: var(--primary-color);
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 14px;
-            font-weight: normal;
-        }
-        
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: var(--primary-color) transparent transparent transparent;
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 992px) {
-            .chart-container {
-                height: 350px;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            h2 {
-                font-size: 1.8rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .goal-timeline {
-                flex-direction: column;
-            }
-            
-            .timeline-item {
-                width: 100%;
-                margin-bottom: 15px;
-            }
-            
-            .timeline-item:not(:last-child)::after {
-                display: none;
-            }
-            
-            .timeline-item::before {
-                content: '';
-                position: absolute;
-                bottom: -8px;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 80%;
-                height: 2px;
-                background-color: #eee;
-            }
-            
-            .nav-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .nav-logo {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-            
-            .chart-container {
-                height: 300px;
-                padding: 15px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            h2 {
-                font-size: 1.5rem;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            .tab-content {
-                padding: 20px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .tab-buttons {
-                flex-direction: column;
-                border-bottom: none;
-            }
-            
-            .tab-btn {
-                border-bottom: none;
-                border-left: 3px solid transparent;
-                text-align: left;
-                border-radius: 5px;
-                padding: 12px 15px;
-            }
-            
-            .tab-btn.active {
-                border-bottom: none;
-                border-left: 3px solid var(--secondary-color);
-            }
-            
-            .chart-container {
-                height: 250px;
-            }
-            
-            h1 {
-                font-size: 1.6rem;
-            }
-        }
-        
-        /* Animation classes */
-        .fade-in {
-            animation: fadeIn 1s ease forwards;
-        }
-        
-        .slide-up {
-            animation: slideUp 0.8s ease forwards;
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Pulse animation for important elements */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        /* Highlight box */
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(231, 244, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
-            border-radius: 8px;
-            padding: 25px;
-            margin: 30px 0;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .highlight-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--accent-color), var(--secondary-color));
-        }
-    </style>
-</head>
-<body>
-     <!-- Navigation Header -->
-<div class="nav-header" id="navHeader">
-  <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    
-    <!-- Left: Logo -->
-    <a href="#" class="nav-logo">
-      <div class="logo-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
+{% extends "base.html" %}
 
-      <!-- Logo Text Section -->
-      <div class="logo-text" style="display: flex; align-items: center; gap: 1rem;">
-        <img src="/static/images/santhu123.png" alt="JAIN University Logo" style="height: 3.5rem; object-fit: contain;" />
-        <div>
-             <h2>Financial Enablers and Funding Models</h2>
-                    <p>Resource Generation Strategy for JAIN University</p>
+{% block title %}Enabler B — Financial Sustainability{% endblock %}
+
+{% block styles %}
+<style>
+  :root{
+    --bg-page: #f3f8fd;
+    --hero-bg: linear-gradient(180deg,#ffffff,#f7fbff);
+    --muted:#64748b;
+    --accent:#ff8c00;
+    --card-shadow: 0 20px 40px rgba(16,24,40,0.06);
+  }
+
+  html,body { height:100%; margin:0; }
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: var(--bg-page);
+    color: #0b1220;
+  }
+
+  .page-wrap {
+    max-width: 1400px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 0 10px;
+  }
+  .page-header .title {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #0b1220, #0b1220);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #071029;
+  }
+  .page-header .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  /* Vision Section (kept plain) */
+  .vision {
+    text-align: center;
+    margin: 0 auto 24px;
+    padding: 16px 18px;
+    max-width: 960px;
+  }
+  .vision h2 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 8px;
+    color: #0b1220;
+  }
+  .vision p {
+    color: #334155;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HERO PANEL */
+  .hero-panel {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 32px;
+    background: var(--hero-bg);
+    border-radius: 24px;
+    padding: 36px;
+    box-shadow: var(--card-shadow);
+    align-items: center;
+  }
+
+  .hero-left {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .hero-left img {
+    display:block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hero-right {
+    position: relative;
+  }
+
+  /* Carousel Header */
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .carousel-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    color: #071029;
+  }
+
+  .controls-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* TERM NAV */
+  .term-nav {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .term-btn {
+    border: 0;
+    background: transparent;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #475569;
+    font-size: 14px;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .term-btn.active {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255,140,0,0.18);
+  }
+
+  .carousel-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  .carousel-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid rgba(15,23,42,0.08);
+    background: rgba(255,255,255,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.16s ease;
+  }
+
+  .carousel-btn:hover {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    border-color: #ff8c00;
+    transform: scale(1.05);
+  }
+  .carousel-btn:hover svg path { stroke: #fff; }
+
+  /* Carousel Content */
+  .carousel-container {
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 6px;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 24px;
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .carousel-track > .goal-card {
+    flex: 0 0 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(14,24,54,0.08);
+  }
+
+  .goal-card h3 {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .goal-card .timeline {
+    display: inline-block;
+    padding: 8px 14px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    font-weight: 700;
+    color: #475569;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  .goal-card ul {
+    padding-left: 20px;
+    color: #374151;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  .goal-card li {
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+
+  .carousel-indicators {
+    display: flex;
+    gap: 8px;
+    padding-top: 14px;
+    justify-content: center;
+  }
+
+  .indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .indicator.active {
+    width: 32px;
+    background: linear-gradient(90deg, #ff8c00, #ffb366);
+    border-radius: 6px;
+  }
+
+  /* Key Indicator */
+  .key-indicator {
+    margin-top: 28px;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .key-indicator h4 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 10px;
+    color: #0b1220;
+  }
+
+  .key-indicator p {
+    color: #374151;
+    max-width: 920px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .hero-panel {
+      grid-template-columns: 420px 1fr;
+      padding: 28px;
+      gap: 20px;
+    }
+    .hero-left img { max-width: 380px; }
+  }
+
+  @media (max-width: 980px) {
+    .hero-panel {
+      grid-template-columns: 1fr;
+      padding: 20px;
+      text-align: center;
+    }
+    .hero-left { order: 1; margin-bottom: 18px; }
+    .hero-right { order: 2; padding-left: 0; }
+    .carousel-header { flex-direction: column; align-items: center; gap: 12px; }
+    .controls-wrapper { width: 100%; flex-direction: column; gap: 10px; }
+    .term-nav { width: 100%; justify-content: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .carousel-controls { justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .page-header .title { font-size: 20px; }
+    .page-header .subtitle { font-size: 13px; }
+    .hero-left img { max-width: 260px; }
+    .term-btn { padding: 8px 12px; font-size: 13px; flex: 1; }
+    .carousel-btn { width: 40px; height: 40px; }
+    .goal-card { padding: 16px; }
+    .goal-card h3 { font-size: 16px; }
+    .goal-card li { font-size: 13px; margin-bottom: 10px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="title">Enabler B — Financial Sustainability</div>
+    <div class="subtitle">Strategic Roadmap · Institutional Development Plan (IDP)</div>
+  </header>
+
+  <!-- Vision (plain) -->
+  <section class="vision" aria-label="Vision">
+    <h2>🎯 Vision</h2>
+    <p>A financially resilient and diversified funding ecosystem that ensures sustained institutional growth, surplus generation, and strategic reinvestment in academic and research excellence.</p>
+  </section>
+
+  <!-- HERO: panel with image + carousel -->
+  <section class="hero-panel">
+    <div class="hero-left" aria-hidden="false">
+      <!-- replace file name/path if your image is different -->
+      <img src="{{ url_for('static', filename='images/eb.png') }}" alt="Enabler B roadmap illustration">
+    </div>
+
+    <div class="hero-right">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Strategic Goals Timeline</h3>
+
+        <div class="controls-wrapper" role="tablist" aria-label="Term navigation and carousel controls">
+          <nav class="term-nav" aria-label="Term navigation">
+            <button class="term-btn active" data-slide="0" type="button">Short</button>
+            <button class="term-btn" data-slide="1" type="button">Mid</button>
+            <button class="term-btn" data-slide="2" type="button">Long</button>
+          </nav>
+
+          <div class="carousel-controls" aria-hidden="false">
+            <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M12 16L6 10L12 4" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="carousel-btn" onclick="nextSlide()" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
       </div>
-    </a>
 
-    <!-- Right: Back Link -->
-    <a href="/enablers" class="nav-back-link" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 500;">
-      <i class="fas fa-arrow-left"></i> Back to Enablers
-    </a>
-
-  </div>
-         
-  
-    
-    <div class="container">
-        <header class="slide-up">
-            <h1>Financial Enablers Framework</h1>
-            <p>Sustainable Resource Generation for Institutional Excellence</p>
-        </header>
-
-        <section class="intro-section card fade-in">
-            <h4>JAIN (Deemed to be University) is committed to maintain a high growth trajectory through a planned approach towards sourcing of funds needed for capital expenditure and recurring expenditure, deploying funds optimally and generating a surplus, which can be redeployed to meet future needs and to avail opportunities that are bound to arise in India's vibrant economy.</h4>
-            
-            <div class="progress-container">
-                <div class="progress-title">
-                    <span>Current Funding Diversification</span>
-                    <span>45%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 45%;"></div>
-                </div>
-            </div>
-            
-            <div class="chart-container pulse">
-                <canvas id="fundingSourcesChart"></canvas>
-            </div>
-            
-            <div class="highlight-box">
-                <h4>Strategic Financial Objectives</h4>
-                <p>Our financial strategy focuses on three key pillars: <strong>Diversification</strong> of revenue sources, <strong>Optimization</strong> of resource allocation, and <strong>Sustainability</strong> through endowment growth and strategic investments. By 2025, we aim to reduce tuition fee dependence to under 35% while increasing research and industry partnerships to 40% of total revenue.</p>
-            </div>
-        </section>
-        
-        <section class="financial-policies card slide-up">
-            <h2>2.1 Financial Policies</h2>
-            <p class="tooltip">Comprehensive financial policies to guide resource generation and allocation
-                <span class="tooltiptext">These policies ensure alignment with institutional goals and regulatory requirements</span>
-            </p>
-            
-            <div class="goal-timeline">
-                <div class="timeline-item active" onclick="showGoalContent('short-term-policies')">
-                    <h4>Short-term Goals</h4>
-                    <p>(0-3 years)</p>
-                    <i class="fas fa-calendar-alt" style="margin-top: 10px; font-size: 1.5rem;"></i>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('medium-term-policies')">
-                    <h4>Medium-term Goals</h4>
-                    <p>(3-5 years)</p>
-                    <i class="fas fa-chart-line" style="margin-top: 10px; font-size: 1.5rem;"></i>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('long-term-policies')">
-                    <h4>Long-term Goals</h4>
-                    <p>(5+ years)</p>
-                    <i class="fas fa-bullseye" style="margin-top: 10px; font-size: 1.5rem;"></i>
-                </div>
-            </div>
-            
-            <div id="short-term-policies" class="goal-content active">
-                <ul>
-                    <li>Formulate policies that enable support to academic and research activities of the University, development of infrastructure – both physical and digital and the key thrust areas of the University such as sports, entrepreneurship.</li>
-                    <li>The Policies shall support expansion of academic and research activities requiring addition of physical facilities and digital resources in the near term covering a period of 2 – 3 years.</li>
-                    <li>The policies shall promote securing sponsorship for Institution of gold medals and scholarships.</li>
-                </ul>
-                
-                <div class="progress-container">
-                    <div class="progress-title">
-                        <span>Policy Implementation Progress</span>
-                        <span>65%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 65%;"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="medium-term-policies" class="goal-content">
-                <ul>
-                    <li>The policy shall support resource generation through external funding of research, consultancy, CSR and other avenues to supplement income from fees.</li>
-                    <li>The policy shall support creation of an endowment fund for receiving funds from Alumni.</li>
-                    <li>Capex planning for supporting medium term growth.</li>
-                    <li>Policies to promote startups in Technology agnostic sectors with a view to securing external funding.</li>
-                </ul>
-            </div>
-            
-            <div id="long-term-policies" class="goal-content">
-                <ul>
-                    <li>The policy shall support the funding from alumni and philanthropists for establishment of Chairs, Scholarship and Fellowships.</li>
-                    <li>Development of sustainable financial models for long-term institutional stability.</li>
-                    <li>Creation of a comprehensive investment policy for endowment growth.</li>
-                </ul>
-            </div>
-        </section>
-        
-        <section class="action-plan card slide-up">
-            <h2>2.2 Action Plan and Budgets</h2>
-            <p>Detailed financial roadmaps with clear milestones and performance indicators</p>
-            
-            <div class="tab-container">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="openTab('short-term-plan')">
-                        <i class="fas fa-calendar-day"></i> Short-term
-                    </button>
-                    <button class="tab-btn" onclick="openTab('medium-term-plan')">
-                        <i class="fas fa-calendar-week"></i> Medium-term
-                    </button>
-                    <button class="tab-btn" onclick="openTab('long-term-plan')">
-                        <i class="fas fa-calendar-alt"></i> Long-term
-                    </button>
-                </div>
-                
-                <div id="short-term-plan" class="tab-content active">
-                    <ul>
-                        <li>To formulate budgets for the forthcoming academic year.</li>
-                        <li>Seek monthly breakup from Schools/ Departments/ Centres with a view to ensuring granularity of budgets and for planning of cash flows.</li>
-                        <li>Prepare a consolidated Capital Budget and Revenue Budget for the forthcoming academic year.</li>
-                        <li>Utilization of funds and monitoring spending based on milestones.</li>
-                        <li>Split tuition fee and other fees and link the head to specific uses.</li>
-                    </ul>
-                    
-                    <div class="chart-container">
-                        <canvas id="shortTermBudgetChart"></canvas>
-                    </div>
-                    
-                    <div class="info-box">
-                        <h4>Budget Allocation Strategy</h4>
-                        <p>Short-term budgets prioritize immediate academic needs while laying foundation for future growth through strategic investments in infrastructure and faculty development.</p>
-                    </div>
-                </div>
-                
-                <div id="medium-term-plan" class="tab-content">
-                    <ul>
-                        <li>Allocate funds for institutional needs arising from research, innovation and internationalization.</li>
-                        <li>Earmark funds for green initiatives, sustainability, circular economy and SDGs.</li>
-                        <li>Develop multi-year budgeting framework aligned with strategic plan.</li>
-                        <li>Implement performance-based budget allocation models.</li>
-                    </ul>
-                    
-                    <div class="progress-container">
-                        <div class="progress-title">
-                            <span>Medium-term Planning Progress</span>
-                            <span>30%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 30%;"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="long-term-plan" class="tab-content">
-                    <ul>
-                        <li>Detailed planning to sustain and grow the activities of the University.</li>
-                        <li>Establish endowment growth targets and investment strategies.</li>
-                        <li>Develop comprehensive risk management framework for financial sustainability.</li>
-                        <li>Create scenario planning models for various economic conditions.</li>
-                    </ul>
-                    
-                    <div class="chart-container" style="height: 300px;">
-                        <canvas id="longTermProjectionChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section class="revenue-sources card slide-up">
-            <h2>2.3 Diversifying Source of Revenue</h2>
-            <p>Strategic initiatives to reduce dependency on tuition fees and build sustainable revenue streams</p>
-            
-            <div class="goal-timeline">
-                <div class="timeline-item active" onclick="showGoalContent('short-term-revenue')">
-                    <h4>Short-term</h4>
-                    <p>(0-3 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('medium-term-revenue')">
-                    <h4>Medium-term</h4>
-                    <p>(3-5 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('long-term-revenue')">
-                    <h4>Long-term</h4>
-                    <p>(5+ years)</p>
-                </div>
-            </div>
-            
-            <div id="short-term-revenue" class="goal-content active">
-                <ul>
-                    <li>Avail Government funded schemes through spreading awareness and supporting efforts of faculty members/research scholars to secure funds.</li>
-                    <li>Constantly explore new sources of funding, continue to incentivize faculty members and research scholars for contribution to research and consultancy.</li>
-                    <li>Establish corporate partnership program for sponsored research.</li>
-                    <li>Launch executive education programs for working professionals.</li>
-                </ul>
-            </div>
-            
-            <div id="medium-term-revenue" class="goal-content">
-                <ul>
-                    <li>Focus on industry-University partnerships</li>
-                    <li>Increase focus on research collaboration with foreign universities</li>
-                    <li>Continued focus on patents and IPR</li>
-                    <li>Step up efforts to commercialize patents through technology licensing and other avenues.</li>
-                    <li>Develop revenue-sharing models with faculty for commercialized research.</li>
-                </ul>
-                
-                <div class="chart-container" style="height: 300px;">
-                    <canvas id="revenueDiversificationChart"></canvas>
-                </div>
-            </div>
-            
-            <div id="long-term-revenue" class="goal-content">
-                <ul>
-                    <li>Increase focus on industry led research.</li>
-                    <li>Generate revenue through royalty, license fee from technology transfers and dividends from incubated companies. Build equity holdings in incubated companies.</li>
-                    <li>Establish self-sustaining research centers with industry funding.</li>
-                    <li>Develop comprehensive alumni giving program with endowment focus.</li>
-                </ul>
-            </div>
-            
-            <div class="info-box">
-                <h4>Revenue Growth Strategy</h4>
-                <p>The university aims to gradually reduce dependence on tuition fees by developing multiple revenue streams including research grants, industry partnerships, technology commercialization, and alumni contributions. Our target is to achieve a 40-30-30 revenue mix (Tuition-Research-Other) by 2025.</p>
-            </div>
-        </section>
-        
-        <section class="government-liaison card slide-up">
-            <h2>2.4 Liaison with Government of India, Ministries and others for funding</h2>
-            <p>Strategic engagement with government agencies to secure funding and support institutional initiatives</p>
-            
-            <div class="goal-timeline">
-                <div class="timeline-item active" onclick="showGoalContent('short-term-liaison')">
-                    <h4>Short-term</h4>
-                    <p>(0-3 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('medium-term-liaison')">
-                    <h4>Medium-term</h4>
-                    <p>(3-5 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('long-term-liaison')">
-                    <h4>Long-term</h4>
-                    <p>(5+ years)</p>
-                </div>
-            </div>
-            
-            <div id="short-term-liaison" class="goal-content active">
-                <ul>
-                    <li>Establish exclusive cell with responsibility for securing funding and grants</li>
-                    <li>To avail funds under MODROB scheme for modernization of labs/workshops / computing facilities and explore other schemes of a similar nature to access larger quantum of funds.</li>
-                    <li>Develop database of all relevant government funding opportunities.</li>
-                    <li>Conduct workshops for faculty on grant application processes.</li>
-                </ul>
-            </div>
-            
-            <div id="medium-term-liaison" class="goal-content">
-                <ul>
-                    <li>Establish a Centre for Governance for training of executive training / training of Government officers</li>
-                    <li>Develop strategic partnerships with key ministries and departments.</li>
-                    <li>Position university as think tank for policy research and analysis.</li>
-                </ul>
-                
-                <div class="progress-container">
-                    <div class="progress-title">
-                        <span>Government Partnership Development</span>
-                        <span>25%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 25%;"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="long-term-liaison" class="goal-content">
-                <ul>
-                    <li>To establish a pipeline of large scale research grants from the Government and corporates</li>
-                    <li>Secure anchor status for major government research initiatives.</li>
-                    <li>Develop institutional capability for managing large-scale government projects.</li>
-                </ul>
-            </div>
-        </section>
-        
-        <section class="irg-scheme card slide-up">
-            <h2>2.5 IRG Scheme in each Department</h2>
-            <p>Institutional Resource Generation through decentralized departmental initiatives</p>
-            
-            <div class="goal-timeline">
-                <div class="timeline-item active" onclick="showGoalContent('short-term-irg')">
-                    <h4>Short-term</h4>
-                    <p>(0-3 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('medium-term-irg')">
-                    <h4>Medium-term</h4>
-                    <p>(3-5 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('long-term-irg')">
-                    <h4>Long-term</h4>
-                    <p>(5+ years)</p>
-                </div>
-            </div>
-            
-            <div id="short-term-irg" class="goal-content active">
-                <ul>
-                    <li>Departments to be trained and mentored towards IRG</li>
-                    <li>Each Department to draw plans for IRG</li>
-                    <li>Departments to build and enhance their profiles and publicize them through various channels, website, social media</li>
-                    <li>Establish departmental revenue targets and incentive structures.</li>
-                </ul>
-            </div>
-            
-            <div id="medium-term-irg" class="goal-content">
-                <ul>
-                    <li>Departments shall work towards generation of revenue from consultancy</li>
-                    <li>Departments to generate revenue through technology licensing and royalty</li>
-                    <li>Develop department-specific industry partnership programs.</li>
-                    <li>Implement cross-departmental collaboration for larger projects.</li>
-                </ul>
-                
-                <div class="chart-container" style="height: 300px;">
-                    <canvas id="departmentRevenueChart"></canvas>
-                </div>
-            </div>
-            
-            <div id="long-term-irg" class="goal-content">
-                <ul>
-                    <li>Each Department can have its own endowment fund from grants obtained from Alumni and Philanthropist.</li>
-                    <li>Establish self-sustaining research centers within departments.</li>
-                    <li>Develop department-branded executive education programs.</li>
-                </ul>
-            </div>
-        </section>
-        
-        <section class="financial-committee card slide-up">
-            <h2>2.6 Financial / Investment Committee</h2>
-            <p>The investment committee established by the University shall evaluate financial plans and determine feasibility of proposals.</p>
-            
-            <div class="chart-container">
-                <canvas id="committeeChart"></canvas>
-            </div>
-            
-            <div class="info-box">
-                <h4>Committee Composition</h4>
-                <p>The Financial Committee comprises senior administrators, finance experts, and external financial professionals to ensure diverse perspectives in financial decision-making. The committee meets quarterly to review financial performance and strategic investments.</p>
-            </div>
-        </section>
-        
-        <section class="staff-training card slide-up">
-            <h2>2.7 Staff providing financial services</h2>
+      <div class="carousel-container" aria-live="polite">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- Short-Term Goals (0–2 years) -->
+          <div class="goal-card short-term" id="slide-0" role="tabpanel" aria-hidden="false">
+            <div class="timeline">0–2 years</div>
+            <h3>Short-Term Goals</h3>
             <ul>
-                <li>Training of administrative staff aimed at efficient and seamless support of the finance function of all activities of the University</li>
-                <li>Existing guidelines and procedures shall be reviewed and strengthened to enable easy access to research grants by faculty.</li>
-                <li>Implement professional development program for finance staff.</li>
-                <li>Develop specialized financial support teams for research grants management.</li>
-                <li>Establish financial literacy program for non-finance administrators.</li>
+              <li>Set up strong financial systems — annual budgets, fee-linked spending.</li>
+              <li>Introduce IRG training and sponsorship processes.</li>
+              <li>Create grant-access cell and processes for external funding applications.</li>
+              <li>Initial utilisation of relevant government schemes and seed funding.</li>
             </ul>
-            
-            <div class="progress-container">
-                <div class="progress-title">
-                    <span>Staff Training Implementation</span>
-                    <span>40%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 40%;"></div>
-                </div>
-            </div>
-        </section>
+          </div>
+
+          <!-- Mid-Term Goals (2–5 years) -->
+          <div class="goal-card mid-term" id="slide-1" role="tabpanel" aria-hidden="true">
+            <div class="timeline">2–5 years</div>
+            <h3>Mid-Term Goals</h3>
+            <ul>
+              <li>Strengthen revenue channels — alumni endowment and planned giving.</li>
+              <li>Capex planning and project-based funding strategies.</li>
+              <li>Industry and international research partnerships.</li>
+              <li>Build consultancy income and sustainability funding lines.</li>
+              <li>Commercialisation of patents and IP-driven revenue streams.</li>
+            </ul>
+          </div>
+
+          <!-- Long-Term Goals (5–15 years) -->
+          <div class="goal-card long-term" id="slide-2" role="tabpanel" aria-hidden="true">
+            <div class="timeline">5–15 years</div>
+            <h3>Long-Term Goals</h3>
+            <ul>
+              <li>Achieve financial self-reliance through large research grants.</li>
+              <li>Establish alumni/philanthropy-funded Chairs, scholarships, and endowments.</li>
+              <li>Generate major revenue from technology licensing and royalties.</li>
+              <li>Take equity positions in promising startups and spinouts.</li>
+              <li>Develop a sustainable diversified funding ecosystem for reinvestment.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-indicators" role="tablist" aria-label="Carousel indicators">
+        <div class="indicator active" onclick="goToSlide(0)" aria-label="Show short term goals"></div>
+        <div class="indicator" onclick="goToSlide(1)" aria-label="Show mid term goals"></div>
+        <div class="indicator" onclick="goToSlide(2)" aria-label="Show long term goals"></div>
+      </div>
     </div>
-    
-    <button class="fab" onclick="scrollToTop()" title="Back to Top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-    
-   
-    <script>
-        // Function to show goal content based on timeline selection
-        function showGoalContent(contentId) {
-            // Hide all goal contents first
-            const allContents = document.querySelectorAll('.goal-content');
-            allContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Show selected content
-            document.getElementById(contentId).classList.add('active');
-            
-            // Update timeline item active state
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            timelineItems.forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Find the clicked item (parent of parent of the clicked element)
-            let clickedItem = event.target;
-            while (!clickedItem.classList.contains('timeline-item')) {
-                clickedItem = clickedItem.parentElement;
-            }
-            clickedItem.classList.add('active');
-        }
-        
-        // Tab functionality
-        function openTab(tabId) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Deactivate all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Activate selected tab and content
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-        
-        // Scroll to top function
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Show/hide back to top button based on scroll position
-        window.onscroll = function() {
-            const fab = document.querySelector('.fab');
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                fab.style.display = 'flex';
-            } else {
-                fab.style.display = 'none';
-            }
-            
-            // Add scrolled class to header
-            const navHeader = document.getElementById('navHeader');
-            if (window.scrollY > 50) {
-                navHeader.classList.add('scrolled');
-            } else {
-                navHeader.classList.remove('scrolled');
-            }
-        };
-        
-        // Animate progress bars when they come into view
-        function animateProgressBars() {
-            const progressBars = document.querySelectorAll('.progress-fill');
-            progressBars.forEach(bar => {
-                const rect = bar.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    const width = bar.style.width;
-                    bar.style.width = '0';
-                    setTimeout(() => {
-                        bar.style.width = width;
-                    }, 100);
-                }
-            });
-        }
-        
-        // Initialize charts when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Funding Sources Pie Chart
-            const fundingSourcesCtx = document.getElementById('fundingSourcesChart').getContext('2d');
-            new Chart(fundingSourcesCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Tuition Fees', 'Research Grants', 'Industry Partnerships', 'Government Funding', 'Alumni Contributions', 'Other Sources'],
-                    datasets: [{
-                        data: [45, 20, 15, 10, 5, 5],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12',
-                            '#9b59b6'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    cutout: '70%',
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Current Funding Sources Distribution',
-                            font: {
-                                size: 16,
-                                weight: '600'
-                            },
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.label}: ${context.raw}%`;
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            });
-            
-            // Short-term Budget Allocation Chart
-            const shortTermBudgetCtx = document.getElementById('shortTermBudgetChart').getContext('2d');
-            new Chart(shortTermBudgetCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Academic Programs', 'Research', 'Infrastructure', 'Digital Resources', 'Sports', 'Entrepreneurship'],
-                    datasets: [{
-                        label: 'Budget Allocation (%)',
-                        data: [30, 25, 20, 15, 5, 5],
-                        backgroundColor: [
-                            'rgba(0, 51, 102, 0.7)',
-                            'rgba(52, 152, 219, 0.7)',
-                            'rgba(231, 76, 60, 0.7)',
-                            'rgba(46, 204, 113, 0.7)',
-                            'rgba(243, 156, 18, 0.7)',
-                            'rgba(155, 89, 182, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(0, 51, 102, 1)',
-                            'rgba(52, 152, 219, 1)',
-                            'rgba(231, 76, 60, 1)',
-                            'rgba(46, 204, 113, 1)',
-                            'rgba(243, 156, 18, 1)',
-                            'rgba(155, 89, 182, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 35,
-                            title: {
-                                display: true,
-                                text: 'Percentage of Budget',
-                                font: {
-                                    weight: '600'
-                                }
-                            },
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Short-term Budget Allocation Plan',
-                            font: {
-                                size: 16,
-                                weight: '600'
-                            },
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.raw}% of total budget`;
-                                }
-                            }
-                        }
-                    },
-                    animation: {
-                        duration: 2000
-                    }
-                }
-            });
-            
-            // Committee Responsibilities Chart
-            const committeeCtx = document.getElementById('committeeChart').getContext('2d');
-            new Chart(committeeCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Financial Planning', 'Investment Evaluation', 'Budget Approval', 'Risk Assessment', 'Policy Formulation'],
-                    datasets: [{
-                        data: [25, 25, 20, 15, 15],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Financial Committee Responsibilities',
-                            font: {
-                                size: 16,
-                                weight: '600'
-                            },
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
-                        }
-                    },
-                    cutout: '65%',
-                    animation: {
-                        animateScale: true,
-                        animateRotate: true
-                    }
-                }
-            });
-            
-            // Revenue Diversification Chart
-            const revenueDiversificationCtx = document.getElementById('revenueDiversificationChart').getContext('2d');
-            new Chart(revenueDiversificationCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Tuition Fees', 'Research Grants', 'Industry Partnerships', 'Alumni Giving', 'Executive Education', 'Technology Transfer'],
-                    datasets: [
-                        {
-                            label: 'Current Revenue',
-                            data: [45, 20, 15, 5, 10, 5],
-                            backgroundColor: 'rgba(0, 51, 102, 0.2)',
-                            borderColor: 'rgba(0, 51, 102, 1)',
-                            borderWidth: 2,
-                            pointBackgroundColor: 'rgba(0, 51, 102, 1)'
-                        },
-                        {
-                            label: '2025 Target',
-                            data: [35, 25, 20, 10, 15, 15],
-                            backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                            borderColor: 'rgba(52, 152, 219, 1)',
-                            borderWidth: 2,
-                            pointBackgroundColor: 'rgba(52, 152, 219, 1)'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Revenue Diversification Strategy',
-                            font: {
-                                size: 16,
-                                weight: '600'
-                            }
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
-                    },
-                    scales: {
-                        r: {
-                            angleLines: {
-                                display: true
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 50
-                        }
-                    }
-                }
-            });
-            
-            // Department Revenue Chart
-            const departmentRevenueCtx = document.getElementById('departmentRevenueChart').getContext('2d');
-            new Chart(departmentRevenueCtx, {
-                type: 'horizontalBar',
-                data: {
-                    labels: ['Engineering', 'Management', 'Sciences', 'Humanities', 'Pharmacy', 'Law'],
-                    datasets: [{
-                        label: 'Revenue Potential (Scale 1-10)',
-                        data: [8, 9, 6, 4, 7, 5],
-                        backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                        borderColor: 'rgba(0, 51, 102, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Departmental Revenue Potential Assessment',
-                            font: {
-                                size: 16,
-                                weight: '600'
-                            }
-                        },
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 10
-                        }
-                    }
-                }
-            });
-            
-            // Long-term Projection Chart
-            const longTermProjectionCtx = document.getElementById('longTermProjectionChart').getContext('2d');
-            new Chart(longTermProjectionCtx, {
-                type: 'line',
-                data: {
-                    labels: ['2023', '2024', '2025', '2026', '2027', '2028'],
-                    datasets: [
-                        {
-                            label: 'Tuition Fees',
-                            data: [45, 42, 38, 35, 33, 30],
-                            borderColor: '#003366',
-                            backgroundColor: 'rgba(0, 51, 102, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Research Revenue',
-                            data: [20, 23, 27, 30, 32, 35],
-                            borderColor: '#3498db',
-                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Other Revenue',
-                            data: [35, 35, 35, 35, 35, 35],
-                            borderColor: '#2ecc71',
-                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                            fill: true,
-                            tension: 0.3
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Long-term Revenue Projections (% of total)',
-                            font: {
-                                size: 16,
-                                weight: '600'
-                            }
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            min: 0,
-                            max: 50
-                        }
-                    }
-                }
-            });
-            
-            // Animate elements when they come into view
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                        
-                        // If it's a progress bar, animate it
-                        if (entry.target.classList.contains('progress-fill')) {
-                            const width = entry.target.style.width;
-                            entry.target.style.width = '0';
-                            setTimeout(() => {
-                                entry.target.style.width = width;
-                            }, 100);
-                        }
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            document.querySelectorAll('.slide-up, .fade-in, .progress-fill').forEach(el => {
-                observer.observe(el);
-            });
-        });
-    </script>
-</body>
-</html>
+  </section>
+
+  <!-- Key Indicator / Outcome -->
+  <section class="key-indicator" aria-label="Key indicator">
+    <h4>Key Indicator</h4>
+    <p>A financially resilient and diversified funding ecosystem that ensures sustained institutional growth, surplus generation, and strategic reinvestment in academic and research excellence.</p>
+    <p style="margin-top:12px; font-weight:600; color:#475569;">Outcome: Institutional readiness, transparency, inclusivity, and participatory governance.</p>
+  </section>
+</main>
+
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.querySelectorAll('.indicator');
+  const termBtns = document.querySelectorAll('.term-btn');
+  const totalSlides = 3;
+
+  function updateCarousel() {
+    if (!track) return;
+    const container = track.parentElement;
+    const slideWidth = container.offsetWidth;
+    const gap = 24; // must match CSS gap
+    track.style.transform = `translateX(-${currentSlide * (slideWidth + gap)}px)`;
+
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentSlide));
+    termBtns.forEach((btn, i) => btn.classList.toggle('active', i === currentSlide));
+
+    // ARIA
+    for (let i = 0; i < totalSlides; i++) {
+      const p = document.getElementById(`slide-${i}`);
+      if (p) p.setAttribute('aria-hidden', i === currentSlide ? 'false' : 'true');
+    }
+  }
+
+  function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; updateCarousel(); }
+  function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; updateCarousel(); }
+  function goToSlide(i) { currentSlide = Math.max(0, Math.min(totalSlides - 1, i)); updateCarousel(); }
+
+  termBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const ds = btn.getAttribute('data-slide');
+      const target = ds !== null ? parseInt(ds, 10) : idx;
+      goToSlide(target);
+    });
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // autoplay with safe stop on user interaction
+  let autoplay = setInterval(nextSlide, 6000);
+  ['touchstart', 'mousedown'].forEach(ev =>
+    document.addEventListener(ev, () => { clearInterval(autoplay); autoplay = null; }, { passive: true })
+  );
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(updateCarousel, 90);
+  });
+
+  window.addEventListener('load', updateCarousel);
+  document.addEventListener('DOMContentLoaded', updateCarousel);
+</script>
+{% endblock %}

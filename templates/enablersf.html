@@ -1,1146 +1,475 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAIN University - Networking & Collaborations</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-             --primary: #003366;
-            --primary-light: #0066cc;
-            --secondary: #e74c3c;
-            --jain-blue: #003366;
-            --jain-gold: #FFD700;
-            --jain-light: #F8F9FA;
-            --jain-accent: #28A745;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-        }
-        
-        /* Header */
-        .nav-header {
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            height: 3rem;
-            width: 3rem;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logo-icon i {
-            color: white;
-            font-size: 1.25rem;
-        }
-        
-        .logo-text h2 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--primary);
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .logo-text p {
-            margin: 0.25rem 0 0;
-            font-size: 0.8rem;
-            color: var(--text-medium);
-        }
-        
-        .nav-back-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            padding: 8px 15px;
-            border-radius: 4px;
-            border: 1px solid var(--medium-gray);
-        }
-        
-        .nav-back-link i {
-            margin-right: 0.5rem;
-        }
-        
-        
-        .jain-header {
-            background: linear-gradient(135deg, var(--jain-blue) 0%, #004080 100%);
-            color: white;
-            padding: 4rem 0;
-            margin-bottom: 2rem;
-            border-bottom: 5px solid var(--jain-gold);
-        }
-        
-        .enabler-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 2rem;
-            border-top: 4px solid var(--jain-blue);
-        }
-        
-        .enabler-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
-        }
-        
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            font-weight: 600;
-            color: var(--jain-blue);
-            border-radius: 10px 10px 0 0 !important;
-        }
-        
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 20px;
-        }
-        
-        .timeline-item:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 5px;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: var(--jain-accent);
-        }
-        
-        .timeline-connector {
-            position: absolute;
-            left: 7px;
-            top: 20px;
-            bottom: -25px;
-            width: 1px;
-            background-color: #ddd;
-        }
-        
-        .progress-bar {
-            background-color: var(--jain-blue);
-        }
-        
-        .vis-card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .vis-card-body {
-            flex-grow: 1;
-        }
-        
-        .nav-pills .nav-link.active {
-            background-color: var(--jain-blue);
-        }
-        
-        .nav-pills .nav-link {
-            color: var(--jain-blue);
-        }
-        
-        footer {
-            background-color: var(--jain-blue);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .impact-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--jain-blue);
-        }
-        
-        .impact-label {
-            font-size: 1rem;
-            color: #666;
-        }
-        
-        .partner-logo {
-            height: 80px;
-            margin: 15px;
-            filter: grayscale(100%);
-            transition: filter 0.3s;
-        }
-        
-        .partner-logo:hover {
-            filter: grayscale(0%);
-        }
-        
-        .network-icon {
-            font-size: 2.5rem;
-            color: var(--jain-blue);
-            margin-bottom: 1rem;
-        }
-        
-        @media (max-width: 768px) {
-            .jain-header {
-                padding: 2rem 0;
-            }
-            
-            .impact-number {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation Header -->
-<div class="nav-header" id="navHeader">
-  <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    
-    <!-- Left: Logo -->
-    <a href="#" class="nav-logo">
-      <div class="logo-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
+{% extends "base.html" %}
 
-      <!-- Logo Text Section -->
-      <div class="logo-text" style="display: flex; align-items: center; gap: 1rem;">
-        <img src="/static/images/santhu123.png" alt="JAIN University Logo" style="height: 3.5rem; object-fit: contain;" />
-        <div>
-           <h2> Networking & Collaborations</h2>
-                    <p> | JAIN University</p>
-        </div>
-      </div>
-    </a>
+{% block title %}Enabler F — Partnerships & Community{% endblock %}
 
-    <!-- Right: Back Link -->
-    <a href="/enablers" class="nav-back-link" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 500;">
-      <i class="fas fa-arrow-left"></i> Back to Enablers
-    </a>
+{% block styles %}
+<style>
+  :root{
+    --bg-page: #f3f8fd;
+    --hero-bg: linear-gradient(180deg,#ffffff,#f7fbff);
+    --muted:#64748b;
+    --accent:#ff8c00;
+    --card-shadow: 0 20px 40px rgba(16,24,40,0.06);
+  }
 
+  html,body { height:100%; margin:0; }
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: var(--bg-page);
+    color: #0b1220;
+  }
+
+  .page-wrap {
+    max-width: 1400px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 0 10px;
+  }
+  .page-header .title {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #ff8c00, #07316a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-header .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  /* Vision Section */
+  .vision {
+    text-align: center;
+    margin: 0 auto 32px;
+    padding: 24px;
+    max-width: 900px;
+    background: linear-gradient(135deg, rgba(255,140,0,0.05), rgba(255,255,255,0.8));
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .vision h2 { 
+    font-size: 20px; 
+    font-weight: 800; 
+    margin: 0 0 12px; 
+    color: #0b1220;
+  }
+  .vision p { 
+    color: #334155; 
+    margin: 0; 
+    font-size: 16px; 
+    line-height: 1.7; 
+  }
+
+  /* HERO PANEL */
+  .hero-panel {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 32px;
+    background: var(--hero-bg);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+    align-items: center;
+  }
+
+  .hero-left { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  }
   
+  .hero-left img {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    object-fit: contain;
+    background: transparent !important;
+  }
+
+  .hero-right { 
+    position: relative;
+  }
+
+  /* Carousel Header */
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .carousel-title { 
+    font-size: 22px; 
+    font-weight: 800; 
+    margin: 0; 
+    color: #071029; 
+  }
+
+  .controls-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* TERM NAV */
+  .term-nav {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .term-btn {
+    border: 0;
+    background: transparent;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #475569;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .term-btn.active { 
+    background: linear-gradient(135deg, #ff8c00, #ffb366); 
+    color: #fff; 
+    box-shadow: 0 4px 12px rgba(255,140,0,0.3);
+  }
+
+  .carousel-controls { 
+    display: flex; 
+    gap: 8px; 
+  }
+
+  .carousel-btn {
+    width: 44px; 
+    height: 44px; 
+    border-radius: 50%;
+    border: 2px solid rgba(15,23,42,0.08);
+    background: rgba(255,255,255,0.95);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-btn:hover {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    border-color: #ff8c00;
+    transform: scale(1.05);
+  }
+
+  .carousel-btn:hover svg path {
+    stroke: white;
+  }
+
+  /* Carousel Content */
+  .carousel-container { 
+    overflow: hidden; 
+    border-radius: 16px; 
+    padding: 4px;
+  }
+  
+  .carousel-track { 
+    display: flex; 
+    gap: 24px; 
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .carousel-track > .goal-card { 
+    flex: 0 0 100%; 
+    background: white; 
+    border-radius: 16px; 
+    padding: 28px; 
+    box-shadow: 0 8px 24px rgba(14,24,54,0.08);
+  }
+
+  .goal-card h3 { 
+    margin: 0 0 16px; 
+    font-size: 20px; 
+    font-weight: 800; 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+  }
+  
+  .goal-card .timeline { 
+    display: inline-block; 
+    padding: 8px 14px; 
+    background: #f1f5f9; 
+    border-radius: 20px; 
+    font-weight: 700; 
+    color: #475569; 
+    font-size: 13px; 
+    margin-bottom: 16px; 
+  }
+  
+  .goal-card ul { 
+    padding-left: 20px; 
+    color: #374151; 
+    line-height: 1.8; 
+    margin: 0; 
+  }
+  
+  .goal-card li { 
+    margin-bottom: 12px; 
+    font-size: 15px; 
+  }
+
+  .carousel-indicators { 
+    display: flex; 
+    gap: 8px; 
+    padding-top: 16px; 
+    justify-content: center; 
+  }
+  
+  .indicator { 
+    width: 12px; 
+    height: 12px; 
+    border-radius: 50%; 
+    background: #cbd5e1; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .indicator.active { 
+    width: 32px; 
+    background: linear-gradient(90deg, #ff8c00, #ffb366); 
+    border-radius: 6px; 
+  }
+
+  /* Key Indicator */
+  .key-indicator {
+    margin-top: 32px;
+    text-align: center;
+    padding: 28px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  .key-indicator h4 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    color: #0b1220;
+  }
+
+  .key-indicator p {
+    color: #374151;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .hero-panel {
+      grid-template-columns: 420px 1fr;
+      padding: 28px;
+      gap: 20px;
+    }
+    .hero-left img { max-width: 380px; }
+  }
+
+  @media (max-width: 980px) {
+    .hero-panel {
+      grid-template-columns: 1fr;
+      padding: 24px;
+      text-align: center;
+    }
+    .hero-left { order: 1; margin-bottom: 18px; }
+    .hero-right { order: 2; padding-left: 0; }
+    .carousel-header { flex-direction: column; align-items: center; text-align: center; }
+    .controls-wrapper { width: 100%; flex-direction: column; gap: 12px; }
+    .term-nav { width: 100%; justify-content: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .carousel-controls { justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .page-header .title { font-size: 20px; }
+    .page-header .subtitle { font-size: 13px; }
+    .hero-left img { max-width: 260px; }
+    .term-btn { padding: 8px 12px; font-size: 13px; flex: 1; }
+    .carousel-btn { width: 40px; height: 40px; }
+    .goal-card { padding: 18px; }
+    .goal-card h3 { font-size: 16px; }
+    .goal-card li { font-size: 13px; margin-bottom: 10px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="title">Enabler F — Partnerships & Community</div>
+    <div class="subtitle">Strategic Roadmap · Institutional Development Plan (IDP)</div>
+  </header>
+
+  <!-- Vision (plain) -->
+  <section class="vision" aria-label="Vision">
+    <h2>🎯 Vision</h2>
+    <p>A globally connected collaboration ecosystem that strengthens academic excellence, drives innovation with industry and communities, and expands opportunities for students and faculty through robust alumni, national, and international partnerships.</p>
+  </section>
+
+  <!-- HERO: image + carousel -->
+  <section class="hero-panel">
+    <div class="hero-left" aria-hidden="false">
+      <img src="{{ url_for('static', filename='images/ef.png') }}" alt="Enabler F roadmap illustration">
     </div>
 
-    <!-- Hero Header -->
-    <header class="jain-header" id="overview">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">Networking & Collaborations</h1>
-            <p class="lead mb-4">Building Global Partnerships for Academic Excellence and Societal Impact</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="#strategies" class="btn btn-light btn-lg px-4">Explore Strategies</a>
-            
-            </div>
+    <div class="hero-right">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Strategic Goals Timeline</h3>
+
+        <div class="controls-wrapper" role="tablist" aria-label="Term navigation and carousel controls">
+          <nav class="term-nav" aria-label="Term navigation">
+            <button class="term-btn active" data-slide="0" type="button">Short</button>
+            <button class="term-btn" data-slide="1" type="button">Mid</button>
+            <button class="term-btn" data-slide="2" type="button">Long</button>
+          </nav>
+
+          <div class="carousel-controls" aria-hidden="false">
+            <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M12 16L6 10L12 4" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="carousel-btn" onclick="nextSlide()" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
-    </header>
+      </div>
 
-    <!-- Overview Section -->
-    <section class="container mb-5">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Strategic Overview</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p>The Institutional Development Plan for Networking and Collaborations (2024-2039) focuses on establishing and strengthening networks that enhance the university's academic, research, and societal contributions.</p>
-                        <p>Our goal is to build a collaborative infrastructure that supports:</p>
-                        <ul>
-                            <li>Alumni engagement and lifelong learning</li>
-                            <li>Community outreach and social impact</li>
-                            <li>Industry partnerships and innovation</li>
-                            <li>International academic collaboration</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <canvas id="networkImpactChart"></canvas>
-                    </div>
-                </div>
-            </div>
+      <div class="carousel-container" aria-live="polite">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- SHORT-TERM GOALS -->
+          <div class="goal-card short-term" id="slide-0" role="tabpanel" aria-hidden="false">
+            <div class="timeline">0–2 years</div>
+            <h3>Short-Term Goals</h3>
+            <ul>
+              <li>Alumni connect — build basic alumni engagement programs and events.</li>
+              <li>Local community ties — initiate community projects and outreach.</li>
+              <li>Industry boards & pilot projects — start partnerships and MoUs.</li>
+              <li>Establish basic MoUs and exchange agreements.</li>
+            </ul>
+          </div>
+
+          <!-- MID-TERM GOALS -->
+          <div class="goal-card mid-term" id="slide-1" role="tabpanel" aria-hidden="true">
+            <div class="timeline">2–5 years</div>
+            <h3>Mid-Term Goals</h3>
+            <ul>
+              <li>Global alumni & exchanges — organised outbound/inbound exchange programs.</li>
+              <li>Centres of Excellence partnerships — collaborative research and teaching hubs.</li>
+              <li>Industry labs & co-created curricula — embed industry projects into courses.</li>
+              <li>Interdisciplinary collaborative projects with external partners.</li>
+            </ul>
+          </div>
+
+          <!-- LONG-TERM GOALS -->
+          <div class="goal-card long-term" id="slide-2" role="tabpanel" aria-hidden="true">
+            <div class="timeline">5–15 years</div>
+            <h3>Long-Term Goals</h3>
+            <ul>
+              <li>Global research networks and transnational centres of collaboration.</li>
+              <li>Endowments and alumni-funded programmes to sustain major initiatives.</li>
+              <li>Strong industry–academia ecosystems supporting scale and community impact.</li>
+              <li>Large-scale community impact projects and global partnerships.</li>
+            </ul>
+          </div>
         </div>
-    </section>
+      </div>
 
-    <!-- Key Focus Areas -->
-    <section class="container mb-5">
-        <h2 class="text-center mb-4">Key Focus Areas</h2>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="network-icon">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <h5>Alumni Engagement</h5>
-                        <p>Building lifelong relationships with alumni for mentorship, funding, and collaboration</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="network-icon">
-                            <i class="fas fa-hands-helping"></i>
-                        </div>
-                        <h5>Community Partnerships</h5>
-                        <p>Connecting with society through impactful projects and initiatives</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="network-icon">
-                            <i class="fas fa-industry"></i>
-                        </div>
-                        <h5>Industry Collaboration</h5>
-                        <p>Bridging academia and industry for practical learning and innovation</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="network-icon">
-                            <i class="fas fa-globe"></i>
-                        </div>
-                        <h5>Global Networks</h5>
-                        <p>Establishing international partnerships for student and faculty exchange</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      <div class="carousel-indicators" role="tablist" aria-label="Carousel indicators">
+        <div class="indicator active" onclick="goToSlide(0)" aria-label="Show short term goals"></div>
+        <div class="indicator" onclick="goToSlide(1)" aria-label="Show mid term goals"></div>
+        <div class="indicator" onclick="goToSlide(2)" aria-label="Show long term goals"></div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Strategic Initiatives -->
-    <section class="container mb-5" id="strategies">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Strategic Initiatives</h3>
-            </div>
-            <div class="card-body">
-                <ul class="nav nav-pills mb-4" id="initiatives-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="alumni-tab" data-bs-toggle="pill" data-bs-target="#alumni" type="button">Alumni Engagement</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="community-tab" data-bs-toggle="pill" data-bs-target="#community" type="button">Community</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="centers-tab" data-bs-toggle="pill" data-bs-target="#centers" type="button">Centers of Excellence</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="industry-tab" data-bs-toggle="pill" data-bs-target="#industry" type="button">Industry</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="international-tab" data-bs-toggle="pill" data-bs-target="#international" type="button">International</button>
-                    </li>
-                </ul>
-                
-                <div class="tab-content" id="initiatives-tabContent">
-                    <div class="tab-pane fade show active" id="alumni" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Alumni Engagement Strategy</h4>
-                                <p>We prioritize lifelong engagement with alumni through professional development, mentorship, and endowment programs. By establishing a robust alumni network, we aim to leverage alumni contributions to support institutional growth, career support for students, and resource mobilization.</p>
-                                
-                                <div class="accordion" id="alumniAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#alumniOne">
-                                                Engagement Mechanisms
-                                            </button>
-                                        </h2>
-                                        <div id="alumniOne" class="accordion-collapse collapse show" data-bs-parent="#alumniAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Develop lifetime engagement programs</li>
-                                                    <li>Conduct needs assessment surveys</li>
-                                                    <li>Create professional development courses</li>
-                                                    <li>Organize networking events</li>
-                                                    <li>Launch dedicated alumni portal</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#alumniTwo">
-                                                Mentorship & Endowments
-                                            </button>
-                                        </h2>
-                                        <div id="alumniTwo" class="accordion-collapse collapse" data-bs-parent="#alumniAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Establish structured mentorship programs</li>
-                                                    <li>Develop targeted donation campaigns</li>
-                                                    <li>Recognize top donors and mentors</li>
-                                                    <li>Form alumni advisory boards</li>
-                                                    <li>Involve alumni in governance</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="alumniChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="community" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Community Engagement Strategy</h4>
-                                <p>We create meaningful connections with local communities and civil society organizations, involving students and faculty in projects that address societal needs. We track the societal and economic effects of research projects and community initiatives to foster a university culture dedicated to positive social outcomes.</p>
-                                
-                                <div class="accordion" id="communityAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#communityOne">
-                                                Engagement Programs
-                                            </button>
-                                        </h2>
-                                        <div id="communityOne" class="accordion-collapse collapse show" data-bs-parent="#communityAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Develop community service programs</li>
-                                                    <li>Organize public lectures and workshops</li>
-                                                    <li>Partner with local organizations</li>
-                                                    <li>Encourage faculty and student participation</li>
-                                                    <li>Track and report societal impact</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#communityTwo">
-                                                Impact Measurement
-                                            </button>
-                                        </h2>
-                                        <div id="communityTwo" class="accordion-collapse collapse" data-bs-parent="#communityAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Implement outcome-based incentives</li>
-                                                    <li>Develop metrics for societal impact</li>
-                                                    <li>Establish transparent reporting</li>
-                                                    <li>Expand programs regionally/globally</li>
-                                                    <li>Promote sustainable engagement models</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="communityChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="centers" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Centers of Excellence Strategy</h4>
-                                <p>Building partnerships with leading research institutions and centers of excellence is essential to enhance our academic and research output. Joint research projects, dual degree programs, and interdisciplinary collaborations will provide access to diverse learning experiences and advanced research opportunities.</p>
-                                
-                                <div class="accordion" id="centersAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#centersOne">
-                                                Partnership Development
-                                            </button>
-                                        </h2>
-                                        <div id="centersOne" class="accordion-collapse collapse show" data-bs-parent="#centersAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Form partnerships with leading research centers</li>
-                                                    <li>Collaborate on joint research initiatives</li>
-                                                    <li>Develop interdisciplinary programs</li>
-                                                    <li>Offer dual degrees with partner institutions</li>
-                                                    <li>Organize international academic events</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#centersTwo">
-                                                Global Expansion
-                                            </button>
-                                        </h2>
-                                        <div id="centersTwo" class="accordion-collapse collapse" data-bs-parent="#centersAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Expand to international Centers of Excellence</li>
-                                                    <li>Develop advanced research collaborations</li>
-                                                    <li>Create faculty exchange programs</li>
-                                                    <li>Showcase outcomes at global forums</li>
-                                                    <li>Establish joint innovation labs</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="centersChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="industry" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Industry Collaboration Strategy</h4>
-                                <p>To bridge academia and industry, we engage industry leaders in curriculum development, teaching, and program evaluation. We establish advisory boards, integrate real-world projects led by industry professionals, and create innovation hubs for joint industry-academia ventures.</p>
-                                
-                                <div class="accordion" id="industryAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#industryOne">
-                                                Curriculum Integration
-                                            </button>
-                                        </h2>
-                                        <div id="industryOne" class="accordion-collapse collapse show" data-bs-parent="#industryAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Establish industry advisory boards</li>
-                                                    <li>Co-design curricula with industry input</li>
-                                                    <li>Integrate industry-led projects</li>
-                                                    <li>Develop internship programs</li>
-                                                    <li>Align programs with market demands</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#industryTwo">
-                                                Innovation Ecosystem
-                                            </button>
-                                        </h2>
-                                        <div id="industryTwo" class="accordion-collapse collapse" data-bs-parent="#industryAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Create collaborative research labs</li>
-                                                    <li>Establish technology incubators</li>
-                                                    <li>Host industry-academia forums</li>
-                                                    <li>Develop joint problem-solving workshops</li>
-                                                    <li>Promote research commercialization</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="industryChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="international" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>International Collaboration Strategy</h4>
-                                <p>We implement exchange programs with leading universities to provide global learning experiences, promoting cultural exchange and academic collaboration. These programs enhance students' global awareness, cross-cultural competence, and academic diversity.</p>
-                                
-                                <div class="accordion" id="internationalAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#internationalOne">
-                                                Exchange Programs
-                                            </button>
-                                        </h2>
-                                        <div id="internationalOne" class="accordion-collapse collapse show" data-bs-parent="#internationalAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Develop student exchange programs</li>
-                                                    <li>Establish faculty mobility initiatives</li>
-                                                    <li>Create joint degree programs</li>
-                                                    <li>Promote credit transfer systems</li>
-                                                    <li>Organize international academic events</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#internationalTwo">
-                                                Global Partnerships
-                                            </button>
-                                        </h2>
-                                        <div id="internationalTwo" class="accordion-collapse collapse" data-bs-parent="#internationalAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Expand to global research networks</li>
-                                                    <li>Develop interdisciplinary projects</li>
-                                                    <li>Host international conferences</li>
-                                                    <li>Establish collaborative innovation challenges</li>
-                                                    <li>Create global alumni chapters</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="internationalChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Key Indicator / Outcome -->
+  <section class="key-indicator" aria-label="Key indicator">
+    <h4>Key Indicator</h4>
+    <p>A globally connected collaboration ecosystem that strengthens academic excellence, drives innovation with industry and communities, and expands opportunities for students and faculty through robust alumni, national, and international partnerships.</p>
+    <p style="margin-top:12px; font-weight:600; color:#475569;">Outcome: Enhanced external engagement, stronger alumni networks, and impactful community partnerships.</p>
+  </section>
+</main>
 
-    
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.querySelectorAll('.indicator');
+  const termBtns = document.querySelectorAll('.term-btn');
+  const totalSlides = 3;
 
-    <!-- Timeline Section -->
-    <section class="container mb-5">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Implementation Timeline</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-primary text-white">
-                                Short-Term (2024-2026)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Alumni Network Launch</h5>
-                                    <p>Establish digital platform and initial engagement programs</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Industry Advisory Boards</h5>
-                                    <p>Form initial industry partnerships and curriculum integration</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Community Programs</h5>
-                                    <p>Launch local outreach initiatives and partnerships</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-warning text-dark">
-                                Medium-Term (2026-2029)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Global Partnerships</h5>
-                                    <p>Establish international exchange programs and research collaborations</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Innovation Hubs</h5>
-                                    <p>Develop industry-academia collaborative spaces</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Regional Expansion</h5>
-                                    <p>Scale community programs to regional level</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-success text-white">
-                                Long-Term (2029-2039)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Global Network</h5>
-                                    <p>Establish worldwide alumni chapters and partnerships</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Research Leadership</h5>
-                                    <p>Position as global research collaborator</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Sustainable Impact</h5>
-                                    <p>Institutionalize community engagement models</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  function updateCarousel() {
+    if (!track) return;
+    const container = track.parentElement;
+    const slideWidth = container.offsetWidth;
+    const gap = 24;
+    track.style.transform = `translateX(-${currentSlide * (slideWidth + gap)}px)`;
 
-    <!-- Metrics Section -->
-    <section class="container mb-5">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Collaboration Metrics</h3>
-            </div>
-            <div class="card-body">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Partnership Growth Projection</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="partnershipGrowthChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Engagement Impact Areas</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="impactAreasChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Alumni Participation</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="alumniParticipationChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>International Reach</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="internationalReachChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentSlide));
+    termBtns.forEach((btn, i) => btn.classList.toggle('active', i === currentSlide));
 
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Network Impact Chart
-        const networkImpactCtx = document.getElementById('networkImpactChart').getContext('2d');
-        const networkImpactChart = new Chart(networkImpactCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Academic Growth', 'Research Output', 'Societal Impact', 'Student Opportunities', 'Global Reach'],
-                datasets: [{
-                    data: [25, 25, 20, 20, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Network Impact Areas'
-                    }
-                }
-            }
-        });
+    // ARIA
+    for (let i = 0; i < totalSlides; i++) {
+      const p = document.getElementById(`slide-${i}`);
+      if (p) p.setAttribute('aria-hidden', i === currentSlide ? 'false' : 'true');
+    }
+  }
 
-        // Alumni Chart
-        const alumniCtx = document.getElementById('alumniChart').getContext('2d');
-        const alumniChart = new Chart(alumniCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Engagement', 'Mentorship', 'Donations', 'Governance', 'Networking'],
-                datasets: [{
-                    label: 'Current Progress',
-                    data: [65, 50, 40, 30, 70],
-                    backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    borderWidth: 1
-                }, {
-                    label: 'Target',
-                    data: [90, 80, 75, 60, 90],
-                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+  function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; updateCarousel(); }
+  function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; updateCarousel(); }
+  function goToSlide(i) { currentSlide = Math.max(0, Math.min(totalSlides - 1, i)); updateCarousel(); }
 
-        // Community Chart
-        const communityCtx = document.getElementById('communityChart').getContext('2d');
-        const communityChart = new Chart(communityCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Local Outreach', 'Regional Programs', 'Social Impact', 'Sustainable Models', 'Global Initiatives'],
-                datasets: [{
-                    label: 'Current',
-                    data: [70, 50, 65, 40, 30],
-                    backgroundColor: 'rgba(0, 51, 102, 0.2)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    pointBackgroundColor: 'rgba(0, 51, 102, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(0, 51, 102, 1)'
-                }, {
-                    label: 'Target',
-                    data: [90, 80, 85, 75, 70],
-                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    pointBackgroundColor: 'rgba(40, 167, 69, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(40, 167, 69, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true
-                        },
-                        suggestedMin: 0,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
+  termBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const ds = btn.getAttribute('data-slide');
+      const target = ds !== null ? parseInt(ds, 10) : idx;
+      goToSlide(target);
+    });
+  });
 
-        // Centers Chart
-        const centersCtx = document.getElementById('centersChart').getContext('2d');
-        const centersChart = new Chart(centersCtx, {
-            type: 'polarArea',
-            data: {
-                labels: ['Research Collab', 'Joint Degrees', 'Faculty Exchange', 'Interdisciplinary', 'Global Events'],
-                datasets: [{
-                    data: [60, 40, 35, 50, 30],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Centers of Excellence Focus Areas'
-                    }
-                }
-            }
-        });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
 
-        // Industry Chart
-        const industryCtx = document.getElementById('industryChart').getContext('2d');
-        const industryChart = new Chart(industryCtx, {
-            type: 'line',
-            data: {
-                labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2035', '2039'],
-                datasets: [{
-                    label: 'Advisory Boards',
-                    data: [20, 40, 60, 70, 80, 85, 90, 95, 100],
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    backgroundColor: 'rgba(0, 51, 102, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Curriculum Integration',
-                    data: [15, 30, 50, 65, 75, 85, 90, 95, 98],
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Innovation Hubs',
-                    data: [5, 15, 30, 50, 65, 80, 85, 90, 95],
-                    borderColor: 'rgba(255, 193, 7, 1)',
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+  // autoplay with safe stop on user interaction
+  let autoplay = setInterval(nextSlide, 6000);
+  ['touchstart', 'mousedown'].forEach(ev =>
+    document.addEventListener(ev, () => { clearInterval(autoplay); autoplay = null; }, { passive: true })
+  );
 
-        // International Chart
-        const internationalCtx = document.getElementById('internationalChart').getContext('2d');
-        const internationalChart = new Chart(internationalCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Student Exchange', 'Faculty Mobility', 'Joint Degrees', 'Research Collab', 'Global Events'],
-                datasets: [{
-                    label: 'Current Partners',
-                    data: [5, 3, 2, 4, 6],
-                    backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    borderWidth: 1
-                }, {
-                    label: 'Target Partners',
-                    data: [15, 10, 8, 12, 20],
-                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+  window.addEventListener('resize', () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(updateCarousel, 90);
+  });
 
-        // Partnership Growth Chart
-        const partnershipGrowthCtx = document.getElementById('partnershipGrowthChart').getContext('2d');
-        const partnershipGrowthChart = new Chart(partnershipGrowthCtx, {
-            type: 'line',
-            data: {
-                labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2035', '2039'],
-                datasets: [{
-                    label: 'Industry Partners',
-                    data: [5, 10, 15, 25, 35, 45, 55, 65, 80, 100],
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    backgroundColor: 'rgba(0, 51, 102, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Academic Partners',
-                    data: [3, 8, 12, 20, 30, 40, 50, 60, 75, 90],
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Community Partners',
-                    data: [10, 15, 20, 25, 30, 35, 40, 45, 60, 80],
-                    borderColor: 'rgba(255, 193, 7, 1)',
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Projected Partnership Growth'
-                    }
-                }
-            }
-        });
-
-        // Impact Areas Chart
-        const impactAreasCtx = document.getElementById('impactAreasChart').getContext('2d');
-        const impactAreasChart = new Chart(impactAreasCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Student Opportunities', 'Research Output', 'Community Impact', 'Curriculum Enhancement', 'Global Reach'],
-                datasets: [{
-                    data: [30, 25, 20, 15, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Primary Impact Areas'
-                    }
-                }
-            }
-        });
-
-        // Alumni Participation Chart
-        const alumniParticipationCtx = document.getElementById('alumniParticipationChart').getContext('2d');
-        const alumniParticipationChart = new Chart(alumniParticipationCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Mentorship', 'Donations', 'Events', 'Governance', 'Networking'],
-                datasets: [{
-                    label: 'Current Participation (%)',
-                    data: [25, 15, 40, 10, 35],
-                    backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Alumni Engagement Areas'
-                    }
-                }
-            }
-        });
-
-        // International Reach Chart
-        const internationalReachCtx = document.getElementById('internationalReachChart').getContext('2d');
-        const internationalReachChart = new Chart(internationalReachCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['North America', 'Europe', 'Asia', 'Africa', 'Australia'],
-                datasets: [{
-                    data: [30, 25, 20, 15, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Global Partnership Distribution'
-                    }
-                }
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+  window.addEventListener('load', updateCarousel);
+  document.addEventListener('DOMContentLoaded', updateCarousel);
+</script>
+{% endblock %}

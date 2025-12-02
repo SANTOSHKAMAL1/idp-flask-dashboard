@@ -1,235 +1,143 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>All Enablers - IDP Committees</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    .toggle-btn {
-      cursor: pointer;
-    }
-  </style>
-  
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+{% extends "base.html" %}
 
-  <!-- Combined Header + Navbar -->
-  <nav class="bg-white p-4 text-blue-900 shadow-md sticky top-0 z-50 border-b border-blue-100">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+{% block title %}All Enablers — IDP{% endblock %}
 
-      <!-- Logo + Title -->
-      <div class="flex items-center gap-4">
-        <img src="/static/images/santhu123.png" alt="JAIN University Logo" class="h-14 w-auto object-contain" />
-        <div>
-          <h2 class="text-lg sm:text-xl font-bold text-blue-900">Institutional Development Plan</h2>
-          <p class="text-sm text-gray-700">JAIN (Deemed-to-be University)</p>
-        </div>
-      </div>
+{% block styles %}
+<style>
+  /* small page-specific tweaks */
+  .toggle-btn { cursor: pointer; }
+  .section-card { transition: all .18s ease; }
+  .section-card:hover { transform: translateY(-6px); box-shadow: 0 14px 40px rgba(15,23,42,0.08); }
+</style>
+{% endblock %}
 
-      <!-- Enabler A–H Buttons -->
-      <div class="flex flex-wrap gap-2 justify-center">
-        <a href="/enablersA" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">A</a>
-        <a href="/enablersb" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">B</a>
-        <a href="/enablersc" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">C</a>
-        <a href="/enablersd" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">D</a>
-        <a href="/enablerse" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">E</a>
-        <a href="/enablersf" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">F</a>
-        <a href="/enablersg" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">G</a>
-        <a href="/enablersh" class="bg-blue-100 hover:bg-blue-200 text-blue-900 font-medium py-1 px-3 rounded">H</a>
-      </div>
+{% block content %}
+<main class="p-6 max-w-7xl mx-auto space-y-6">
 
-      <!-- Back to Dashboard -->
-      <div>
-        <a href="/" class="text-blue-900 hover:text-blue-600 text-sm font-medium whitespace-nowrap">← Back to Dashboard</a>
-      </div>
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-blue-900 mb-2">Institutional Development Plan – Enablers (A to H)</h1>
+      <p class="text-sm text-gray-600">Click a section to expand the committee members and roles.</p>
     </div>
-  </nav>
 
+    
+  </div>
 
+  <!-- Repeatable section component -->
+  {% macro enabler_section(id, title, rows) %}
+  <section class="bg-white shadow-md rounded-xl p-6 section-card" id="section-{{ id }}">
+    <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('{{ id }}')">
+      <h3 class="text-2xl font-semibold text-blue-800">{{ title }}</h3>
+      <i id="chev-{{ id }}" class="fas fa-chevron-down"></i>
+    </div>
+    <div id="content-{{ id }}" class="hidden mt-4">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="text-left px-4 py-2">Name &amp; Designation</th>
+            <th class="text-left px-4 py-2">Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rows %}
+            <tr>
+              <td class="px-4 py-2">{{ r[0] }}</td>
+              <td class="px-4 py-2">{{ r[1] }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  {% endmacro %}
 
+  {# Provide data inline — you can also pass these via view context instead #}
+  {% set a_rows = [
+    ["Dr. Easwaran Iyer, Advisor, Chancellor’s Advisory Board", "Chairperson"],
+    ["Mr. Ravindra Bhandary, Vice President, JGI","Member"],
+    ["Dr. J. Letha, Pro Vice – Chancellor","Member"],
+    ["Ms. Aparna Prasad, Director, Office of Communications and HR","Member"],
+    ["Mr. M.S. Parswanath, Director, Projects and Facilities, JGI","Member"],
+    ["Dr. Asha Rajiv, Director, IQAC","Convenor"]
+  ] %}
 
-  <main class="p-6 max-w-7xl mx-auto space-y-6">
-    <h2 class="text-3xl font-bold text-blue-900 mb-6">Institutional Development Plan – Enablers (A to H)</h2>
+  {% set b_rows = [
+    ["Mr. Ravindra Bhandary, Vice President, JGI","Chairperson"],
+    ["Dr. N V H Krishnan, Advisor, Chancellor’s Advisory Board","Member"],
+    ["Mr. M.S. Santhosh, Joint Registrar","Convenor"],
+    ["Ms. Aparna Prasad, Director, Office of Communications and HR","Member"],
+    ["Mr. M.S. Parswanath, Director, Projects and Facilities, JGI","Member"]
+  ] %}
 
-   <!-- Enabler A -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-a">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('a')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler A: Governance and Leadership</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-a" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100">
-        <tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position in IDP Committee</th></tr>
-      </thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Dr. Easwaran Iyer, Advisor, Chancellor’s Advisory Board</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Mr. Ravindra Bhandary, Vice President, JGI</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. J. Letha, Pro Vice – Chancellor</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Ms. Aparna Prasad, Director, Office of Communications and Human Resources</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Mr. M.S. Parswanath, Director, Projects and Facilities, JGI</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Asha Rajiv, Director, IQAC</td><td class="px-4 py-2">Convenor</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  {% set c_rows = [
+    ["Dr. Shradha Kanwar, Chief Academic Officer","Chairperson"],
+    ["Dr. Sridhara Murthi K R, Advisor, Chancellor’s Advisory Board","Member"],
+    ["Dr. S Kiran, Deputy Dean, Academics","Convenor"],
+    ["Dr. G Geetha, Director, School of CSE","Member"]
+  ] %}
 
-<!-- Enabler B -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-b">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('b')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler B: Financial Enablers and Funding Models</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-b" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100">
-        <tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position in IDP Committee</th></tr>
-      </thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Mr. Ravindra Bhandary, Vice President, JGI</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Dr. N V H Krishnan, Advisor, Chancellor’s Advisory Board</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Mr. M.S. Santhosh, Joint Registrar</td><td class="px-4 py-2">Convenor</td></tr>
-        <tr><td class="px-4 py-2">Ms. Aparna Prasad, Director, Office of Communications and Human Resources</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Mr. M.S. Parswanath, Director, Projects and Facilities, JGI</td><td class="px-4 py-2">Member</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  {% set d_rows = [
+    ["Dr. S Srikanta Swamy, Director, CRTA","Chairperson"],
+    ["Dr. Harold Andrew Patrick, Dean, CMS","Member"],
+    ["Dr. Varalakshmi K. N, Director, CRPAS","Convenor"]
+  ] %}
 
-<!-- Enabler C -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-c">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('c')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler C: Academic Enablers</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-c" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100"><tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position</th></tr></thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Dr. Shradha Kanwar, Chief Academic Officer</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Dr. Sridhara Murthi K R, Advisor, Chancellor’s Advisory Board</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. S Kiran, Deputy Dean, Academics</td><td class="px-4 py-2">Convenor</td></tr>
-        <tr><td class="px-4 py-2">Dr. G Geetha, Director, School of Computer Science and Engineering</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Srividya Shivakumar, Director, Allied Healthcare and Sciences</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Sagar Gulati, Director, School of CS & IT</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Simmy Kurian, Deputy Director, CMS B School, Kochi</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Neelima M, Deputy Director, School of Commerce</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Beemkumar N, Professor, Mechanical Engineering</td><td class="px-4 py-2">Member</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  {% set e_rows = [
+    ["Dr. Dinesh N., Pro Vice-Chancellor","Chairperson"],
+    ["Dr. Jitendra Kumar Mishra, Registrar","Convenor"],
+    ["Ms. Aparna Prasad, Director, HR","Member"]
+  ] %}
 
-<!-- Enabler D -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-d">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('d')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler D: Research and Intellectual Property</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-d" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100"><tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position</th></tr></thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Dr. S Srikanta Swamy, Director, CRTA</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Dr. Harold Andrew Patrick, Dean, CMS</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Geetha Balakrishna, Director, CNMS</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Varalakshmi K. N, Director, CRPAS</td><td class="px-4 py-2">Convenor</td></tr>
-        <tr><td class="px-4 py-2">Dr. Chetan Nag K S, Deputy Director, CUBEC</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Simmy Kurian, Deputy Director, CMS Kochi</td><td class="px-4 py-2">Member</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  {% set f_rows = [
+    ["Dr. Easwaran Iyer, Advisor, Chancellor’s Advisory Board","Chairperson"],
+    ["Dr. Dinesh N., Pro Vice-Chancellor","Member"],
+    ["Mr. M.S. Santhosh, Joint Registrar","Member"],
+    ["Ms. Preeti Bhandary, Sr. Manager, Placements","Convenor"]
+  ] %}
 
-<!-- Enabler E -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-e">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('e')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler E: Human Resources & Supportive Facilitative</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-e" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100"><tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position</th></tr></thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Dr. Dinesh N., Pro Vice-Chancellor</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Dr. Jitendra Kumar Mishra, Registrar</td><td class="px-4 py-2">Convenor</td></tr>
-        <tr><td class="px-4 py-2">Ms. Aparna Prasad, Director, HR</td><td class="px-4 py-2">Member</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  {% set g_rows = [
+    ["Mr. Ravindra Bhandary, Vice President, JGI","Chairperson"],
+    ["Dr. N V H Krishnan, Advisor, Chancellor’s Advisory Board","Convenor"],
+    ["Mr. M.S. Parswanath, Director, Projects and Facilities","Member"]
+  ] %}
 
-<!-- Enabler F -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-f">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('f')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler F: Networking and Collaborations</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-f" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100"><tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position</th></tr></thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Dr. Easwaran Iyer, Advisor, Chancellor’s Advisory Board</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Dr. Dinesh N., Pro Vice-Chancellor</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Mr. M.S. Santhosh, Joint Registrar</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Ms. Preeti Bhandary, Sr. Manager, Placements</td><td class="px-4 py-2">Convenor</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  {% set h_rows = [
+    ["Prof. N S Manjunath, Controller of Examinations","Chairperson"],
+    ["Dr. S Kiran, Deputy Dean, Academics","Convenor"],
+    ["Dr. Felix M. Philip, Deputy Director, CS & IT, Kochi","Member"]
+  ] %}
 
-<!-- Enabler G -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-g">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('g')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler G: Physical Enablers</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-g" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100"><tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position</th></tr></thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Mr. Ravindra Bhandary, Vice President, JGI</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Dr. N V H Krishnan, Advisor, Chancellor’s Advisory Board</td><td class="px-4 py-2">Convenor</td></tr>
-        <tr><td class="px-4 py-2">Mr. M.S. Parswanath, Director, Projects and Facilities</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Mr. Vishal C, Director, Strategy and Development</td><td class="px-4 py-2">Member</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+  {{ enabler_section('a', 'Enabler A: Governance and Leadership', a_rows) }}
+  {{ enabler_section('b', 'Enabler B: Financial Enablers and Funding Models', b_rows) }}
+  {{ enabler_section('c', 'Enabler C: Academic Enablers', c_rows) }}
+  {{ enabler_section('d', 'Enabler D: Research and Intellectual Property', d_rows) }}
+  {{ enabler_section('e', 'Enabler E: Human Resources & Supportive Facilitative', e_rows) }}
+  {{ enabler_section('f', 'Enabler F: Networking and Collaborations', f_rows) }}
+  {{ enabler_section('g', 'Enabler G: Physical Enablers', g_rows) }}
+  {{ enabler_section('h', 'Enabler H: Digital Enablers', h_rows) }}
 
-<!-- Enabler H -->
-<section class="bg-white shadow-md rounded-xl p-6" id="section-h">
-  <div class="flex justify-between items-center toggle-btn" onclick="toggleContent('h')">
-    <h3 class="text-2xl font-semibold text-blue-800">Enabler H: Digital Enablers</h3>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-  <div id="content-h" class="hidden mt-4">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-100"><tr><th class="text-left px-4 py-2">Name & Designation</th><th class="text-left px-4 py-2">Position</th></tr></thead>
-      <tbody>
-        <tr><td class="px-4 py-2">Prof. N S Manjunath, Controller of Examinations</td><td class="px-4 py-2">Chairperson</td></tr>
-        <tr><td class="px-4 py-2">Dr. S Kiran, Deputy Dean, Academics</td><td class="px-4 py-2">Convenor</td></tr>
-        <tr><td class="px-4 py-2">Dr. Felix M. Philip, Deputy Director, CS & IT, Kochi</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Sangeeta Devanathan, Deputy Dean, Academics</td><td class="px-4 py-2">Member</td></tr>
-        <tr><td class="px-4 py-2">Dr. Mahesh T.R., Programme Head, B.Tech CSE</td><td class="px-4 py-2">Member</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-  </main>
-
-  <footer class="bg-blue-900 text-white py-6 mt-12 text-center text-sm">
-    <p>© 2025 IDP Committees Dashboard. All rights reserved.</p>
+  <footer class="mt-6 text-sm text-gray-500">
+    <p>© {{ current_year if current_year is defined else '2025' }} IDP Committees Dashboard.</p>
   </footer>
 
-  <script>
-    function toggleContent(id) {
-      const content = document.getElementById(`content-${id}`);
-      content.classList.toggle('hidden');
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function toggleContent(id) {
+    const content = document.getElementById(`content-${id}`);
+    const chev = document.getElementById(`chev-${id}`);
+    if (!content) return;
+    content.classList.toggle('hidden');
+    if (chev) {
+      chev.classList.toggle('fa-rotate-180');
     }
-  </script>
-</body>
-</html>
+  }
+
+  // Optional: close all on load except A
+  document.addEventListener('DOMContentLoaded', () => {
+    // leave all collapsed by default (the template shows hidden class)
+  });
+</script>
+{% endblock %}

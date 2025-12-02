@@ -1,808 +1,637 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Governance Enablers - IDP Committees</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-fade-in {
-      animation: fadeIn 0.6s ease-out forwards;
-    }
-    
-    .gradient-header {
-      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-    }
-    
-    .card-hover {
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-    
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    }
-    
-    .timeline-item {
-      position: relative;
-      padding-left: 2rem;
-    }
-    
-    .timeline-item:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #4f46e5;
-    }
-    
-    .timeline-item:after {
-      content: '';
-      position: absolute;
-      left: 5px;
-      top: 12px;
-      width: 2px;
-      height: 100%;
-      background: #e0e7ff;
-    }
-    
-    .timeline-item:last-child:after {
-      display: none;
-    }
-    
-    .swoc-badge {
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .swoc-strength {
-      background-color: #dcfce7;
-      color: #166534;
-    }
-    
-    .swoc-weakness {
-      background-color: #fee2e2;
-      color: #991b1b;
-    }
-    
-    .swoc-opportunity {
-      background-color: #dbeafe;
-      color: #1e40af;
-    }
-    
-    .swoc-challenge {
-      background-color: #fef3c7;
-      color: #92400e;
-    }
-    
-    .pill-button {
-      border-radius: 9999px;
-      padding: 0.5rem 1.25rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-    
-    .pill-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-    }
-    
-    .interaction-card {
-      border-left: 4px solid #4f46e5;
-      transition: all 0.3s ease;
-    }
-    
-    .interaction-card:hover {
-      background-color: #f8fafc;
-      transform: translateX(5px);
-    }
-    
-    .vertical-text {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-    }
-    
-    @media (max-width: 768px) {
-      .vertical-text {
-        writing-mode: horizontal-tb;
-        transform: none;
-      }
-    }
-  </style>
-</head>
+{% extends "base.html" %}
 
-<body class="bg-gray-50 text-gray-800 font-sans">
+{% block title %}Enabler A — IDP{% endblock %}
+
+{% block styles %}
+<style>
+  :root{
+    --bg-page: #f3f8fd;
+    --hero-bg: linear-gradient(180deg,#ffffff,#f7fbff);
+    --muted:#64748b;
+    --accent:#ff8c00;
+    --card-shadow: 0 20px 40px rgba(16,24,40,0.06);
+  }
+
+  html,body { height:100%; margin:0; }
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: var(--bg-page);
+    color: #0b1220;
+  }
+
+  .page-wrap {
+    max-width: 1400px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 0 10px;
+  }
+  .page-header .title {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #ff8c00, #07316a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-header .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  /* Vision Section */
+  .vision {
+    text-align: center;
+    margin: 0 auto 32px;
+    padding: 24px;
+    max-width: 900px;
+    background: linear-gradient(135deg, rgba(255,140,0,0.05), rgba(255,255,255,0.8));
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .vision h2 { 
+    font-size: 20px; 
+    font-weight: 800; 
+    margin: 0 0 12px; 
+    color: #0b1220;
+  }
+  .vision p { 
+    color: #334155; 
+    margin: 0; 
+    font-size: 16px; 
+    line-height: 1.7; 
+  }
+
+  /* HERO PANEL */
+  .hero-panel {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 32px;
+    background: var(--hero-bg);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+    align-items: center;
+  }
+
+  .hero-left { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  }
   
-  <!-- Navigation Header -->
-  <nav class="bg-white p-4 text-blue-900 shadow-md sticky top-0 z-50 border-b border-blue-100">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
-     <!-- Logo + Title -->
-<div class="flex items-center justify-between">
-  <img src="/static/images/santhu123.png" alt="JAIN University Logo" class="h-14 w-auto object-contain" />
+  .hero-left img {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    object-fit: contain;
+  }
 
-  <div class="flex items-center gap-4">
-    <div class="h-14 w-14 bg-blue-100 rounded-full flex items-center justify-center">
-      <i class="fas fa-landmark text-blue-600 text-2xl"></i>
+  .hero-right { 
+    position: relative;
+  }
+
+  /* Carousel Header */
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .carousel-title { 
+    font-size: 22px; 
+    font-weight: 800; 
+    margin: 0; 
+    color: #071029; 
+  }
+
+  .controls-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* TERM NAV */
+  .term-nav {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .term-btn {
+    border: 0;
+    background: transparent;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #475569;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .term-btn.active { 
+    background: linear-gradient(135deg, #ff8c00, #ffb366); 
+    color: #fff; 
+    box-shadow: 0 4px 12px rgba(255,140,0,0.3);
+  }
+
+  .carousel-controls { 
+    display: flex; 
+    gap: 8px; 
+  }
+
+  .carousel-btn {
+    width: 44px; 
+    height: 44px; 
+    border-radius: 50%;
+    border: 2px solid rgba(15,23,42,0.08);
+    background: rgba(255,255,255,0.95);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-btn:hover {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    border-color: #ff8c00;
+    transform: scale(1.05);
+  }
+
+  .carousel-btn:hover svg path {
+    stroke: white;
+  }
+
+  /* Carousel Content */
+  .carousel-container { 
+    overflow: hidden; 
+    border-radius: 16px; 
+    padding: 4px;
+  }
+  
+  .carousel-track { 
+    display: flex; 
+    gap: 24px; 
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .carousel-track > .goal-card { 
+    flex: 0 0 100%; 
+    background: white; 
+    border-radius: 16px; 
+    padding: 28px; 
+    box-shadow: 0 8px 24px rgba(14,24,54,0.08);
+  }
+
+  .goal-card h3 { 
+    margin: 0 0 16px; 
+    font-size: 20px; 
+    font-weight: 800; 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+  }
+  
+  .goal-card .timeline { 
+    display: inline-block; 
+    padding: 8px 14px; 
+    background: #f1f5f9; 
+    border-radius: 20px; 
+    font-weight: 700; 
+    color: #475569; 
+    font-size: 13px; 
+    margin-bottom: 16px; 
+  }
+  
+  .goal-card ul { 
+    padding-left: 20px; 
+    color: #374151; 
+    line-height: 1.8; 
+    margin: 0; 
+  }
+  
+  .goal-card li { 
+    margin-bottom: 12px; 
+    font-size: 15px; 
+  }
+
+  .carousel-indicators { 
+    display: flex; 
+    gap: 8px; 
+    padding-top: 16px; 
+    justify-content: center; 
+  }
+  
+  .indicator { 
+    width: 12px; 
+    height: 12px; 
+    border-radius: 50%; 
+    background: #cbd5e1; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .indicator.active { 
+    width: 32px; 
+    background: linear-gradient(90deg, #ff8c00, #ffb366); 
+    border-radius: 6px; 
+  }
+
+  /* Key Indicator */
+  .key-indicator {
+    margin-top: 32px;
+    text-align: center;
+    padding: 28px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  .key-indicator h4 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    color: #0b1220;
+  }
+
+  .key-indicator p {
+    color: #374151;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ========== MOBILE RESPONSIVE ========== */
+  @media (max-width: 1100px) {
+    .hero-panel { 
+      grid-template-columns: 400px 1fr; 
+      padding: 32px;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .hero-panel { 
+      grid-template-columns: 1fr; 
+      padding: 24px;
+      text-align: center;
+    }
+
+    .hero-left {
+      order: 1;
+      margin-bottom: 20px;
+    }
+
+    .hero-left img {
+      max-width: 360px;
+    }
+
+    .hero-right {
+      order: 2;
+    }
+
+    .carousel-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .carousel-title {
+      font-size: 20px;
+    }
+
+    .controls-wrapper {
+      width: 100%;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .term-nav {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .carousel-controls {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .page-wrap {
+      padding: 0 16px;
+    }
+
+    .page-header .title {
+      font-size: 26px;
+    }
+
+    .page-header .subtitle {
+      font-size: 14px;
+    }
+
+    .vision {
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .vision h2 {
+      font-size: 18px;
+    }
+
+    .vision p {
+      font-size: 15px;
+    }
+
+    .hero-panel {
+      padding: 20px;
+      border-radius: 16px;
+    }
+
+    .hero-left img {
+      max-width: 300px;
+    }
+
+    .goal-card {
+      padding: 20px;
+    }
+
+    .goal-card h3 {
+      font-size: 18px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .goal-card li {
+      font-size: 14px;
+    }
+
+    .key-indicator {
+      padding: 20px;
+    }
+
+    .key-indicator h4 {
+      font-size: 18px;
+    }
+
+    .key-indicator p {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-header .title {
+      font-size: 22px;
+    }
+
+    .page-header .subtitle {
+      font-size: 13px;
+    }
+
+    .vision {
+      padding: 16px;
+    }
+
+    .vision h2 {
+      font-size: 16px;
+    }
+
+    .vision p {
+      font-size: 14px;
+    }
+
+    .hero-panel {
+      padding: 16px;
+    }
+
+    .hero-left img {
+      max-width: 260px;
+    }
+
+    .carousel-title {
+      font-size: 18px;
+    }
+
+    .term-btn {
+      padding: 8px 14px;
+      font-size: 13px;
+      flex: 1;
+    }
+
+    .carousel-btn {
+      width: 40px;
+      height: 40px;
+    }
+
+    .goal-card {
+      padding: 18px;
+    }
+
+    .goal-card h3 {
+      font-size: 16px;
+    }
+
+    .goal-card li {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .key-indicator {
+      padding: 18px;
+    }
+
+    .key-indicator h4 {
+      font-size: 16px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- PAGE HEADER (Centered) -->
+  <header class="page-header">
+    <div class="title">Enabler A — Governance and Leadership</div>
+    <div class="subtitle">Strategic Roadmap · Institutional Development Plan (IDP)</div>
+  </header>
+
+  <!-- Vision (Centered) -->
+  <section class="vision">
+    <h2>🎯 Vision Statement</h2>
+    <p>A transparent, accountable, and digitally empowered governance structure that ensures strategic leadership, regulatory compliance, and participatory decision-making across the institution.</p>
+  </section>
+
+  <!-- HERO: unified panel with image + carousel -->
+  <section class="hero-panel">
+    <div class="hero-left">
+      <img src="{{ url_for('static', filename='images/ea.png') }}" alt="Governance illustration">
     </div>
-    <div>
-      <h2 class="text-lg sm:text-xl font-bold text-blue-900">Governance Enablers</h2>
-      <p class="text-sm text-gray-700">IDP - JAIN (Deemed-to-be University)</p>
-    </div>
-  </div>
-</div>
 
-      <!-- Back to Dashboard -->
-      <div>
-        <a href="/enablers" class="text-blue-900 hover:text-blue-600 text-sm font-medium whitespace-nowrap flex items-center">
-          <i class="fas fa-arrow-left mr-2"></i> Back to Enablers
-        </a>
+    <div class="hero-right">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Strategic Goals Timeline</h3>
+
+        <div class="controls-wrapper">
+          <nav class="term-nav">
+            <button class="term-btn active" data-slide="0">Short</button>
+            <button class="term-btn" data-slide="1">Mid</button>
+            <button class="term-btn" data-slide="2">Long</button>
+          </nav>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M12 16L6 10L12 4" stroke="#0b1220" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="carousel-btn" onclick="nextSlide()" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M8 4L14 10L8 16" stroke="#0b1220" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+          <div class="goal-card short-term" id="slide-0">
+            <div class="timeline">⏱️ 0–2 years</div>
+            <h3><span>🚀</span> Short-Term Goals</h3>
+            <ul>
+              <li>Departmental Development Plans</li>
+              <li>Strengthen 360-degree feedback</li>
+              <li>Digital learning expansion (SWAYAM, Coursera)</li>
+              <li>Research Innovation Council</li>
+              <li>Financial sustainability via grants & partnerships</li>
+              <li>Alumni and student engagement reforms</li>
+            </ul>
+          </div>
+
+          <div class="goal-card mid-term" id="slide-1">
+            <div class="timeline">📅 2–5 years</div>
+            <h3><span>📈</span> Mid-Term Goals</h3>
+            <ul>
+              <li>Establish Senate and Syndicate</li>
+              <li>Strengthen accreditation audits</li>
+              <li>Create Centres of Excellence</li>
+              <li>Implement centralised academic platforms</li>
+              <li>Promote international research and IP commercialisation</li>
+            </ul>
+          </div>
+
+          <div class="goal-card long-term" id="slide-2">
+            <div class="timeline">🗓️ 5–15 years</div>
+            <h3><span>🌟</span> Long-Term Goals</h3>
+            <ul>
+              <li>Global alumni collaboration</li>
+              <li>Adopt circular economy & green investments</li>
+              <li>Expand hybrid and AI-driven academic models</li>
+              <li>Build global research networks</li>
+              <li>Develop policy-review mechanisms</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-indicators">
+        <div class="indicator active" onclick="goToSlide(0)"></div>
+        <div class="indicator" onclick="goToSlide(1)"></div>
+        <div class="indicator" onclick="goToSlide(2)"></div>
       </div>
     </div>
-  </nav>
+  </section>
 
-  <div class="max-w-7xl mx-auto px-4 py-8">
-    <!-- Hero Section -->
-    <section class="gradient-header text-white rounded-xl p-8 mb-12 shadow-lg animate-fade-in">
-      <div class="flex flex-col md:flex-row items-center gap-8">
-        <div class="flex-1">
-          <h1 class="text-3xl md:text-4xl font-bold mb-4">Governance Framework for IDP Implementation</h1>
-          <p class="text-blue-100 text-lg mb-6">
-            The Governance Enabler serves as the cornerstone of all enablers in the IDP document, focusing on Centralized Leadership, Policy Management, Strategic Oversight, and Digital Growth.
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">NEP 2020</span>
-            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">UGC Compliance</span>
-            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">NAAC Standards</span>
-            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">Digital Transformation</span>
-          </div>
-        </div>
-        <div class="w-full md:w-96">
-          <canvas id="governancePieChart" height="250"></canvas>
-        </div>
-      </div>
-    </section>
+  <!-- Key Indicator (Centered) -->
+  <section class="key-indicator">
+    <h4>📊 Key Performance Indicator</h4>
+    <p>Institutional governance effectiveness measured through accreditation scores, adoption of digital governance platforms, research commercialization metrics and stakeholder (student/faculty/alumni) engagement indices.</p>
+  </section>
+</main>
 
-    <!-- Key Focus Areas -->
-    <section class="mb-16 animate-fade-in" style="animation-delay: 0.2s">
-      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
-        <i class="fas fa-bullseye mr-3"></i> Key Focus Areas
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
-          <div class="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-            <i class="fas fa-eye text-blue-600 text-xl"></i>
-          </div>
-          <h3 class="font-bold text-lg mb-2">Transparency & Accountability</h3>
-          <p class="text-gray-600">Ensuring open decision-making through grievance redressal, compliance tracking, and stakeholder engagement.</p>
-        </div>
-        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
-          <div class="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-            <i class="fas fa-users text-purple-600 text-xl"></i>
-          </div>
-          <h3 class="font-bold text-lg mb-2">Stakeholder Engagement</h3>
-          <p class="text-gray-600">Involving faculty, students, alumni, and external partners in participatory governance.</p>
-        </div>
-        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
-          <div class="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-            <i class="fas fa-laptop-code text-green-600 text-xl"></i>
-          </div>
-          <h3 class="font-bold text-lg mb-2">Digital Transformation</h3>
-          <p class="text-gray-600">Enhancing administrative efficiency using ERP systems, AI-based decision support, and paperless workflows.</p>
-        </div>
-        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
-          <div class="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-            <i class="fas fa-balance-scale text-yellow-600 text-xl"></i>
-          </div>
-          <h3 class="font-bold text-lg mb-2">Policy & Framework</h3>
-          <p class="text-gray-600">Establishing regulatory guidelines and governance structures for effective decision-making.</p>
-        </div>
-        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
-          <div class="h-12 w-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-            <i class="fas fa-shield-alt text-red-600 text-xl"></i>
-          </div>
-          <h3 class="font-bold text-lg mb-2">Compliance & Risk</h3>
-          <p class="text-gray-600">Maintaining quality assurance, accreditation readiness, and institutional risk assessment.</p>
-        </div>
-        <div class="bg-white rounded-xl p-6 shadow-md card-hover">
-          <div class="h-12 w-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-            <i class="fas fa-leaf text-indigo-600 text-xl"></i>
-          </div>
-          <h3 class="font-bold text-lg mb-2">Sustainability</h3>
-          <p class="text-gray-600">Developing self-sustaining governance models and integrating ESG practices.</p>
-        </div>
-      </div>
-    </section>
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.querySelectorAll('.indicator');
+  const termBtns = document.querySelectorAll('.term-btn');
+  const totalSlides = 3;
 
-    <!-- Governance Verticals -->
-    <section class="mb-16 animate-fade-in" style="animation-delay: 0.4s">
-      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
-        <i class="fas fa-sitemap mr-3"></i> Governance Verticals
-      </h2>
-      <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-blue-50">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Vertical</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Purpose</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">Key Metrics</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr class="hover:bg-blue-50 transition-colors">
-                <td class="px-6 py-4 font-medium">Policy & Framework Development</td>
-                <td class="px-6 py-4 text-gray-600">Establishes regulatory guidelines, institutional policies, and governance structures</td>
-                <td class="px-6 py-4">
-                  <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 mb-1">Policy adoption rate</span>
-                  <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mr-1 mb-1">Compliance score</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-blue-50 transition-colors">
-                <td class="px-6 py-4 font-medium">Digital Governance & Automation</td>
-                <td class="px-6 py-4 text-gray-600">Enhances administrative efficiency using ERP systems and AI-based decision support</td>
-                <td class="px-6 py-4">
-                  <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mr-1 mb-1">Process efficiency</span>
-                  <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mr-1 mb-1">Digital adoption</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-blue-50 transition-colors">
-                <td class="px-6 py-4 font-medium">Transparency & Accountability</td>
-                <td class="px-6 py-4 text-gray-600">Ensures open decision-making through grievance redressal and compliance tracking</td>
-                <td class="px-6 py-4">
-                  <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-1 mb-1">Stakeholder trust</span>
-                  <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded mr-1 mb-1">Grievance resolution</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-blue-50 transition-colors">
-                <td class="px-6 py-4 font-medium">Capacity Building & Leadership</td>
-                <td class="px-6 py-4 text-gray-600">Strengthens governance through training programs and leadership pipelines</td>
-                <td class="px-6 py-4">
-                  <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-1 mb-1">Training hours</span>
-                  <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded mr-1 mb-1">Leadership readiness</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-blue-50 transition-colors">
-                <td class="px-6 py-4 font-medium">Stakeholder Engagement</td>
-                <td class="px-6 py-4 text-gray-600">Involves faculty, students, industry, and alumni in governance</td>
-                <td class="px-6 py-4">
-                  <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-1 mb-1">Participation rate</span>
-                  <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-1 mb-1">Satisfaction score</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-blue-50 transition-colors">
-                <td class="px-6 py-4 font-medium">Audit, Compliance & Risk</td>
-                <td class="px-6 py-4 text-gray-600">Maintains quality assurance and institutional risk assessment</td>
-                <td class="px-6 py-4">
-                  <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded mr-1 mb-1">Audit findings</span>
-                  <span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded mr-1 mb-1">Risk mitigation</span>
-                </td>
-              </tr>
-              <tr class="hover:bg-blue-50 transition-colors">
-                <td class="px-6 py-4 font-medium">Sustainability & Autonomy</td>
-                <td class="px-6 py-4 text-gray-600">Develops self-sustaining governance models and ESG practices</td>
-                <td class="px-6 py-4">
-                  <span class="inline-block bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded mr-1 mb-1">Financial autonomy</span>
-                  <span class="inline-block bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded mr-1 mb-1">ESG score</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+  function updateCarousel() {
+    if (!track) return;
+    const container = track.parentElement;
+    const slideWidth = container.offsetWidth;
+    track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
 
-    <!-- Enabler Interactions -->
-    <section class="mb-16 animate-fade-in" style="animation-delay: 0.6s">
-      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
-        <i class="fas fa-project-diagram mr-3"></i> Interaction with Other IDP Enablers
-      </h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
-          <div class="flex items-start mb-4">
-            <div class="bg-blue-100 text-blue-800 rounded-lg p-3 mr-4">
-              <i class="fas fa-book-open text-xl"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-lg">Academic Enabler</h3>
-              <p class="text-gray-600">Defines academic policies (curriculum, faculty recruitment) and establishes research ethics frameworks</p>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Policy Alignment</span>
-            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Curriculum Standards</span>
-            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Faculty Development</span>
-          </div>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
-          <div class="flex items-start mb-4">
-            <div class="bg-purple-100 text-purple-800 rounded-lg p-3 mr-4">
-              <i class="fas fa-flask text-xl"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-lg">Research & IP</h3>
-              <p class="text-gray-600">Oversees research integrity & financial transparency, manages research project risk assessment</p>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">IP Governance</span>
-            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Ethics Compliance</span>
-            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Funding Audits</span>
-          </div>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
-          <div class="flex items-start mb-4">
-            <div class="bg-green-100 text-green-800 rounded-lg p-3 mr-4">
-              <i class="fas fa-money-bill-wave text-xl"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-lg">Financial Enablers</h3>
-              <p class="text-gray-600">Develops infrastructure guidelines & resource allocation policies, ensures financial sustainability</p>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Budget Governance</span>
-            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Resource Allocation</span>
-            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Funding Models</span>
-          </div>
-        </div>
-        <div class="bg-white p-6 rounded-xl shadow-md interaction-card">
-          <div class="flex items-start mb-4">
-            <div class="bg-yellow-100 text-yellow-800 rounded-lg p-3 mr-4">
-              <i class="fas fa-users text-xl"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-lg">HRM Enablers</h3>
-              <p class="text-gray-600">Trains faculty & administrators in governance best practices, ensures transparent faculty recruitment</p>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Leadership Training</span>
-            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Faculty Evaluation</span>
-            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Administrative Development</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SWOC Analysis -->
-    <section class="mb-16 animate-fade-in" style="animation-delay: 0.8s">
-      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
-        <i class="fas fa-chart-pie mr-3"></i> Governance SWOC Analysis
-      </h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <div class="bg-white rounded-xl shadow-md p-6 h-full">
-            <h3 class="font-bold text-lg mb-4">Stakeholder Survey Results</h3>
-            <canvas id="stakeholderChart" height="250"></canvas>
-          </div>
-        </div>
-        <div>
-          <div class="bg-white rounded-xl shadow-md p-6 h-full">
-            <h3 class="font-bold text-lg mb-4">Key Findings</h3>
-            <div class="space-y-4">
-              <div>
-                <span class="swoc-badge swoc-strength">Strength</span>
-                <p class="mt-2">Strong implementation of decision-making frameworks and digital governance ecosystem</p>
-              </div>
-              <div>
-                <span class="swoc-badge swoc-weakness">Weakness</span>
-                <p class="mt-2">Need for improvement in faculty development and participatory governance</p>
-              </div>
-              <div>
-                <span class="swoc-badge swoc-opportunity">Opportunity</span>
-                <p class="mt-2">Global academic partnerships and technology integration in learning</p>
-              </div>
-              <div>
-                <span class="swoc-badge swoc-challenge">Challenge</span>
-                <p class="mt-2">Shifts in regulations, dependent funding, and new academic models</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Implementation Timeline -->
-    <section class="mb-16 animate-fade-in" style="animation-delay: 1s">
-      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
-        <i class="fas fa-road mr-3"></i> Implementation Roadmap
-      </h2>
-      <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="p-6">
-          <div class="flex overflow-x-auto pb-4">
-            <div class="flex space-x-8">
-              <!-- Short Term -->
-              <div class="flex-shrink-0 w-72">
-                <div class="bg-blue-100 text-blue-900 rounded-lg p-4 mb-4">
-                  <h3 class="font-bold text-lg">Short-term (0-2 Years)</h3>
-                  <p class="text-sm">Foundation Building</p>
-                </div>
-                <div class="space-y-4">
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Establish University Court</h4>
-                    <p class="text-sm text-gray-600">Oversee institutional progress and policy direction</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Departmental Development Plans</h4>
-                    <p class="text-sm text-gray-600">Align with Institutional Development Plan</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">360-degree Feedback System</h4>
-                    <p class="text-sm text-gray-600">Evaluate faculty, administration, and student experiences</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Research & Innovation Council</h4>
-                    <p class="text-sm text-gray-600">Improve research quality and interdisciplinary collaboration</p>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Mid Term -->
-              <div class="flex-shrink-0 w-72">
-                <div class="bg-purple-100 text-purple-900 rounded-lg p-4 mb-4">
-                  <h3 class="font-bold text-lg">Mid-term (3-5 Years)</h3>
-                  <p class="text-sm">Consolidation & Growth</p>
-                </div>
-                <div class="space-y-4">
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Establish Senate & Syndicate</h4>
-                    <p class="text-sm text-gray-600">Incorporate diverse perspectives in governance</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Centers of Excellence</h4>
-                    <p class="text-sm text-gray-600">Promote AI, Indian Knowledge Systems, and emerging technologies</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">External Academic Audits</h4>
-                    <p class="text-sm text-gray-600">Ensure quality and maintain high educational standards</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Expand Funding Models</h4>
-                    <p class="text-sm text-gray-600">Include endowments, CSR funding, and IP revenue</p>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Long Term -->
-              <div class="flex-shrink-0 w-72">
-                <div class="bg-green-100 text-green-900 rounded-lg p-4 mb-4">
-                  <h3 class="font-bold text-lg">Long-term (5+ Years)</h3>
-                  <p class="text-sm">Sustainable Excellence</p>
-                </div>
-                <div class="space-y-4">
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Policy Review Mechanism</h4>
-                    <p class="text-sm text-gray-600">Update and render accountable governance policies</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Digital Resource Optimization</h4>
-                    <p class="text-sm text-gray-600">Integrate technologies for institutional resource management</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">Global Alumni Network</h4>
-                    <p class="text-sm text-gray-600">Strengthen engagement and collaboration</p>
-                  </div>
-                  <div class="timeline-item">
-                    <h4 class="font-medium">International Research Pathways</h4>
-                    <p class="text-sm text-gray-600">Strengthen global knowledge-sharing networks</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Key Metrics Dashboard -->
-    <section class="mb-16 animate-fade-in" style="animation-delay: 1.2s">
-      <h2 class="text-2xl font-bold mb-6 flex items-center text-blue-900">
-        <i class="fas fa-chart-line mr-3"></i> Governance Performance Metrics
-      </h2>
-      <div class="bg-white rounded-xl shadow-md p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-blue-50 rounded-lg p-4">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm text-blue-800 font-medium">Policy Compliance</p>
-                <h3 class="text-2xl font-bold text-blue-900">92%</h3>
-              </div>
-              <div class="bg-blue-100 p-2 rounded-lg">
-                <i class="fas fa-check-circle text-blue-600"></i>
-              </div>
-            </div>
-            <div class="mt-2 h-2 bg-blue-200 rounded-full overflow-hidden">
-              <div class="h-full bg-blue-600 rounded-full" style="width: 92%"></div>
-            </div>
-          </div>
-          <div class="bg-purple-50 rounded-lg p-4">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm text-purple-800 font-medium">Digital Adoption</p>
-                <h3 class="text-2xl font-bold text-purple-900">78%</h3>
-              </div>
-              <div class="bg-purple-100 p-2 rounded-lg">
-                <i class="fas fa-laptop-code text-purple-600"></i>
-              </div>
-            </div>
-            <div class="mt-2 h-2 bg-purple-200 rounded-full overflow-hidden">
-              <div class="h-full bg-purple-600 rounded-full" style="width: 78%"></div>
-            </div>
-          </div>
-          <div class="bg-green-50 rounded-lg p-4">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm text-green-800 font-medium">Stakeholder Satisfaction</p>
-                <h3 class="text-2xl font-bold text-green-900">85%</h3>
-              </div>
-              <div class="bg-green-100 p-2 rounded-lg">
-                <i class="fas fa-smile text-green-600"></i>
-              </div>
-            </div>
-            <div class="mt-2 h-2 bg-green-200 rounded-full overflow-hidden">
-              <div class="h-full bg-green-600 rounded-full" style="width: 85%"></div>
-            </div>
-          </div>
-          <div class="bg-yellow-50 rounded-lg p-4">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="text-sm text-yellow-800 font-medium">Risk Mitigation</p>
-                <h3 class="text-2xl font-bold text-yellow-900">88%</h3>
-              </div>
-              <div class="bg-yellow-100 p-2 rounded-lg">
-                <i class="fas fa-shield-alt text-yellow-600"></i>
-              </div>
-            </div>
-            <div class="mt-2 h-2 bg-yellow-200 rounded-full overflow-hidden">
-              <div class="h-full bg-yellow-600 rounded-full" style="width: 88%"></div>
-            </div>
-          </div>
-        </div>
-        <div class="h-80">
-          <canvas id="performanceTrendChart"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- Conclusion -->
-    <section class="animate-fade-in" style="animation-delay: 1.4s">
-      <div class="bg-blue-900 text-white rounded-xl p-8 shadow-lg">
-        <h2 class="text-2xl font-bold mb-4">Conclusion</h2>
-        <p class="mb-6 text-blue-100">
-          Governance is not simply an administrative function, but the pillar of institutional quality. It guides academic policies, research funding, digital transformation, financial sustainability, and participatory decision-making. The IDP offers a systematic path for governance excellence through short-term, mid-term and long-term reforms.
-       
-      </div>
-    </section>
-  </div>
-
-    
-
-  <script>
-    // Governance Focus Areas Pie Chart
-    const governancePieCtx = document.getElementById('governancePieChart').getContext('2d');
-    const governancePieChart = new Chart(governancePieCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Policy Framework', 'Digital Governance', 'Transparency', 'Capacity Building', 'Stakeholder Engagement', 'Compliance', 'Sustainability'],
-        datasets: [{
-          data: [22, 18, 15, 12, 14, 11, 8],
-          backgroundColor: [
-            '#4f46e5',
-            '#7c3aed',
-            '#10b981',
-            '#f59e0b',
-            '#ef4444',
-            '#6366f1',
-            '#14b8a6'
-          ],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        cutout: '70%',
-        plugins: {
-          legend: {
-            position: 'right',
-            labels: {
-              color: '#fff',
-              font: {
-                family: "'Inter', sans-serif"
-              },
-              padding: 20
-            }
-          },
-          tooltip: {
-            bodyFont: {
-              family: "'Inter', sans-serif"
-            },
-            titleFont: {
-              family: "'Inter', sans-serif"
-            }
-          }
-        },
-        animation: {
-          animateScale: true,
-          animateRotate: true
-        }
-      }
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentSlide));
+    termBtns.forEach((btn, i) => {
+      btn.classList.toggle('active', i === currentSlide);
     });
+  }
 
-    // Stakeholder Survey Chart
-    const stakeholderCtx = document.getElementById('stakeholderChart').getContext('2d');
-    const stakeholderChart = new Chart(stakeholderCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Administrators', 'Campus Directors', 'Faculty', 'Students', 'Alumni', 'Industry'],
-        datasets: [{
-          label: 'Satisfaction Level',
-          data: [88, 82, 75, 79, 85, 81],
-          backgroundColor: '#4f46e5',
-          borderRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            max: 100,
-            grid: {
-              drawBorder: false
-            },
-            ticks: {
-              color: '#6b7280'
-            }
-          },
-          x: {
-            grid: {
-              display: false
-            },
-            ticks: {
-              color: '#6b7280'
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            backgroundColor: '#1f2937',
-            titleFont: {
-              family: "'Inter', sans-serif"
-            },
-            bodyFont: {
-              family: "'Inter', sans-serif"
-            }
-          }
-        }
-      }
-    });
+  function nextSlide() { 
+    currentSlide = (currentSlide + 1) % totalSlides; 
+    updateCarousel(); 
+  }
+  
+  function prevSlide() { 
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; 
+    updateCarousel(); 
+  }
+  
+  function goToSlide(i) { 
+    currentSlide = i; 
+    updateCarousel(); 
+  }
 
-    // Performance Trend Chart
-    const trendCtx = document.getElementById('performanceTrendChart').getContext('2d');
-    const trendChart = new Chart(trendCtx, {
-      type: 'line',
-      data: {
-        labels: ['2021', '2022', '2023', '2024 (Projected)', '2025 (Target)'],
-        datasets: [
-          {
-            label: 'Policy Compliance',
-            data: [75, 82, 88, 90, 95],
-            borderColor: '#4f46e5',
-            backgroundColor: 'rgba(79, 70, 229, 0.05)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.3
-          },
-          {
-            label: 'Digital Adoption',
-            data: [55, 65, 75, 82, 90],
-            borderColor: '#7c3aed',
-            backgroundColor: 'rgba(124, 58, 237, 0.05)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.3
-          },
-          {
-            label: 'Stakeholder Satisfaction',
-            data: [72, 78, 83, 86, 90],
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.05)',
-            borderWidth: 3,
-            fill: true,
-            tension: 0.3
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        interaction: {
-          intersect: false,
-          mode: 'index'
-        },
-        scales: {
-          y: {
-            beginAtZero: false,
-            min: 50,
-            max: 100,
-            grid: {
-              drawBorder: false
-            },
-            ticks: {
-              color: '#6b7280'
-            }
-          },
-          x: {
-            grid: {
-              display: false
-            },
-            ticks: {
-              color: '#6b7280'
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            position: 'top',
-            labels: {
-              color: '#111827',
-              font: {
-                family: "'Inter', sans-serif"
-              },
-              padding: 20,
-              usePointStyle: true
-            }
-          },
-          tooltip: {
-            backgroundColor: '#1f2937',
-            titleFont: {
-              family: "'Inter', sans-serif"
-            },
-            bodyFont: {
-              family: "'Inter', sans-serif"
-            }
-          }
-        }
-      }
+  // Wire up term buttons
+  termBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const ds = btn.getAttribute('data-slide');
+      const target = ds !== null ? parseInt(ds, 10) : idx;
+      goToSlide(target);
     });
+  });
 
-    // Animation on scroll
-    document.addEventListener('DOMContentLoaded', () => {
-      const animatedElements = document.querySelectorAll('.animate-fade-in');
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
-          }
-        });
-      }, { threshold: 0.1 });
-      
-      animatedElements.forEach(el => {
-        el.style.opacity = 0;
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        observer.observe(el);
-      });
-    });
-  </script>
-</body>
-</html>
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // Auto-play
+  let autoplay = setInterval(nextSlide, 6000);
+  ['touchstart', 'mousedown'].forEach(ev => 
+    document.addEventListener(ev, () => {
+      clearInterval(autoplay);
+      autoplay = null;
+    }, { passive: true })
+  );
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(updateCarousel, 100);
+  });
+
+  window.addEventListener('load', updateCarousel);
+  document.addEventListener('DOMContentLoaded', updateCarousel);
+</script>
+{% endblock %}

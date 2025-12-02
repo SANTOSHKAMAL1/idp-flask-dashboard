@@ -1,1104 +1,482 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAIN University - Strategic Action Plan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-             --primary: #003366;
-            --primary-light: #0066cc;
-            --secondary: #e74c3c;
-            --jain-blue: #003366;
-            --jain-gold: #FFD700;
-            --jain-light: #F8F9FA;
-            --jain-accent: #28A745;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-        }
-        
-        /* Header */
-        .nav-header {
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            height: 3rem;
-            width: 3rem;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logo-icon i {
-            color: white;
-            font-size: 1.25rem;
-        }
-        
-        .logo-text h2 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--primary);
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .logo-text p {
-            margin: 0.25rem 0 0;
-            font-size: 0.8rem;
-            color: var(--text-medium);
-        }
-        
-        .nav-back-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            padding: 8px 15px;
-            border-radius: 4px;
-            border: 1px solid var(--medium-gray);
-        }
-        
-        .nav-back-link i {
-            margin-right: 0.5rem;
-        }
-        
-        .jain-header {
-            background: linear-gradient(135deg, var(--jain-blue) 0%, #004080 100%);
-            color: white;
-            padding: 4rem 0;
-            margin-bottom: 2rem;
-            border-bottom: 5px solid var(--jain-gold);
-        }
-        
-        .enabler-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 2rem;
-            border-top: 4px solid var(--jain-blue);
-        }
-        
-        .enabler-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
-        }
-        
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            font-weight: 600;
-            color: var(--jain-blue);
-            border-radius: 10px 10px 0 0 !important;
-        }
-        
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 20px;
-        }
-        
-        .timeline-item:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 5px;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: var(--jain-accent);
-        }
-        
-        .timeline-connector {
-            position: absolute;
-            left: 7px;
-            top: 20px;
-            bottom: -25px;
-            width: 1px;
-            background-color: #ddd;
-        }
-        
-        .progress-bar {
-            background-color: var(--jain-blue);
-        }
-        
-        .vis-card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .vis-card-body {
-            flex-grow: 1;
-        }
-        
-        .nav-pills .nav-link.active {
-            background-color: var(--jain-blue);
-        }
-        
-        .nav-pills .nav-link {
-            color: var(--jain-blue);
-        }
-        
-        footer {
-            background-color: var(--jain-blue);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .impact-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--jain-blue);
-        }
-        
-        .impact-label {
-            font-size: 1rem;
-            color: #666;
-        }
-        
-        @media (max-width: 768px) {
-            .jain-header {
-                padding: 2rem 0;
-            }
-            
-            .impact-number {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation Header -->
-<div class="nav-header" id="navHeader">
-  <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    
-    <!-- Left: Logo -->
-    <a href="#" class="nav-logo">
-      <div class="logo-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
+{% extends "base.html" %}
 
-      <!-- Logo Text Section -->
-      <div class="logo-text" style="display: flex; align-items: center; gap: 1rem;">
-        <img src="/static/images/santhu123.png" alt="JAIN University Logo" style="height: 3.5rem; object-fit: contain;" />
-        <div>
-             <h2> Human Resources and Supportive</h2>
-                    <p> Facilitative Enablers  | JAIN University</p>
+{% block title %}Enabler E — Student Experience & Support{% endblock %}
+
+{% block styles %}
+<style>
+  :root{
+    --bg-page: #f3f8fd;
+    --hero-bg: linear-gradient(180deg,#ffffff,#f7fbff);
+    --muted:#64748b;
+    --accent:#ff8c00;
+    --card-shadow: 0 20px 40px rgba(16,24,40,0.06);
+  }
+
+  html,body { height:100%; margin:0; }
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: var(--bg-page);
+    color: #0b1220;
+  }
+
+  .page-wrap {
+    max-width: 1400px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 0 10px;
+  }
+  .page-header .title {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #ff8c00, #07316a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-header .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  /* Vision Section */
+  .vision {
+    text-align: center;
+    margin: 0 auto 32px;
+    padding: 22px;
+    max-width: 900px;
+    background: linear-gradient(135deg, rgba(255,140,0,0.05), rgba(255,255,255,0.8));
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .vision h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    color: #0b1220;
+  }
+  .vision p {
+    color: #334155;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* HERO PANEL */
+  .hero-panel {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 32px;
+    background: var(--hero-bg);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+    align-items: center;
+  }
+
+  .hero-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-left img {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    object-fit: contain;
+    background: transparent !important;
+  }
+
+  .hero-right {
+    position: relative;
+  }
+
+  /* Carousel Header */
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .carousel-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0;
+    color: #071029;
+  }
+
+  .controls-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* TERM NAV */
+  .term-nav {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .term-btn {
+    border: 0;
+    background: transparent;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #475569;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .term-btn.active {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255,140,0,0.3);
+  }
+
+  .carousel-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  .carousel-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(15,23,42,0.08);
+    background: rgba(255,255,255,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-btn:hover {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    border-color: #ff8c00;
+    transform: scale(1.05);
+  }
+
+  .carousel-btn:hover svg path {
+    stroke: white;
+  }
+
+  /* Carousel Content */
+  .carousel-container {
+    overflow: hidden;
+    border-radius: 16px;
+    padding: 6px;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 24px;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .carousel-track > .goal-card {
+    flex: 0 0 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 8px 24px rgba(14,24,54,0.08);
+  }
+
+  .goal-card h3 {
+    margin: 0 0 16px;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .goal-card .timeline {
+    display: inline-block;
+    padding: 8px 14px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    font-weight: 700;
+    color: #475569;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .goal-card ul {
+    padding-left: 20px;
+    color: #374151;
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  .goal-card li {
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+
+  .carousel-indicators {
+    display: flex;
+    gap: 8px;
+    padding-top: 16px;
+    justify-content: center;
+  }
+
+  .indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .indicator.active {
+    width: 32px;
+    background: linear-gradient(90deg, #ff8c00, #ffb366);
+    border-radius: 6px;
+  }
+
+  /* Key Indicator */
+  .key-indicator {
+    margin-top: 28px;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .key-indicator h4 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 10px;
+    color: #0b1220;
+  }
+
+  .key-indicator p {
+    color: #374151;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .hero-panel {
+      grid-template-columns: 420px 1fr;
+      padding: 28px;
+      gap: 20px;
+    }
+    .hero-left img { max-width: 380px; }
+  }
+
+  @media (max-width: 980px) {
+    .hero-panel {
+      grid-template-columns: 1fr;
+      padding: 24px;
+      text-align: center;
+    }
+    .hero-left { order: 1; margin-bottom: 18px; }
+    .hero-right { order: 2; padding-left: 0; }
+    .carousel-header { flex-direction: column; align-items: center; text-align: center; }
+    .controls-wrapper { width: 100%; flex-direction: column; gap: 12px; }
+    .term-nav { width: 100%; justify-content: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .carousel-controls { justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .page-header .title { font-size: 22px; }
+    .page-header .subtitle { font-size: 13px; }
+    .hero-left img { max-width: 260px; }
+    .term-btn { padding: 8px 14px; font-size: 13px; flex: 1; }
+    .carousel-btn { width: 40px; height: 40px; }
+    .goal-card { padding: 18px; }
+    .goal-card h3 { font-size: 16px; }
+    .goal-card li { font-size: 13px; margin-bottom: 10px; }
+    .key-indicator { padding: 18px; }
+    .key-indicator h4 { font-size: 16px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="title">Enabler E — Student Experience & Support</div>
+    <div class="subtitle">Strategic Roadmap · Institutional Development Plan (IDP)</div>
+  </header>
+
+  <!-- Vision -->
+  <section class="vision" aria-label="Vision">
+    <h2>🎯 Vision</h2>
+    <p>A people-first ecosystem that empowers faculty, staff, and students through inclusive support systems, continuous skill development, digital enablement, and holistic well-being for sustained institutional excellence.</p>
+  </section>
+
+  <!-- HERO: image + carousel -->
+  <section class="hero-panel">
+    <div class="hero-left" aria-hidden="false">
+      <img src="{{ url_for('static', filename='images/ee.png') }}" alt="Enabler E illustration">
+    </div>
+
+    <div class="hero-right">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Strategic Goals Timeline</h3>
+
+        <div class="controls-wrapper" role="tablist" aria-label="Term navigation and carousel controls">
+          <nav class="term-nav" aria-label="Term navigation">
+            <button class="term-btn active" data-slide="0" type="button">Short</button>
+            <button class="term-btn" data-slide="1" type="button">Mid</button>
+            <button class="term-btn" data-slide="2" type="button">Long</button>
+          </nav>
+
+          <div class="carousel-controls" aria-hidden="false">
+            <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M12 16L6 10L12 4" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="carousel-btn" onclick="nextSlide()" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
       </div>
-    </a>
 
-    <!-- Right: Back Link -->
-    <a href="/enablers" class="nav-back-link" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 500;">
-      <i class="fas fa-arrow-left"></i> Back to Enablers
-    </a>
+      <div class="carousel-container" aria-live="polite">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- SHORT-TERM GOALS -->
+          <div class="goal-card short-term" id="slide-0" role="tabpanel" aria-hidden="false">
+            <div class="timeline">0–2 years</div>
+            <h3>Short-Term Goals</h3>
+            <ul>
+              <li>Inclusive access — AI-based admissions and expanded scholarships.</li>
+              <li>Digital support — smart classrooms, e-learning, and reliable connectivity.</li>
+              <li>Well-being — counselling centres, stress-relief and mental health programs.</li>
+              <li>Staff upskilling — digital onboarding, tools training and recognition systems.</li>
+              <li>Faculty boost — transparent hiring, micro-grants, and induction programmes.</li>
+              <li>Collaboration & outreach — communication apps, diversity programs, and corporate tie-ups.</li>
+              <li>Initial fundraising & corporate relations for seed support.</li>
+            </ul>
+          </div>
 
-  </div>
-                    
-    
+          <!-- MID-TERM GOALS -->
+          <div class="goal-card mid-term" id="slide-1" role="tabpanel" aria-hidden="true">
+            <div class="timeline">2–5 years</div>
+            <h3>Mid-Term Goals</h3>
+            <ul>
+              <li>Global exposure — student/faculty exchanges and dual degree partnerships.</li>
+              <li>Holistic learning — interdisciplinary courses and hybrid delivery models.</li>
+              <li>Tech adoption — AI-driven learning, predictive tools, and digital twins.</li>
+              <li>Faculty growth — international exchanges, upskilling and recognition.</li>
+              <li>Sustainable systems — green campuses and broader outreach programmes.</li>
+              <li>Career & entrepreneurship — incubators, corporate links, and stronger placement pipelines.</li>
+              <li>Emotional & financial ecosystems — integrated wellness and student financial support systems.</li>
+            </ul>
+          </div>
 
-    <!-- Hero Header -->
-    <header class="jain-header" id="overview">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">Strategic Action Plan 2023-2038</h1>
-            <p class="lead mb-4">Transforming Higher Education Through Innovation, Inclusivity, and Global Excellence</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="#enablers" class="btn btn-light btn-lg px-4">Explore Enablers</a>
-                <a href="#metrics" class="btn btn-outline-light btn-lg px-4">View Metrics</a>
-            </div>
+          <!-- LONG-TERM GOALS -->
+          <div class="goal-card long-term" id="slide-2" role="tabpanel" aria-hidden="true">
+            <div class="timeline">5–15 years</div>
+            <h3>Long-Term Goals</h3>
+            <ul>
+              <li>Global leadership — international campuses and top-tier academic standards.</li>
+              <li>Centres of excellence — research & pedagogical innovation hubs.</li>
+              <li>AI-first institution — AI-enabled operations and blockchain systems.</li>
+              <li>Future workforce pipelines — leadership programmes and world-class HR practices.</li>
+              <li>Sustainable funding — endowments and long-term partnerships.</li>
+              <li>Holistic well-being — emotional excellence centres and global wellness ecosystem.</li>
+              <li>Green leadership — carbon-neutral campuses and sustainability models.</li>
+            </ul>
+          </div>
         </div>
-    </header>
+      </div>
 
-    <!-- Mission & Vision -->
-    <section class="container mb-5">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card h-100 enabler-card">
-                    <div class="card-body">
-                        <h3 class="card-title text-center mb-4"><i class="fas fa-bullseye me-2"></i>Our Vision</h3>
-                        <p class="card-text">To be a global leader in higher education that transcends boundaries and empowers learners to thrive in an interconnected world through academic excellence, innovation, and holistic development.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card h-100 enabler-card">
-                    <div class="card-body">
-                        <h3 class="card-title text-center mb-4"><i class="fas fa-rocket me-2"></i>Our Mission</h3>
-                        <p class="card-text">To create a transformative educational ecosystem that integrates cutting-edge technologies, global best practices, and student-centric approaches to foster collaboration, trust, and innovation while upholding our core values of inclusivity, transparency, and leadership.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      <div class="carousel-indicators" role="tablist" aria-label="Carousel indicators">
+        <div class="indicator active" onclick="goToSlide(0)" aria-label="Show short term goals"></div>
+        <div class="indicator" onclick="goToSlide(1)" aria-label="Show mid term goals"></div>
+        <div class="indicator" onclick="goToSlide(2)" aria-label="Show long term goals"></div>
+      </div>
+    </div>
+  </section>
 
-   
+  <!-- Key Indicator -->
+  <section class="key-indicator" aria-label="Key indicator">
+    <h4>📊 Key Indicator</h4>
+    <p>A people-first ecosystem that empowers faculty, staff and students through inclusive support systems, continuous skill development, digital enablement, and holistic well-being for sustained institutional excellence.</p>
+    <p style="margin-top:12px; font-weight:600; color:#475569;">Outcome: Improved student success, staff capacity, and an inclusive campus culture aligned with global opportunities.</p>
+  </section>
+</main>
 
-    <!-- Enablers Section -->
-    <section class="container mb-5" id="enablers">
-        <h2 class="text-center mb-5">Transformative Enablers</h2>
-        
-        <ul class="nav nav-pills mb-4 justify-content-center" id="enablers-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="students-tab" data-bs-toggle="pill" data-bs-target="#students" type="button">Student Enablers</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="staff-tab" data-bs-toggle="pill" data-bs-target="#staff" type="button">Staff Empowerment</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="faculty-tab" data-bs-toggle="pill" data-bs-target="#faculty" type="button">Faculty & Research</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="cross-tab" data-bs-toggle="pill" data-bs-target="#cross" type="button">Cross-Functional</button>
-            </li>
-        </ul>
-        
-        <div class="tab-content" id="enablers-tabContent">
-            <div class="tab-pane fade show active" id="students" role="tabpanel">
-                <div class="card enabler-card">
-                    <div class="card-header">
-                        <h3 class="mb-0">Student and Learner Enablers</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4><i class="fas fa-chart-line me-2"></i>Key Objectives</h4>
-                                <ul class="list-group list-group-flush mb-4">
-                                    <li class="list-group-item">Ensure equitable access through inclusive admission processes</li>
-                                    <li class="list-group-item">Provide comprehensive financial support systems</li>
-                                    <li class="list-group-item">Develop state-of-the-art digital infrastructure</li>
-                                    <li class="list-group-item">Enhance career readiness and global exposure</li>
-                                    <li class="list-group-item">Foster holistic student well-being</li>
-                                </ul>
-                                
-                                <h4><i class="fas fa-check-circle me-2"></i>Key Achievements (First 3 Years)</h4>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 85%">AI-Driven Admissions (85%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 75%">Digital Infrastructure (75%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 90%">Mentorship Programs (90%)</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="studentChart"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <h4><i class="fas fa-road me-2"></i>Strategic Roadmap</h4>
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-primary text-white">
-                                            Short-Term (3 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>AI-driven admission systems</li>
-                                                <li>Expanded scholarship programs</li>
-                                                <li>Digital learning platforms</li>
-                                                <li>Career support cells</li>
-                                                <li>Peer mentorship programs</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-warning text-dark">
-                                            Medium-Term (5 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Partnerships with NGOs/schools</li>
-                                                <li>Interdisciplinary courses</li>
-                                                <li>Global exchange programs</li>
-                                                <li>Enhanced mental health services</li>
-                                                <li>Skill development workshops</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-success text-white">
-                                            Long-Term (15 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Lifelong learning ecosystem</li>
-                                                <li>AI-driven personalized learning</li>
-                                                <li>Multicultural campus initiatives</li>
-                                                <li>Student leadership training</li>
-                                                <li>Digital portfolios</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-pane fade" id="staff" role="tabpanel">
-                <div class="card enabler-card">
-                    <div class="card-header">
-                        <h3 class="mb-0">Staff Empowerment Enablers</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4><i class="fas fa-chart-line me-2"></i>Key Objectives</h4>
-                                <ul class="list-group list-group-flush mb-4">
-                                    <li class="list-group-item">Enhance administrative and IT proficiency</li>
-                                    <li class="list-group-item">Implement transparent recognition frameworks</li>
-                                    <li class="list-group-item">Develop structured career progression pathways</li>
-                                    <li class="list-group-item">Foster cross-departmental collaboration</li>
-                                    <li class="list-group-item">Promote leadership development</li>
-                                </ul>
-                                
-                                <h4><i class="fas fa-check-circle me-2"></i>Key Achievements (First 3 Years)</h4>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 80%">Skill Training (80%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 70%">Onboarding (70%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%">Flexible Work (65%)</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="staffChart"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <h4><i class="fas fa-road me-2"></i>Strategic Roadmap</h4>
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-primary text-white">
-                                            Short-Term (3 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Skill training programs</li>
-                                                <li>Recognition frameworks</li>
-                                                <li>Efficient onboarding</li>
-                                                <li>IT proficiency training</li>
-                                                <li>Customer service workshops</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-warning text-dark">
-                                            Medium-Term (5 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Structured career progression</li>
-                                                <li>Cross-department training</li>
-                                                <li>Flexible work arrangements</li>
-                                                <li>Advanced upskilling</li>
-                                                <li>Leadership development</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-success text-white">
-                                            Long-Term (15 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>AI-based task management</li>
-                                                <li>Global best practices</li>
-                                                <li>Sustainability training</li>
-                                                <li>Leadership pipeline</li>
-                                                <li>Digital transformation</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-pane fade" id="faculty" role="tabpanel">
-                <div class="card enabler-card">
-                    <div class="card-header">
-                        <h3 class="mb-0">Faculty and Research Enablers</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4><i class="fas fa-chart-line me-2"></i>Key Objectives</h4>
-                                <ul class="list-group list-group-flush mb-4">
-                                    <li class="list-group-item">Ensure transparent, merit-based faculty recruitment</li>
-                                    <li class="list-group-item">Promote interdisciplinary research collaboration</li>
-                                    <li class="list-group-item">Facilitate global faculty exchange programs</li>
-                                    <li class="list-group-item">Strengthen industry-academia integration</li>
-                                    <li class="list-group-item">Establish centers of research excellence</li>
-                                </ul>
-                                
-                                <h4><i class="fas fa-check-circle me-2"></i>Key Achievements (First 3 Years)</h4>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 75%">AI Recruitment (75%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 60%">Research Grants (60%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 50%">Industry Collab (50%)</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="facultyChart"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <h4><i class="fas fa-road me-2"></i>Strategic Roadmap</h4>
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-primary text-white">
-                                            Short-Term (3 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>AI-driven recruitment</li>
-                                                <li>Faculty orientation</li>
-                                                <li>Micro-grants for research</li>
-                                                <li>Industry integration</li>
-                                                <li>Teaching innovation labs</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-warning text-dark">
-                                            Medium-Term (5 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Interdisciplinary research</li>
-                                                <li>Global faculty exchange</li>
-                                                <li>Research commercialization</li>
-                                                <li>Endowed chairs</li>
-                                                <li>AI teaching analytics</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-success text-white">
-                                            Long-Term (15 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Global recognition</li>
-                                                <li>Research centers</li>
-                                                <li>Blockchain research</li>
-                                                <li>International fellowships</li>
-                                                <li>Thought leadership</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-pane fade" id="cross" role="tabpanel">
-                <div class="card enabler-card">
-                    <div class="card-header">
-                        <h3 class="mb-0">Cross-Functional Enablers</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4><i class="fas fa-chart-line me-2"></i>Key Objectives</h4>
-                                <ul class="list-group list-group-flush mb-4">
-                                    <li class="list-group-item">Promote diversity and inclusion across all functions</li>
-                                    <li class="list-group-item">Implement sustainable campus infrastructure</li>
-                                    <li class="list-group-item">Foster collaborative ecosystems with industry/government</li>
-                                    <li class="list-group-item">Enhance community service integration</li>
-                                    <li class="list-group-item">Establish global innovation partnerships</li>
-                                </ul>
-                                
-                                <h4><i class="fas fa-check-circle me-2"></i>Key Achievements (First 3 Years)</h4>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 70%">Diversity Programs (70%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 55%">Green Campus (55%)</div>
-                                </div>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%">Comm Channels (65%)</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="crossChart"></canvas>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <h4><i class="fas fa-road me-2"></i>Strategic Roadmap</h4>
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-primary text-white">
-                                            Short-Term (3 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Diversity programs</li>
-                                                <li>Real-time communication</li>
-                                                <li>Transparent recognition</li>
-                                                <li>Green initiatives</li>
-                                                <li>Community outreach</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-warning text-dark">
-                                            Medium-Term (5 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Sustainable infrastructure</li>
-                                                <li>Collaborative ecosystems</li>
-                                                <li>Blockchain transparency</li>
-                                                <li>Global partnerships</li>
-                                                <li>Innovation think tanks</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-success text-white">
-                                            Long-Term (15 Years)
-                                        </div>
-                                        <div class="card-body">
-                                            <ul>
-                                                <li>Global leadership</li>
-                                                <li>Open data initiatives</li>
-                                                <li>AI-driven operations</li>
-                                                <li>International standards</li>
-                                                <li>Innovation leadership</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.querySelectorAll('.indicator');
+  const termBtns = document.querySelectorAll('.term-btn');
+  const totalSlides = 3;
 
-    <!-- Timeline Section -->
-    <section class="container mb-5" id="timeline">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Strategic Timeline</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-primary text-white">
-                                Short-Term (2023-2026)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>AI-Driven Admissions</h5>
-                                    <p>Implement AI systems for fair student selection</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Digital Infrastructure</h5>
-                                    <p>Upgrade e-learning platforms and connectivity</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Staff Training</h5>
-                                    <p>Enhance administrative and IT skills</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Faculty Recruitment</h5>
-                                    <p>Implement transparent hiring processes</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-warning text-dark">
-                                Medium-Term (2026-2029)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Global Partnerships</h5>
-                                    <p>Establish student/faculty exchange programs</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Interdisciplinary Research</h5>
-                                    <p>Launch cross-department research centers</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Sustainable Campus</h5>
-                                    <p>Implement renewable energy solutions</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Industry Integration</h5>
-                                    <p>Develop corporate collaboration frameworks</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-success text-white">
-                                Long-Term (2029-2038)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Lifelong Learning</h5>
-                                    <p>Establish continuous education platforms</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Global Leadership</h5>
-                                    <p>Position as international education leader</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Innovation Hubs</h5>
-                                    <p>Create centers addressing global challenges</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Financial Independence</h5>
-                                    <p>Develop robust endowment funds</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  function updateCarousel() {
+    if (!track) return;
+    const container = track.parentElement;
+    const gap = 24;
+    const slideWidth = container.offsetWidth;
+    track.style.transform = `translateX(-${currentSlide * (slideWidth + gap)}px)`;
 
-    <!-- Metrics & Visualization -->
-    <section class="container mb-5" id="metrics">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Strategic Metrics & Progress</h3>
-            </div>
-            <div class="card-body">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Enabler Implementation Progress</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="progressChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Resource Allocation</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="resourceChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Student Impact Projections</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="impactChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Global Partnership Growth</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="partnershipChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentSlide));
+    termBtns.forEach((btn, i) => btn.classList.toggle('active', i === currentSlide));
 
-    
+    for (let i = 0; i < totalSlides; i++) {
+      const p = document.getElementById(`slide-${i}`);
+      if (p) p.setAttribute('aria-hidden', i === currentSlide ? 'false' : 'true');
+    }
+  }
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Student Enablers Chart
-        const studentCtx = document.getElementById('studentChart').getContext('2d');
-        const studentChart = new Chart(studentCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Admissions', 'Scholarships', 'Digital Infra', 'Career Support', 'Wellness'],
-                datasets: [{
-                    label: 'Implementation Progress',
-                    data: [85, 75, 90, 80, 70],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(0, 51, 102, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(0, 51, 102, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+  function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; updateCarousel(); }
+  function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; updateCarousel(); }
+  function goToSlide(i) { currentSlide = Math.max(0, Math.min(totalSlides - 1, i)); updateCarousel(); }
 
-        // Staff Enablers Chart
-        const staffCtx = document.getElementById('staffChart').getContext('2d');
-        const staffChart = new Chart(staffCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Training', 'Recognition', 'Onboarding', 'Flex Work', 'Leadership'],
-                datasets: [{
-                    data: [80, 65, 70, 65, 60],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    }
-                }
-            }
-        });
+  termBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const ds = btn.getAttribute('data-slide');
+      const target = ds !== null ? parseInt(ds, 10) : idx;
+      goToSlide(target);
+    });
+  });
 
-        // Faculty Enablers Chart
-        const facultyCtx = document.getElementById('facultyChart').getContext('2d');
-        const facultyChart = new Chart(facultyCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Recruitment', 'Research', 'Global Exchange', 'Industry Collab', 'Teaching Innovation'],
-                datasets: [{
-                    label: 'Current Progress',
-                    data: [75, 60, 50, 50, 65],
-                    backgroundColor: 'rgba(0, 51, 102, 0.2)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    pointBackgroundColor: 'rgba(0, 51, 102, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(0, 51, 102, 1)'
-                }, {
-                    label: 'Target',
-                    data: [100, 100, 100, 100, 100],
-                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    pointBackgroundColor: 'rgba(40, 167, 69, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(40, 167, 69, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true
-                        },
-                        suggestedMin: 0,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
 
-        // Cross-Functional Chart
-        const crossCtx = document.getElementById('crossChart').getContext('2d');
-        const crossChart = new Chart(crossCtx, {
-            type: 'polarArea',
-            data: {
-                labels: ['Diversity', 'Sustainability', 'Communication', 'Collaboration', 'Transparency'],
-                datasets: [{
-                    data: [70, 55, 65, 60, 50],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        suggestedMin: 0,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
+  // autoplay; stop on user interaction
+  let autoplay = setInterval(nextSlide, 6000);
+  ['touchstart', 'mousedown'].forEach(ev =>
+    document.addEventListener(ev, () => { clearInterval(autoplay); autoplay = null; }, { passive: true })
+  );
 
-        // Progress Chart
-        const progressCtx = document.getElementById('progressChart').getContext('2d');
-        const progressChart = new Chart(progressCtx, {
-            type: 'line',
-            data: {
-                labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2035', '2038'],
-                datasets: [{
-                    label: 'Student Enablers',
-                    data: [20, 40, 60, 75, 85, 90, 92, 95, 98, 100],
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    backgroundColor: 'rgba(0, 51, 102, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Staff Enablers',
-                    data: [15, 30, 50, 65, 75, 85, 90, 92, 95, 98],
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Faculty Enablers',
-                    data: [10, 25, 45, 60, 70, 80, 85, 90, 95, 98],
-                    borderColor: 'rgba(255, 193, 7, 1)',
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+  window.addEventListener('resize', () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(updateCarousel, 90);
+  });   
 
-        // Resource Chart
-        const resourceCtx = document.getElementById('resourceChart').getContext('2d');
-        const resourceChart = new Chart(resourceCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Student Support', 'Staff Development', 'Research', 'Infrastructure', 'Global Initiatives'],
-                datasets: [{
-                    label: 'Budget Allocation (%)',
-                    data: [30, 20, 25, 15, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 40
-                    }
-                }
-            }
-        });
-
-        // Impact Chart
-        const impactCtx = document.getElementById('impactChart').getContext('2d');
-        const impactChart = new Chart(impactCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Academic Excellence', 'Career Readiness', 'Global Exposure', 'Well-being', 'Leadership'],
-                datasets: [{
-                    data: [35, 25, 20, 10, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    }
-                }
-            }
-        });
-
-        // Partnership Chart
-        const partnershipCtx = document.getElementById('partnershipChart').getContext('2d');
-        const partnershipChart = new Chart(partnershipCtx, {
-            type: 'line',
-            data: {
-                labels: ['2023', '2025', '2027', '2029', '2031', '2033', '2035', '2038'],
-                datasets: [{
-                    label: 'International Partnerships',
-                    data: [5, 15, 25, 35, 45, 50, 55, 60],
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    backgroundColor: 'rgba(0, 51, 102, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+  window.addEventListener('load', updateCarousel);
+  document.addEventListener('DOMContentLoaded', updateCarousel);
+</script>
+{% endblock %}

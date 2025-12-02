@@ -1,973 +1,475 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAIN University - Physical Enablers</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root {
-             --primary: #003366;
-            --primary-light: #0066cc;
-            --secondary: #e74c3c;
-            --jain-blue: #003366;
-            --jain-gold: #FFD700;
-            --jain-light: #F8F9FA;
-            --jain-accent: #28A745;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-        }
-        
-        /* Header */
-        .nav-header {
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            height: 3rem;
-            width: 3rem;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logo-icon i {
-            color: white;
-            font-size: 1.25rem;
-        }
-        
-        .logo-text h2 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--primary);
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .logo-text p {
-            margin: 0.25rem 0 0;
-            font-size: 0.8rem;
-            color: var(--text-medium);
-        }
-        
-        .nav-back-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            padding: 8px 15px;
-            border-radius: 4px;
-            border: 1px solid var(--medium-gray);
-        }
-        
-        .nav-back-link i {
-            margin-right: 0.5rem;
-        }
-        
-        
-        .jain-header {
-            background: linear-gradient(135deg, var(--jain-blue) 0%, #004080 100%);
-            color: white;
-            padding: 4rem 0;
-            margin-bottom: 2rem;
-            border-bottom: 5px solid var(--jain-gold);
-        }
-        
-        .navbar-brand {
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: var(--jain-blue) !important;
-        }
-        
-        .nav-link {
-            color: var(--jain-blue) !important;
-            font-weight: 500;
-        }
-        
-        .nav-link:hover {
-            color: var(--jain-gold) !important;
-        }
-        
-        .jain-header {
-            background: linear-gradient(135deg, var(--jain-blue) 0%, #004080 100%);
-            color: white;
-            padding: 4rem 0;
-            margin-bottom: 2rem;
-            border-bottom: 5px solid var(--jain-gold);
-        }
-        
-        .enabler-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-bottom: 2rem;
-            border-top: 4px solid var(--jain-blue);
-        }
-        
-        .enabler-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
-        }
-        
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            font-weight: 600;
-            color: var(--jain-blue);
-            border-radius: 10px 10px 0 0 !important;
-        }
-        
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 20px;
-        }
-        
-        .timeline-item:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 5px;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background-color: var(--jain-accent);
-        }
-        
-        .timeline-connector {
-            position: absolute;
-            left: 7px;
-            top: 20px;
-            bottom: -25px;
-            width: 1px;
-            background-color: #ddd;
-        }
-        
-        .progress-bar {
-            background-color: var(--jain-blue);
-        }
-        
-        .vis-card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .vis-card-body {
-            flex-grow: 1;
-        }
-        
-        .nav-pills .nav-link.active {
-            background-color: var(--jain-blue);
-            color: white !important;
-        }
-        
-        footer {
-            background-color: var(--jain-blue);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .impact-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--jain-blue);
-        }
-        
-        .impact-label {
-            font-size: 1rem;
-            color: #666;
-        }
-        
-        .facility-icon {
-            font-size: 2.5rem;
-            color: var(--jain-blue);
-            margin-bottom: 1rem;
-        }
-        
-        @media (max-width: 768px) {
-            .jain-header {
-                padding: 2rem 0;
-            }
-            
-            .impact-number {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation Header -->
-<div class="nav-header" id="navHeader">
-  <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    
-    <!-- Left: Logo -->
-    <a href="#" class="nav-logo">
-      <div class="logo-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
+{% extends "base.html" %}
 
-      <!-- Logo Text Section -->
-      <div class="logo-text" style="display: flex; align-items: center; gap: 1rem;">
-        <img src="/static/images/santhu123.png" alt="JAIN University Logo" style="height: 3.5rem; object-fit: contain;" />
-        <div>
-            <h2> Physical Enablers</h2>
-                    <p> Academic Excellence and Sustainable Growth | JAIN University</p>
+{% block title %}Enabler G — Campus Infrastructure & Digitalization{% endblock %}
+
+{% block styles %}
+<style>
+  :root{
+    --bg-page: #f3f8fd;
+    --hero-bg: linear-gradient(180deg,#ffffff,#f7fbff);
+    --muted:#64748b;
+    --accent:#ff8c00;
+    --card-shadow: 0 20px 40px rgba(16,24,40,0.06);
+  }
+
+  html,body { height:100%; margin:0; }
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: var(--bg-page);
+    color: #0b1220;
+  }
+
+  .page-wrap {
+    max-width: 1400px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 0 10px;
+  }
+  .page-header .title {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #ff8c00, #07316a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-header .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  /* Vision Section */
+  .vision {
+    text-align: center;
+    margin: 0 auto 32px;
+    padding: 24px;
+    max-width: 900px;
+    background: linear-gradient(135deg, rgba(255,140,0,0.05), rgba(255,255,255,0.8));
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .vision h2 { 
+    font-size: 20px; 
+    font-weight: 800; 
+    margin: 0 0 12px; 
+    color: #0b1220;
+  }
+  .vision p { 
+    color: #334155; 
+    margin: 0; 
+    font-size: 16px; 
+    line-height: 1.7; 
+  }
+
+  /* HERO PANEL */
+  .hero-panel {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 32px;
+    background: var(--hero-bg);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+    align-items: center;
+  }
+
+  .hero-left { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  }
+  
+  .hero-left img {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    object-fit: contain;
+    background: transparent !important;
+  }
+
+  .hero-right { 
+    position: relative;
+  }
+
+  /* Carousel Header */
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .carousel-title { 
+    font-size: 22px; 
+    font-weight: 800; 
+    margin: 0; 
+    color: #071029; 
+  }
+
+  .controls-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* TERM NAV */
+  .term-nav {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .term-btn {
+    border: 0;
+    background: transparent;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #475569;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .term-btn.active { 
+    background: linear-gradient(135deg, #ff8c00, #ffb366); 
+    color: #fff; 
+    box-shadow: 0 4px 12px rgba(255,140,0,0.3);
+  }
+
+  .carousel-controls { 
+    display: flex; 
+    gap: 8px; 
+  }
+
+  .carousel-btn {
+    width: 44px; 
+    height: 44px; 
+    border-radius: 50%;
+    border: 2px solid rgba(15,23,42,0.08);
+    background: rgba(255,255,255,0.95);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-btn:hover {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    border-color: #ff8c00;
+    transform: scale(1.05);
+  }
+
+  .carousel-btn:hover svg path {
+    stroke: white;
+  }
+
+  /* Carousel Content */
+  .carousel-container { 
+    overflow: hidden; 
+    border-radius: 16px; 
+    padding: 4px;
+  }
+  
+  .carousel-track { 
+    display: flex; 
+    gap: 24px; 
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .carousel-track > .goal-card { 
+    flex: 0 0 100%; 
+    background: white; 
+    border-radius: 16px; 
+    padding: 28px; 
+    box-shadow: 0 8px 24px rgba(14,24,54,0.08);
+  }
+
+  .goal-card h3 { 
+    margin: 0 0 16px; 
+    font-size: 20px; 
+    font-weight: 800; 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+  }
+  
+  .goal-card .timeline { 
+    display: inline-block; 
+    padding: 8px 14px; 
+    background: #f1f5f9; 
+    border-radius: 20px; 
+    font-weight: 700; 
+    color: #475569; 
+    font-size: 13px; 
+    margin-bottom: 16px; 
+  }
+  
+  .goal-card ul { 
+    padding-left: 20px; 
+    color: #374151; 
+    line-height: 1.8; 
+    margin: 0; 
+  }
+  
+  .goal-card li { 
+    margin-bottom: 12px; 
+    font-size: 15px; 
+  }
+
+  .carousel-indicators { 
+    display: flex; 
+    gap: 8px; 
+    padding-top: 16px; 
+    justify-content: center; 
+  }
+  
+  .indicator { 
+    width: 12px; 
+    height: 12px; 
+    border-radius: 50%; 
+    background: #cbd5e1; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .indicator.active { 
+    width: 32px; 
+    background: linear-gradient(90deg, #ff8c00, #ffb366); 
+    border-radius: 6px; 
+  }
+
+  /* Key Indicator */
+  .key-indicator {
+    margin-top: 32px;
+    text-align: center;
+    padding: 28px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  .key-indicator h4 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    color: #0b1220;
+  }
+
+  .key-indicator p {
+    color: #374151;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .hero-panel {
+      grid-template-columns: 420px 1fr;
+      padding: 28px;
+      gap: 20px;
+    }
+    .hero-left img { max-width: 380px; }
+  }
+
+  @media (max-width: 980px) {
+    .hero-panel {
+      grid-template-columns: 1fr;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .hero-left { order: 1; margin-bottom: 18px; }
+    .hero-right { order: 2; padding-left: 0; }
+    .carousel-header { flex-direction: column; align-items: center; gap: 12px; }
+    .controls-wrapper { width: 100%; flex-direction: column; gap: 12px; }
+    .term-nav { width: 100%; justify-content: center; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .carousel-controls { justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .page-header .title { font-size: 22px; }
+    .page-header .subtitle { font-size: 13px; }
+    .hero-left img { max-width: 260px; }
+    .term-btn { padding: 8px 14px; font-size: 13px; flex: 1; }
+    .carousel-btn { width: 40px; height: 40px; }
+    .goal-card { padding: 18px; }
+    .goal-card h3 { font-size: 16px; }
+    .goal-card li { font-size: 13px; margin-bottom: 10px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="title">Enabler G — Campus Infrastructure & Digitalization</div>
+    <div class="subtitle">Strategic Roadmap · Institutional Development Plan (IDP)</div>
+  </header>
+
+  <!-- Vision -->
+  <section class="vision">
+    <h2>🎯 Vision</h2>
+    <p>A sustainable, technology-enabled and future-ready campus infrastructure that enhances learning, research, safety, and student living while supporting institutional growth and global competitiveness.</p>
+  </section>
+
+  <!-- HERO: image + carousel -->
+  <section class="hero-panel">
+    <div class="hero-left">
+      <img src="{{ url_for('static', filename='images/eg.png') }}" alt="Enabler G roadmap illustration">
+    </div>
+
+    <div class="hero-right">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Strategic Goals Timeline</h3>
+
+        <div class="controls-wrapper" role="tablist" aria-label="Term navigation and carousel controls">
+          <nav class="term-nav" aria-label="Term navigation">
+            <button class="term-btn active" data-slide="0" type="button">Short</button>
+            <button class="term-btn" data-slide="1" type="button">Mid</button>
+            <button class="term-btn" data-slide="2" type="button">Long</button>
+          </nav>
+
+          <div class="carousel-controls" aria-hidden="false">
+            <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M12 16L6 10L12 4" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="carousel-btn" onclick="nextSlide()" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
       </div>
-    </a>
 
-    <!-- Right: Back Link -->
-    <a href="/enablers" class="nav-back-link" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 500;">
-      <i class="fas fa-arrow-left"></i> Back to Enablers
-    </a>
+      <div class="carousel-container" aria-live="polite">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- SHORT-TERM GOALS -->
+          <div class="goal-card short-term" id="slide-0" role="tabpanel" aria-hidden="false">
+            <div class="timeline">0–2 years</div>
+            <h3>Short-Term Goals</h3>
+            <ul>
+              <li>Renovate and upgrade classrooms, hostels, sports facilities and cafeteria.</li>
+              <li>Digital boost — Wi-Fi, IT expansion and digital repositories.</li>
+              <li>Safety & health — health centres, security audits and emergency systems.</li>
+              <li>Green start — recycling, water-saving and EV-friendly campus policies.</li>
+            </ul>
+          </div>
 
-  </div>
-                    
+          <!-- MID-TERM GOALS -->
+          <div class="goal-card mid-term" id="slide-1" role="tabpanel" aria-hidden="true">
+            <div class="timeline">2–5 years</div>
+            <h3>Mid-Term Goals</h3>
+            <ul>
+              <li>Eco buildings — energy-efficient, sustainable campus structures.</li>
+              <li>World-class library & innovation lab — digital and automated systems.</li>
+              <li>Digitalisation — automated academic workflows, exam records and smart campus setup.</li>
+              <li>New facilities — additional hostels and interdisciplinary CMDS centres.</li>
+            </ul>
+          </div>
 
-    <!-- Hero Header -->
-    <header class="jain-header" id="overview">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">Physical Enablers</h1>
-            <p class="lead mb-4">Building State-of-the-Art Infrastructure for Academic Excellence and Sustainable Growth</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="#facilities" class="btn btn-light btn-lg px-4">Explore Facilities</a>
-                <a href="#timeline" class="btn btn-outline-light btn-lg px-4">View Timeline</a>
-            </div>
+          <!-- LONG-TERM GOALS -->
+          <div class="goal-card long-term" id="slide-2" role="tabpanel" aria-hidden="true">
+            <div class="timeline">5–15 years</div>
+            <h3>Long-Term Goals</h3>
+            <ul>
+              <li>Innovation hub — research & assessment centre for cross-discipline work.</li>
+              <li>Satellite systems — connected campus networks and research integration.</li>
+              <li>AI-driven campus — AI-enabled teaching, admin and security systems.</li>
+              <li>Cybersecurity — strong data protection, privacy and resilience measures.</li>
+            </ul>
+          </div>
         </div>
-    </header>
+      </div>
 
-    <!-- Overview Section -->
-    <section class="container mb-5">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Strategic Overview</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p>JAIN (Deemed-to-be University) is dedicated to fostering a sustainable growth trajectory by strategically sourcing funds required for capital and recurring expenditures. The institution ensures optimal allocation of resources to create state-of-the-art physical infrastructure, enhance operational efficiency, and generate a surplus that is reinvested to upgrade facilities.</p>
-                        <p>Physical enablers within the university are essential for:</p>
-                        <ul>
-                            <li>Fostering an environment conducive to academic achievement</li>
-                            <li>Advancing research and innovation</li>
-                            <li>Ensuring the overall well-being of students</li>
-                            <li>Establishing infrastructure for effective learning and teaching</li>
-                            <li>Supporting administrative functions</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <canvas id="infrastructureChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      <div class="carousel-indicators" role="tablist" aria-label="Carousel indicators">
+        <div class="indicator active" onclick="goToSlide(0)" aria-label="Show short term goals"></div>
+        <div class="indicator" onclick="goToSlide(1)" aria-label="Show mid term goals"></div>
+        <div class="indicator" onclick="goToSlide(2)" aria-label="Show long term goals"></div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Key Facilities -->
-    <section class="container mb-5" id="facilities">
-        <h2 class="text-center mb-4">Key Infrastructure Areas</h2>
-        <div class="row g-4">
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="facility-icon">
-                            <i class="fas fa-wifi"></i>
-                        </div>
-                        <h5>IT Infrastructure</h5>
-                        <p>High-speed internet, digital classrooms, smart security systems, and cloud-based frameworks</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="facility-icon">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <h5>Library Resources</h5>
-                        <p>24/7 study spaces, digital repositories, innovation labs, and AI-powered systems</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="facility-icon">
-                            <i class="fas fa-flask"></i>
-                        </div>
-                        <h5>Research Facilities</h5>
-                        <p>State-of-the-art labs, interdisciplinary research centers, and high-performance computing</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card h-100 enabler-card text-center">
-                    <div class="card-body">
-                        <div class="facility-icon">
-                            <i class="fas fa-leaf"></i>
-                        </div>
-                        <h5>Sustainable Campus</h5>
-                        <p>Eco-friendly buildings, energy-efficient systems, water conservation, and EV adoption</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- Key Indicator -->
+  <section class="key-indicator">
+    <h4>Key Indicator</h4>
+    <p>A sustainable, technology-enabled and future-ready campus infrastructure that enhances learning, research, safety, and student living while supporting institutional growth and global competitiveness.</p>
+    <p style="margin-top:12px; font-weight:600; color:#475569;">Outcome: Improved campus resilience, safer student living, and digitally-enabled learning environments.</p>
+  </section>
+</main>
 
-    <!-- Strategic Initiatives -->
-    <section class="container mb-5">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Strategic Infrastructure Initiatives</h3>
-            </div>
-            <div class="card-body">
-                <ul class="nav nav-pills mb-4" id="initiatives-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="short-term-tab" data-bs-toggle="pill" data-bs-target="#short-term" type="button">Short-Term (0-3 Years)</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="mid-term-tab" data-bs-toggle="pill" data-bs-target="#mid-term" type="button">Mid-Term (3-5 Years)</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="long-term-tab" data-bs-toggle="pill" data-bs-target="#long-term" type="button">Long-Term (5-15 Years)</button>
-                    </li>
-                </ul>
-                
-                <div class="tab-content" id="initiatives-tabContent">
-                    <div class="tab-pane fade show active" id="short-term" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Immediate Infrastructure Priorities</h4>
-                                <div class="accordion" id="shortTermAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#shortTermOne">
-                                                Campus Renovation & IT
-                                            </button>
-                                        </h2>
-                                        <div id="shortTermOne" class="accordion-collapse collapse show" data-bs-parent="#shortTermAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Renovation and maintenance of existing facilities</li>
-                                                    <li>Wi-Fi accessibility improvements across campus</li>
-                                                    <li>Expanding IT infrastructure and digital classrooms</li>
-                                                    <li>Upgrading security and emergency alert systems</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#shortTermTwo">
-                                                Student & Faculty Facilities
-                                            </button>
-                                        </h2>
-                                        <div id="shortTermTwo" class="accordion-collapse collapse" data-bs-parent="#shortTermAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Accommodation improvements for students and faculty</li>
-                                                    <li>Upgrading sports facilities and cafeteria infrastructure</li>
-                                                    <li>Enhancing sanitation and health center facilities</li>
-                                                    <li>Policy formulation for sustainability initiatives</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="shortTermChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="mid-term" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Medium-Term Infrastructure Development</h4>
-                                <div class="accordion" id="midTermAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#midTermOne">
-                                                Smart Campus & Digitalization
-                                            </button>
-                                        </h2>
-                                        <div id="midTermOne" class="accordion-collapse collapse show" data-bs-parent="#midTermAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Expansion of eco-friendly buildings and energy systems</li>
-                                                    <li>Digitalization of examination records and academic procedures</li>
-                                                    <li>Implementation of Smart Campus Initiative (AI, IoT integration)</li>
-                                                    <li>Development of World-Class Library System with Innovation Lab</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#midTermTwo">
-                                                Academic Expansion
-                                            </button>
-                                        </h2>
-                                        <div id="midTermTwo" class="accordion-collapse collapse" data-bs-parent="#midTermAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>Creation of new hostels for increasing enrollment</li>
-                                                    <li>Development of distance-learning programs</li>
-                                                    <li>Establishment of Centre for Multi-disciplinary Studies</li>
-                                                    <li>Cloud-based IT frameworks and AI-driven student portals</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="midTermChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-pane fade" id="long-term" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Long-Term Infrastructure Vision</h4>
-                                <div class="accordion" id="longTermAccordion">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#longTermOne">
-                                                Advanced Research Infrastructure
-                                            </button>
-                                        </h2>
-                                        <div id="longTermOne" class="accordion-collapse collapse show" data-bs-parent="#longTermAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>State-of-the-Art Research Innovation and Assessment Centre</li>
-                                                    <li>Satellite System for research and digital connectivity</li>
-                                                    <li>Quantum computing and high-performance research computing</li>
-                                                    <li>Global knowledge-sharing networks</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#longTermTwo">
-                                                Future-Ready Campus
-                                            </button>
-                                        </h2>
-                                        <div id="longTermTwo" class="accordion-collapse collapse" data-bs-parent="#longTermAccordion">
-                                            <div class="accordion-body">
-                                                <ul>
-                                                    <li>AI-driven teaching, learning, and administrative infrastructure</li>
-                                                    <li>Enhanced cybersecurity and resilience measures</li>
-                                                    <li>Virtual study environments and blockchain-based systems</li>
-                                                    <li>Robotics and IoT integration across campus</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <canvas id="longTermChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.querySelectorAll('.indicator');
+  const termBtns = document.querySelectorAll('.term-btn');
+  const totalSlides = 3;
 
-    <!-- Timeline Section -->
-    <section class="container mb-5" id="timeline">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Infrastructure Development Timeline</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-primary text-white">
-                                Short-Term (2023-2026)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Campus Modernization</h5>
-                                    <p>Renovation, Wi-Fi expansion, and IT upgrades</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Student Facilities</h5>
-                                    <p>Accommodation, sports, and cafeteria improvements</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Digital Transformation</h5>
-                                    <p>Smart classrooms and security systems</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-warning text-dark">
-                                Mid-Term (2026-2029)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Smart Campus</h5>
-                                    <p>AI and IoT integration across facilities</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Library Innovation</h5>
-                                    <p>World-Class Library System with AI/VR labs</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Sustainable Expansion</h5>
-                                    <p>Eco-friendly buildings and energy systems</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-success text-white">
-                                Long-Term (2029-2038)
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-item">
-                                    <h5>Research Innovation</h5>
-                                    <p>State-of-the-art research centers</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Advanced Technologies</h5>
-                                    <p>Quantum computing and satellite systems</p>
-                                    <div class="timeline-connector"></div>
-                                </div>
-                                <div class="timeline-item">
-                                    <h5>Global Integration</h5>
-                                    <p>World-class knowledge-sharing networks</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  function updateCarousel() {
+    if (!track) return;
+    const container = track.parentElement;
+    const gap = 24; // keep consistent with CSS gap
+    const slideWidth = container.offsetWidth;
+    track.style.transform = `translateX(-${currentSlide * (slideWidth + gap)}px)`;
 
-    <!-- Metrics Section -->
-    <section class="container mb-5">
-        <div class="card enabler-card">
-            <div class="card-header">
-                <h3 class="mb-0">Infrastructure Metrics</h3>
-            </div>
-            <div class="card-body">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Investment Allocation</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="investmentChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Facility Upgrade Progress</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="facilityChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Sustainability Initiatives</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="sustainabilityChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card vis-card">
-                            <div class="card-header">
-                                <h5>Technology Adoption</h5>
-                            </div>
-                            <div class="vis-card-body">
-                                <canvas id="techChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentSlide));
+    termBtns.forEach((btn, i) => btn.classList.toggle('active', i === currentSlide));
 
-   
+    for (let i = 0; i < totalSlides; i++) {
+      const p = document.getElementById(`slide-${i}`);
+      if (p) p.setAttribute('aria-hidden', i === currentSlide ? 'false' : 'true');
+    }
+  }
 
-   
+  function nextSlide() { currentSlide = (currentSlide + 1) % totalSlides; updateCarousel(); }
+  function prevSlide() { currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; updateCarousel(); }
+  function goToSlide(i) { currentSlide = Math.max(0, Math.min(totalSlides - 1, i)); updateCarousel(); }
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Infrastructure Chart
-        const infrastructureCtx = document.getElementById('infrastructureChart').getContext('2d');
-        const infrastructureChart = new Chart(infrastructureCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Academic Buildings', 'Research Facilities', 'Student Housing', 'IT Infrastructure', 'Recreational Spaces'],
-                datasets: [{
-                    data: [30, 25, 20, 15, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Current Infrastructure Composition'
-                    }
-                }
-            }
-        });
+  termBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const ds = btn.getAttribute('data-slide');
+      const target = ds !== null ? parseInt(ds, 10) : idx;
+      goToSlide(target);
+    });
+  });
 
-        // Short Term Chart
-        const shortTermCtx = document.getElementById('shortTermChart').getContext('2d');
-        const shortTermChart = new Chart(shortTermCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Wi-Fi Coverage', 'Classroom Upgrades', 'Housing Improvements', 'Security Systems', 'Health Facilities'],
-                datasets: [{
-                    label: 'Current Status (%)',
-                    data: [65, 70, 50, 75, 60],
-                    backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    borderWidth: 1
-                }, {
-                    label: 'Target (%)',
-                    data: [100, 100, 100, 100, 100],
-                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                }
-            }
-        });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
 
-        // Mid Term Chart
-        const midTermCtx = document.getElementById('midTermChart').getContext('2d');
-        const midTermChart = new Chart(midTermCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Smart Campus', 'Digital Library', 'Eco Buildings', 'Distance Learning', 'Interdisciplinary'],
-                datasets: [{
-                    label: 'Current Progress',
-                    data: [30, 25, 20, 15, 35],
-                    backgroundColor: 'rgba(0, 51, 102, 0.2)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    pointBackgroundColor: 'rgba(0, 51, 102, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(0, 51, 102, 1)'
-                }, {
-                    label: 'Target',
-                    data: [100, 100, 100, 100, 100],
-                    backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    pointBackgroundColor: 'rgba(40, 167, 69, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(40, 167, 69, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true
-                        },
-                        suggestedMin: 0,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
+  // autoplay with safe stop on user interaction
+  let autoplay = setInterval(nextSlide, 6000);
+  ['touchstart', 'mousedown'].forEach(ev =>
+    document.addEventListener(ev, () => { clearInterval(autoplay); autoplay = null; }, { passive: true })
+  );
 
-        // Long Term Chart
-        const longTermCtx = document.getElementById('longTermChart').getContext('2d');
-        const longTermChart = new Chart(longTermCtx, {
-            type: 'polarArea',
-            data: {
-                labels: ['Research Centers', 'AI Infrastructure', 'Quantum Computing', 'Satellite Systems', 'Global Networks'],
-                datasets: [{
-                    data: [15, 10, 5, 5, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Long-Term Vision Progress'
-                    }
-                }
-            }
-        });
+  window.addEventListener('resize', () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(updateCarousel, 90);
+  });
 
-        // Investment Chart
-        const investmentCtx = document.getElementById('investmentChart').getContext('2d');
-        const investmentChart = new Chart(investmentCtx, {
-            type: 'bar',
-            data: {
-                labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2035', '2038'],
-                datasets: [{
-                    label: 'Capital Expenditure (₹ Cr)',
-                    data: [25, 30, 35, 40, 45, 50, 55, 60, 75, 100],
-                    backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    borderWidth: 1
-                }, {
-                    label: 'Recurring Expenditure (₹ Cr)',
-                    data: [15, 18, 20, 22, 25, 28, 30, 35, 40, 50],
-                    backgroundColor: 'rgba(40, 167, 69, 0.7)',
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Projected Infrastructure Investment'
-                    }
-                }
-            }
-        });
-
-        // Facility Chart
-        const facilityCtx = document.getElementById('facilityChart').getContext('2d');
-        const facilityChart = new Chart(facilityCtx, {
-            type: 'line',
-            data: {
-                labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030', '2035', '2038'],
-                datasets: [{
-                    label: 'IT Infrastructure',
-                    data: [20, 40, 60, 75, 85, 90, 92, 95, 98, 100],
-                    borderColor: 'rgba(0, 51, 102, 1)',
-                    backgroundColor: 'rgba(0, 51, 102, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Research Facilities',
-                    data: [15, 30, 50, 65, 75, 85, 90, 92, 95, 98],
-                    borderColor: 'rgba(40, 167, 69, 1)',
-                    backgroundColor: 'rgba(40, 167, 69, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }, {
-                    label: 'Student Housing',
-                    data: [10, 25, 45, 60, 70, 80, 85, 90, 95, 98],
-                    borderColor: 'rgba(255, 193, 7, 1)',
-                    backgroundColor: 'rgba(255, 193, 7, 0.1)',
-                    tension: 0.3,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Facility Upgrade Progress (%)'
-                    }
-                }
-            }
-        });
-
-        // Sustainability Chart
-        const sustainabilityCtx = document.getElementById('sustainabilityChart').getContext('2d');
-        const sustainabilityChart = new Chart(sustainabilityCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Energy Efficiency', 'Water Conservation', 'Waste Management', 'Green Buildings', 'EV Infrastructure'],
-                datasets: [{
-                    data: [30, 25, 20, 15, 10],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Sustainability Initiatives Focus'
-                    }
-                }
-            }
-        });
-
-        // Tech Chart
-        const techCtx = document.getElementById('techChart').getContext('2d');
-        const techChart = new Chart(techCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['AI Integration', 'IoT Implementation', 'Cloud Systems', 'Blockchain', 'Quantum Computing'],
-                datasets: [{
-                    data: [35, 25, 20, 15, 5],
-                    backgroundColor: [
-                        'rgba(0, 51, 102, 0.7)',
-                        'rgba(40, 167, 69, 0.7)',
-                        'rgba(255, 193, 7, 0.7)',
-                        'rgba(220, 53, 69, 0.7)',
-                        'rgba(23, 162, 184, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 51, 102, 1)',
-                        'rgba(40, 167, 69, 1)',
-                        'rgba(255, 193, 7, 1)',
-                        'rgba(220, 53, 69, 1)',
-                        'rgba(23, 162, 184, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Technology Adoption Roadmap'
-                    }
-                }
-            }
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+  window.addEventListener('load', updateCarousel);
+  document.addEventListener('DOMContentLoaded', updateCarousel);
+</script>
+{% endblock %}

@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}JAIN — IDP{% endblock %}</title>
+
+  <!-- Tailwind CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --brand: #0b1220;
+      --muted: #64748b;
+      --accent: #ff8c00;
+      --nav-bg: rgba(255,255,255,0.95);
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: radial-gradient(circle at center, #f8fbff, #e9f0fb);
+      color: var(--brand);
+    }
+
+    /* ========== TOP LOGO (FIXED) ========== */
+    .base-top {
+      position: fixed;
+      top: 16px;
+      left: 20px;
+      z-index: 1500;
+      pointer-events: all;
+    }
+    .base-logo img {
+      height: 42px;
+      width: auto;
+      display: block;
+    }
+
+    /* ========== HAMBURGER BUTTON ========== */
+    .hamburger-btn {
+      display: none;
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      z-index: 1600;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 10px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(15,23,42,0.12);
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger-btn span {
+      width: 26px;
+      height: 3px;
+      background: var(--brand);
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger-btn.active span:nth-child(1) {
+      transform: rotate(45deg) translate(7px, 7px);
+    }
+
+    .hamburger-btn.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger-btn.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    /* ========== DESKTOP NAV (ROUNDED CENTER) ========== */
+    .base-nav-wrap {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1400;
+      pointer-events: none;
+    }
+    
+    .base-nav {
+      pointer-events: all;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      background: var(--nav-bg);
+      border-radius: 50px;
+      padding: 12px 24px;
+      box-shadow: 0 8px 32px rgba(15,23,42,0.12);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      flex-wrap: wrap;
+    }
+    
+    .base-nav a {
+      text-decoration: none;
+      color: var(--brand);
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 50px;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    
+    .base-nav a:hover {
+      background: linear-gradient(135deg, var(--accent), #ffa500);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* ========== MOBILE OVERLAY NAV ========== */
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 18, 32, 0.98);
+      backdrop-filter: blur(20px);
+      z-index: 1500;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      overflow-y: auto;
+    }
+
+    .mobile-nav-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-nav-content {
+      padding: 100px 30px 40px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .mobile-nav-overlay nav {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .mobile-nav-overlay a {
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      font-size: 18px;
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      display: block;
+      text-align: center;
+    }
+
+    .mobile-nav-overlay a:hover,
+    .mobile-nav-overlay a:active {
+      background: linear-gradient(135deg, var(--accent), #ffa500);
+      border-color: var(--accent);
+      transform: translateX(8px);
+    }
+
+    /* ========== CONTENT SPACING ========== */
+    .content-offset {
+      padding-top: 160px;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+      .base-nav {
+        gap: 6px;
+        padding: 10px 20px;
+      }
+      .base-nav a {
+        padding: 8px 14px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hamburger-btn {
+        display: flex;
+      }
+
+      .base-top {
+        top: 14px;
+        left: 16px;
+      }
+
+      .base-logo img {
+        height: 36px;
+      }
+
+      .base-nav-wrap {
+        display: none !important;
+      }
+
+      .mobile-nav-overlay {
+        display: block;
+      }
+
+      .content-offset {
+        padding-top: 100px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .base-logo img {
+        height: 32px;
+      }
+
+      .hamburger-btn {
+        top: 12px;
+        right: 16px;
+        padding: 8px;
+      }
+
+      .hamburger-btn span {
+        width: 22px;
+      }
+
+      .mobile-nav-content {
+        padding: 90px 20px 30px;
+      }
+
+      .mobile-nav-overlay a {
+        font-size: 16px;
+        padding: 14px 20px;
+      }
+
+      .content-offset {
+        padding-top: 90px;
+      }
+    }
+  </style>
+
+  {% block styles %}{% endblock %}
+</head>
+<body>
+
+  <!-- ========== TOP LOGO (ALWAYS VISIBLE) ========== -->
+  <div class="base-top" role="banner">
+    <div class="base-logo">
+      <a href="{{ url_for('dashboard') }}">
+        <img src="{{ url_for('static', filename='images/jainl.png') }}" alt="JAIN Logo">
+      </a>
+    </div>
+  </div>
+
+  <!-- ========== HAMBURGER BUTTON (MOBILE ONLY) ========== -->
+  <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle navigation">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- ========== DESKTOP NAV (ROUNDED CENTER) ========== -->
+  <div class="base-nav-wrap">
+    <nav class="base-nav" role="navigation" aria-label="Primary navigation">
+      <a href="{{ url_for('dashboard') }}">Home</a>
+      <a href="{{ url_for('view_section', section_id='principal') }}">Principal Committee</a>
+      <a href="{{ url_for('enablersA') }}">A</a>
+      <a href="{{ url_for('enablersb') }}">B</a>
+      <a href="{{ url_for('enablersc') }}">C</a>
+      <a href="{{ url_for('enablersd') }}">D</a>
+      <a href="{{ url_for('enablerse') }}">E</a>
+      <a href="{{ url_for('enablersf') }}">F</a>
+      <a href="{{ url_for('enablersg') }}">G</a>
+      <a href="{{ url_for('enablersh') }}">H</a>
+    </nav>
+  </div>
+
+  <!-- ========== MOBILE NAV OVERLAY ========== -->
+  <div id="mobileNav" class="mobile-nav-overlay">
+    <div class="mobile-nav-content">
+      <nav role="navigation" aria-label="Mobile navigation">
+        <a href="{{ url_for('dashboard') }}">🏠 Home</a>
+        <a href="{{ url_for('view_section', section_id='principal') }}">👥 Principal Committee</a>
+        <a href="{{ url_for('enablersA') }}">🅰️ Enabler A</a>
+        <a href="{{ url_for('enablersb') }}">🅱️ Enabler B</a>
+        <a href="{{ url_for('enablersc') }}">🅲 Enabler C</a>
+        <a href="{{ url_for('enablersd') }}">🅳 Enabler D</a>
+        <a href="{{ url_for('enablerse') }}">🅴 Enabler E</a>
+        <a href="{{ url_for('enablersf') }}">🅵 Enabler F</a>
+        <a href="{{ url_for('enablersg') }}">🅶 Enabler G</a>
+        <a href="{{ url_for('enablersh') }}">🅷 Enabler H</a>
+        <a href="{{ url_for('index') }}">ℹ️ About</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="content-offset" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ========== BASE SCRIPTS ========== -->
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    function toggleMobileNav() {
+      hamburgerBtn.classList.toggle('active');
+      mobileNav.classList.toggle('active');
+      
+      // Prevent body scroll when menu is open
+      if (mobileNav.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Toggle menu on hamburger click
+    hamburgerBtn.addEventListener('click', toggleMobileNav);
+
+    // Close menu when clicking a link
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          toggleMobileNav();
+        }
+      });
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+        toggleMobileNav();
+      }
+    });
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

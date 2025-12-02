@@ -1,1611 +1,655 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Enablers - JAIN University</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #003366;
-            --primary-light: #0066cc;
-            --secondary: #e74c3c;
-            --accent-blue: #3498db;
-            --accent-green: #1abc9c;
-            --accent-orange: #f39c12;
-            --accent-purple: #9b59b6;
-            --light-gray: #f8f9fa;
-            --medium-gray: #e9ecef;
-            --dark-gray: #495057;
-            --text-dark: #212529;
-            --text-medium: #6c757d;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            margin: 0;
-            padding: 0;
-            background-color: white;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Header */
-        .nav-header {
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            height: 3rem;
-            width: 3rem;
-            background: var(--primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .logo-icon i {
-            color: white;
-            font-size: 1.25rem;
-        }
-        
-        .logo-text h2 {
-            margin: 0;
-            font-size: 1.1rem;
-            color: var(--primary);
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .logo-text p {
-            margin: 0.25rem 0 0;
-            font-size: 0.8rem;
-            color: var(--text-medium);
-        }
-        
-        .nav-back-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            padding: 8px 15px;
-            border-radius: 4px;
-            border: 1px solid var(--medium-gray);
-        }
-        
-        .nav-back-link i {
-            margin-right: 0.5rem;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: var(--primary);
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .hero h1 {
-            margin: 0;
-            font-size: 2.2rem;
-            font-weight: 700;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .hero p {
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 15px auto 0;
-            opacity: 0.9;
-        }
-        
-        /* Section Styling */
-        section {
-            margin-bottom: 40px;
-        }
-        
-        h2 {
-            color: var(--primary);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 1.8rem;
-            margin: 40px 0 20px;
-        }
-        
-        h3 {
-            color: var(--primary);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            font-size: 1.3rem;
-            margin: 25px 0 15px;
-        }
-        
-        /* Card Styling */
-        .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid var(--medium-gray);
-        }
-        
-        /* Goal Timeline */
-        .goal-timeline {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 25px;
-            gap: 10px;
-        }
-        
-        .timeline-item {
-            flex: 1;
-            text-align: center;
-            padding: 15px;
-            cursor: pointer;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid var(--medium-gray);
-            transition: all 0.2s ease;
-        }
-        
-        .timeline-item:hover {
-            border-color: var(--primary);
-        }
-        
-        .timeline-item.active {
-            background: var(--primary);
-            border-color: var(--primary);
-        }
-        
-        .timeline-item h4 {
-            margin: 0 0 5px;
-            font-weight: 600;
-            color: var(--text-dark);
-            transition: all 0.2s ease;
-        }
-        
-        .timeline-item p {
-            margin: 0;
-            font-size: 0.8rem;
-            color: var(--text-medium);
-            transition: all 0.2s ease;
-        }
-        
-        .timeline-item.active h4,
-        .timeline-item.active p {
-            color: white;
-        }
-        
-        .timeline-item .timeline-icon {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto 10px;
-            background: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--medium-gray);
-            transition: all 0.2s ease;
-        }
-        
-        .timeline-item.active .timeline-icon {
-            background: white;
-            border-color: white;
-        }
-        
-        .timeline-item .timeline-icon i {
-            font-size: 1rem;
-            color: var(--primary);
-            transition: all 0.2s ease;
-        }
-        
-        .timeline-item.active .timeline-icon i {
-            color: var(--primary);
-        }
-        
-        /* Goal Content */
-        .goal-content {
-            display: none;
-            padding: 20px;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid var(--medium-gray);
-        }
-        
-        .goal-content.active {
-            display: block;
-        }
-        
-        /* List Styling */
-        ul {
-            padding-left: 20px;
-            list-style-type: none;
-        }
-        
-        li {
-            margin-bottom: 12px;
-            position: relative;
-            padding-left: 25px;
-            line-height: 1.5;
-        }
-        
-        li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-        
-        /* Chart Container */
-        .chart-container {
-            margin: 30px auto;
-            max-width: 100%;
-            height: 350px;
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-        }
-        
-        /* Info Box */
-        .info-box {
-            background: rgba(0, 51, 102, 0.05);
-            border-left: 3px solid var(--primary);
-            padding: 15px;
-            margin: 25px 0;
-            border-radius: 0 4px 4px 0;
-        }
-        
-        .info-box h4 {
-            color: var(--primary);
-            margin-top: 0;
-        }
-        
-        /* Tab System */
-        .tab-container {
-            margin-bottom: 25px;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid var(--medium-gray);
-            margin-bottom: -1px;
-        }
-        
-        .tab-btn {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--text-medium);
-            position: relative;
-            transition: all 0.2s ease;
-            border-radius: 4px 4px 0 0;
-            margin-right: 5px;
-        }
-        
-        .tab-btn:hover {
-            color: var(--primary);
-            background: rgba(0, 51, 102, 0.05);
-        }
-        
-        .tab-btn.active {
-            color: var(--primary);
-            font-weight: 600;
-            background: white;
-            border: 1px solid var(--medium-gray);
-            border-bottom: 1px solid white;
-        }
-        
-        .tab-content {
-            display: none;
-            padding: 20px;
-            background: white;
-            border-radius: 0 0 4px 4px;
-            border: 1px solid var(--medium-gray);
-            border-top: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 50px;
-        }
-        
-        footer p {
-            margin: 10px 0;
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .goal-timeline {
-                flex-direction: column;
-            }
-            
-            .timeline-item {
-                margin-bottom: 10px;
-                text-align: left;
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .timeline-item .timeline-icon {
-                margin: 0;
-            }
-            
-            .tab-buttons {
-                flex-wrap: wrap;
-            }
-            
-            .tab-btn {
-                flex: 1;
-                min-width: 120px;
-                margin-bottom: 5px;
-                padding: 8px 10px;
-                font-size: 14px;
-            }
-            
-            .chart-container {
-                height: 280px;
-                padding: 10px;
-            }
-        }
-        
-        /* Data Cards */
-        .data-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .data-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--medium-gray);
-        }
-        
-        .data-card h4 {
-            color: var(--primary);
-            margin-top: 0;
-            font-size: 1.1rem;
-        }
-        
-        .data-card .value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 10px 0;
-        }
-        
-        .data-card .description {
-            font-size: 0.9rem;
-            color: var(--text-medium);
-        }
-        
-        /* Progress Bars */
-        .progress-container {
-            margin: 25px 0;
-        }
-        
-        .progress-item {
-            margin-bottom: 15px;
-        }
-        
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background: var(--medium-gray);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation Header -->
-<div class="nav-header" id="navHeader">
-  <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    
-    <!-- Left: Logo -->
-    <a href="#" class="nav-logo">
-      <div class="logo-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
+{% extends "base.html" %}
 
-      <!-- Logo Text Section -->
-      <div class="logo-text" style="display: flex; align-items: center; gap: 1rem;">
-        <img src="/static/images/santhu123.png" alt="JAIN University Logo" style="height: 3.5rem; object-fit: contain;" />
-        <div>
-          <h2>Academic Enablers</h2>
-          <p>Future of Education | JAIN University</p>
+{% block title %}Enabler C — IDP{% endblock %}
+
+{% block styles %}
+<style>
+  :root{
+    --bg-page: #f3f8fd;
+    --hero-bg: linear-gradient(180deg,#ffffff,#f7fbff);
+    --muted:#64748b;
+    --accent:#ff8c00;
+    --card-shadow: 0 20px 40px rgba(16,24,40,0.06);
+  }
+
+  html,body { height:100%; margin:0; }
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: var(--bg-page);
+    color: #0b1220;
+  }
+
+  .page-wrap {
+    max-width: 1400px;
+    margin: 20px auto 60px;
+    padding: 0 20px;
+  }
+
+  /* PAGE HEADER */
+  .page-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding: 0 10px;
+  }
+  .page-header .title {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #ff8c00, #07316a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .page-header .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    margin: 0;
+  }
+
+  /* Vision Section */
+  .vision {
+    text-align: center;
+    margin: 0 auto 32px;
+    padding: 24px;
+    max-width: 900px;
+    background: linear-gradient(135deg, rgba(255,140,0,0.05), rgba(255,255,255,0.8));
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+  .vision h2 { 
+    font-size: 20px; 
+    font-weight: 800; 
+    margin: 0 0 12px; 
+    color: #0b1220;
+  }
+  .vision p { 
+    color: #334155; 
+    margin: 0; 
+    font-size: 16px; 
+    line-height: 1.7; 
+  }
+
+  /* HERO PANEL */
+  .hero-panel {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 32px;
+    background: var(--hero-bg);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--card-shadow);
+    align-items: center;
+  }
+
+  .hero-left { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  }
+  
+  .hero-left img {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .hero-right { 
+    position: relative;
+  }
+
+  /* Carousel Header */
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .carousel-title { 
+    font-size: 22px; 
+    font-weight: 800; 
+    margin: 0; 
+    color: #071029; 
+  }
+
+  .controls-wrapper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  /* TERM NAV */
+  .term-nav {
+    display: flex;
+    gap: 8px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 12px;
+    padding: 6px;
+  }
+
+  .term-btn {
+    border: 0;
+    background: transparent;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #475569;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  
+  .term-btn.active { 
+    background: linear-gradient(135deg, #ff8c00, #ffb366); 
+    color: #fff; 
+    box-shadow: 0 4px 12px rgba(255,140,0,0.3);
+  }
+
+  .carousel-controls { 
+    display: flex; 
+    gap: 8px; 
+  }
+
+  .carousel-btn {
+    width: 44px; 
+    height: 44px; 
+    border-radius: 50%;
+    border: 2px solid rgba(15,23,42,0.08);
+    background: rgba(255,255,255,0.95);
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-btn:hover {
+    background: linear-gradient(135deg, #ff8c00, #ffb366);
+    border-color: #ff8c00;
+    transform: scale(1.05);
+  }
+
+  .carousel-btn:hover svg path {
+    stroke: white;
+  }
+
+  /* Carousel Content */
+  .carousel-container { 
+    overflow: hidden; 
+    border-radius: 16px; 
+    padding: 4px;
+  }
+  
+  .carousel-track { 
+    display: flex; 
+    gap: 24px; 
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .carousel-track > .goal-card { 
+    flex: 0 0 100%; 
+    background: white; 
+    border-radius: 16px; 
+    padding: 28px; 
+    box-shadow: 0 8px 24px rgba(14,24,54,0.08);
+  }
+
+  .goal-card h3 { 
+    margin: 0 0 16px; 
+    font-size: 20px; 
+    font-weight: 800; 
+    display: flex; 
+    gap: 12px; 
+    align-items: center; 
+  }
+  
+  .goal-card .timeline { 
+    display: inline-block; 
+    padding: 8px 14px; 
+    background: #f1f5f9; 
+    border-radius: 20px; 
+    font-weight: 700; 
+    color: #475569; 
+    font-size: 13px; 
+    margin-bottom: 16px; 
+  }
+  
+  .goal-card ul { 
+    padding-left: 20px; 
+    color: #374151; 
+    line-height: 1.8; 
+    margin: 0; 
+  }
+  
+  .goal-card li { 
+    margin-bottom: 12px; 
+    font-size: 15px; 
+  }
+
+  .carousel-indicators { 
+    display: flex; 
+    gap: 8px; 
+    padding-top: 16px; 
+    justify-content: center; 
+  }
+  
+  .indicator { 
+    width: 12px; 
+    height: 12px; 
+    border-radius: 50%; 
+    background: #cbd5e1; 
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .indicator.active { 
+    width: 32px; 
+    background: linear-gradient(90deg, #ff8c00, #ffb366); 
+    border-radius: 6px; 
+  }
+
+  /* Key Indicator */
+  .key-indicator {
+    margin-top: 32px;
+    text-align: center;
+    padding: 28px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  }
+
+  .key-indicator h4 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    color: #0b1220;
+  }
+
+  .key-indicator p {
+    color: #374151;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ========== MOBILE RESPONSIVE ========== */
+  @media (max-width: 1100px) {
+    .hero-panel { 
+      grid-template-columns: 400px 1fr; 
+      padding: 32px;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .hero-panel { 
+      grid-template-columns: 1fr; 
+      padding: 24px;
+      text-align: center;
+    }
+
+    .hero-left {
+      order: 1;
+      margin-bottom: 20px;
+    }
+
+    .hero-left img {
+      max-width: 360px;
+    }
+
+    .hero-right {
+      order: 2;
+    }
+
+    .carousel-header {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .carousel-title {
+      font-size: 20px;
+    }
+
+    .controls-wrapper {
+      width: 100%;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .term-nav {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .carousel-controls {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .page-wrap {
+      padding: 0 16px;
+    }
+
+    .page-header .title {
+      font-size: 26px;
+    }
+
+    .page-header .subtitle {
+      font-size: 14px;
+    }
+
+    .vision {
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .vision h2 {
+      font-size: 18px;
+    }
+
+    .vision p {
+      font-size: 15px;
+    }
+
+    .hero-panel {
+      padding: 20px;
+      border-radius: 16px;
+    }
+
+    .hero-left img {
+      max-width: 300px;
+    }
+
+    .goal-card {
+      padding: 20px;
+    }
+
+    .goal-card h3 {
+      font-size: 18px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .goal-card li {
+      font-size: 14px;
+    }
+
+    .key-indicator {
+      padding: 20px;
+    }
+
+    .key-indicator h4 {
+      font-size: 18px;
+    }
+
+    .key-indicator p {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .page-header .title {
+      font-size: 22px;
+    }
+
+    .page-header .subtitle {
+      font-size: 13px;
+    }
+
+    .vision {
+      padding: 16px;
+    }
+
+    .vision h2 {
+      font-size: 16px;
+    }
+
+    .vision p {
+      font-size: 14px;
+    }
+
+    .hero-panel {
+      padding: 16px;
+    }
+
+    .hero-left img {
+      max-width: 260px;
+    }
+
+    .carousel-title {
+      font-size: 18px;
+    }
+
+    .term-btn {
+      padding: 8px 14px;
+      font-size: 13px;
+      flex: 1;
+    }
+
+    .carousel-btn {
+      width: 40px;
+      height: 40px;
+    }
+
+    .goal-card {
+      padding: 18px;
+    }
+
+    .goal-card h3 {
+      font-size: 16px;
+    }
+
+    .goal-card li {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .key-indicator {
+      padding: 18px;
+    }
+
+    .key-indicator h4 {
+      font-size: 16px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="title">Enabler C — Curriculum & Academic Innovation</div>
+    <div class="subtitle">Strategic Roadmap · Institutional Development Plan (IDP)</div>
+  </header>
+
+  <!-- Vision -->
+  <section class="vision">
+    <h2>🎯 Vision Statement</h2>
+    <p>A future-ready academic ecosystem that ensures flexible, technology-integrated learning, enhanced skill development, strong industry alignment, and measurable student success in national and global opportunities.</p>
+  </section>
+
+  <!-- HERO: image + carousel -->
+  <section class="hero-panel">
+    <div class="hero-left">
+      <!-- update filename if needed -->
+      <img src="{{ url_for('static', filename='images/ec.png') }}" alt="Enabler C roadmap illustration">
+    </div>
+
+    <div class="hero-right">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Strategic Goals Timeline</h3>
+
+        <div class="controls-wrapper">
+          <nav class="term-nav">
+            <button class="term-btn active" data-slide="0">Short</button>
+            <button class="term-btn" data-slide="1">Mid</button>
+            <button class="term-btn" data-slide="2">Long</button>
+          </nav>
+
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M12 16L6 10L12 4" stroke="#0b1220" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="carousel-btn" onclick="nextSlide()" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                <path d="M8 4L14 10L8 16" stroke="#0b1220" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
-    </a>
 
-    <!-- Right: Back Link -->
-    <a href="/enablers" class="nav-back-link" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 500;">
-      <i class="fas fa-arrow-left"></i> Back to Enablers
-    </a>
+      <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- SHORT-TERM GOALS -->
+          <div class="goal-card short-term" id="slide-0">
+            <div class="timeline">⏱️ 0–2 years</div>
+            <h3><span>📘</span> Short-Term Goals</h3>
+            <ul>
+              <li>Curriculum redesign aligned with future skills.</li>
+              <li>Industry-linked courses and internships.</li>
+              <li>Emerging tech + skill papers in programmes.</li>
+              <li>Faculty induction and FDPs on new curriculum.</li>
+              <li>Updated materials, question banks and assessments.</li>
+              <li>Innovation labs, hackathons and idea challenges.</li>
+              <li>Global seminars and virtual student exchange.</li>
+              <li>Earn-While-Learn pilots and live projects.</li>
+              <li>Basic flexibility and credit options for students.</li>
+            </ul>
+          </div>
 
-  </div>
-</div>
+          <!-- MID-TERM GOALS -->
+          <div class="goal-card mid-term" id="slide-1">
+            <div class="timeline">📅 2–5 years</div>
+            <h3><span>🧩</span> Mid-Term Goals</h3>
+            <ul>
+              <li>50% programmes modularised with flexible pathways.</li>
+              <li>Dual degrees and strong global partnerships.</li>
+              <li>AI/AR/VR labs and hybrid learning environments.</li>
+              <li>Faculty global recognition and mobility.</li>
+              <li>Gamified and AI-rich learning content.</li>
+              <li>Innovation hubs and funded research projects.</li>
+              <li>CCLSD expansion and new-age curriculum labs.</li>
+              <li>Structured EWYL (Earn-While-You-Learn) ecosystem.</li>
+              <li>Maker spaces and interdisciplinary student mobility.</li>
+            </ul>
+          </div>
 
-    
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="container">
-            <h1>Academic Enablers</h1>
-            <p>Transforming education through innovation, technology, and learner-centric approaches</p>
+          <!-- LONG-TERM GOALS -->
+          <div class="goal-card long-term" id="slide-2">
+            <div class="timeline">🗓️ 5–15 years</div>
+            <h3><span>🌍</span> Long-Term Goals</h3>
+            <ul>
+              <li>Global academic leadership in key disciplines.</li>
+              <li>Advanced AI/Metaverse learning systems.</li>
+              <li>Centres of Excellence and Research Parks.</li>
+              <li>Faculty as global thought leaders.</li>
+              <li>100% modularisation across programmes.</li>
+              <li>National EWYL benchmark for best practices.</li>
+              <li>1000+ startups, VC fund and accelerator ecosystem.</li>
+              <li>Satellite campuses abroad.</li>
+              <li>Fully interdisciplinary, life-centric education model.</li>
+            </ul>
+          </div>
         </div>
+      </div>
+
+      <div class="carousel-indicators">
+        <div class="indicator active" onclick="goToSlide(0)"></div>
+        <div class="indicator" onclick="goToSlide(1)"></div>
+        <div class="indicator" onclick="goToSlide(2)"></div>
+      </div>
     </div>
-    
-    <div class="container">
-        <!-- Introduction Section -->
-        <section class="intro-section card">
-            <h2>Strategic Academic Framework</h2>
-            <p>The future of education is undergoing a radical transformation, driven by rapid technological advancements and evolving societal needs. Traditional models of education are being challenged as we move towards a more personalized, flexible, and technology-driven learning environment. Emerging technologies such as artificial intelligence, virtual reality, and blockchain are reshaping the way we learn, teach, and assess.</p>
-            
-            <div class="chart-container">
-                <canvas id="educationTransformationChart"></canvas>
-            </div>
-            
-            <div class="info-box">
-                <h4>Academic Vision</h4>
-                <p>Our goal is to create a sustainable academic ecosystem that supports excellence while fostering innovation and research through diversified learning approaches and strategic investments in education technology.</p>
-            </div>
-            
-            <div class="data-cards">
-                <div class="data-card">
-                    <h4>Programs Offered</h4>
-                    <div class="value">120+</div>
-                    <div class="description">Diverse academic programs across disciplines</div>
-                </div>
-                <div class="data-card">
-                    <h4>Faculty Members</h4>
-                    <div class="value">850+</div>
-                    <div class="description">Qualified and experienced educators</div>
-                </div>
-                <div class="data-card">
-                    <h4>Student Enrollment</h4>
-                    <div class="value">15,000+</div>
-                    <div class="description">Students pursuing academic excellence</div>
-                </div>
-                <div class="data-card">
-                    <h4>Research Projects</h4>
-                    <div class="value">200+</div>
-                    <div class="description">Ongoing innovative research initiatives</div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Courses Section -->
-        <section class="courses-section card">
-            <h2>1. Courses Catering to Professional/Future Requirements</h2>
-            
-            <div class="goal-timeline">
-                <div class="timeline-item active" onclick="showGoalContent('short-term-courses')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-calendar-week"></i>
-                    </div>
-                    <h4>Short-term</h4>
-                    <p>(0-3 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('medium-term-courses')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h4>Medium-term</h4>
-                    <p>(3-5 years)</p>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('long-term-courses')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <h4>Long-term</h4>
-                    <p>(5+ years)</p>
-                </div>
-            </div>
-            
-            <div id="short-term-courses" class="goal-content active">
-                <ul>
-                    <li>Restructure the Academic Planning Process to ensure more rigor and relevance</li>
-                    <li>In-depth Analysis of Current Programs and Course Offerings</li>
-                    <li>Diversify the current portfolio with future-focused disciplines</li>
-                    <li>Involve students in curriculum design process as co-creators for 30% curriculum</li>
-                    <li>Establish University-Industry Cell through department led initiatives</li>
-                    <li>Establish Centre of Excellence in Artificial Intelligence</li>
-                </ul>
-                
-                <div class="chart-container">
-                    <canvas id="shortTermCoursesChart"></canvas>
-                </div>
-            </div>
-            
-            <div id="medium-term-courses" class="goal-content">
-                <ul>
-                    <li>Fully integrate NCrF and other frameworks</li>
-                    <li>Encourage students to Design their own Degrees</li>
-                    <li>Increase options for short-term skill certifications</li>
-                    <li>Collaborate for dual-degree or joint-degree programs</li>
-                    <li>Offer more industry-centric programs co-created with industry leaders</li>
-                </ul>
-                
-                <div class="chart-container">
-                    <canvas id="mediumTermCoursesChart"></canvas>
-                </div>
-            </div>
-            
-            <div id="long-term-courses" class="goal-content">
-                <ul>
-                    <li>Offer Programs that are entrepreneurial in nature</li>
-                    <li>Create flexible learning opportunities for professionals</li>
-                    <li>Become a pioneer in creating professionals who are value multipliers</li>
-                    <li>Contribute significantly to Viksit Bharat</li>
-                </ul>
-                
-                <div class="chart-container">
-                    <canvas id="longTermCoursesChart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Curriculum Section -->
-        <section class="curriculum-section card">
-            <h2>2. Curriculum - Updated as per Industry Requirements</h2>
-            
-            <div class="tab-container">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="openTab('short-term-curriculum')">
-                        <i class="fas fa-clock"></i> Short-term
-                    </button>
-                    <button class="tab-btn" onclick="openTab('medium-term-curriculum')">
-                        <i class="fas fa-hourglass-half"></i> Medium-term
-                    </button>
-                    <button class="tab-btn" onclick="openTab('long-term-curriculum')">
-                        <i class="fas fa-calendar"></i> Long-term
-                    </button>
-                </div>
-                
-                <div id="short-term-curriculum" class="tab-content active">
-                    <ul>
-                        <li>Design modular curriculum with provision for course based registration</li>
-                        <li>Integrate industry-relevant skills into existing programs</li>
-                        <li>Develop new industry-relevant programs in high-growth sectors</li>
-                        <li>Establish Department Program Assessment Committee</li>
-                        <li>Initiate Department-level Internship Bank</li>
-                    </ul>
-                    
-                    <div class="progress-container">
-                        <div class="progress-item">
-                            <div class="progress-label">
-                                <span>Industry-aligned courses</span>
-                                <span>65%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 65%"></div>
-                            </div>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-label">
-                                <span>Faculty with industry experience</span>
-                                <span>45%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 45%"></div>
-                            </div>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-label">
-                                <span>Students in internship programs</span>
-                                <span>78%</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 78%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="medium-term-curriculum" class="tab-content">
-                    <ul>
-                        <li>Design Dynamic curriculum with 30% opportunity for customisation</li>
-                        <li>Collaborate with leading companies as Strategic Partners</li>
-                        <li>Establish University-Industry Academic Cell</li>
-                        <li>Establish a robust Internship platform</li>
-                        <li>Integrate apprenticeships into university curricula</li>
-                    </ul>
-                    
-                    <div class="chart-container">
-                        <canvas id="mediumTermCurriculumChart"></canvas>
-                    </div>
-                </div>
-                
-                <div id="long-term-curriculum" class="tab-content">
-                    <ul>
-                        <li>Launch APAC-Centre for Assessment of Performance analytics</li>
-                        <li>Establish the university as a recognized leader in industry-relevant education</li>
-                        <li>Become a preferred partner for leading industries</li>
-                        <li>Increase in student-led startups by 50%</li>
-                        <li>Achieve 100% industry relevance across all programs</li>
-                    </ul>
-                    
-                    <div class="chart-container">
-                        <canvas id="longTermCurriculumChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Faculty Development Section -->
-        <section class="faculty-section card">
-            <h2>7. Faculty/Teaching Staff Development</h2>
-            
-            <div class="goal-timeline">
-                <div class="timeline-item active" onclick="showGoalContent('short-term-faculty')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <h4>Short-term</h4>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('medium-term-faculty')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <h4>Medium-term</h4>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('long-term-faculty')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-globe"></i>
-                    </div>
-                    <h4>Long-term</h4>
-                </div>
-            </div>
-            
-            <div id="short-term-faculty" class="goal-content active">
-                <ul>
-                    <li>Establish key tenets of faculty members Value system</li>
-                    <li>Cultivate skillset to create Learning Experience Designers</li>
-                    <li>Develop comprehensive faculty evaluation system</li>
-                    <li>Engage SMEs from industry as teaching staff</li>
-                    <li>Promote faculty participation in collaborative research projects</li>
-                </ul>
-                
-                <div class="data-cards">
-                    <div class="data-card">
-                        <h4>Faculty Training</h4>
-                        <div class="value">85%</div>
-                        <div class="description">Completed professional development</div>
-                    </div>
-                    <div class="data-card">
-                        <h4>Industry Exposure</h4>
-                        <div class="value">45%</div>
-                        <div class="description">Faculty with industry experience</div>
-                    </div>
-                    <div class="data-card">
-                        <h4>Research Output</h4>
-                        <div class="value">120+</div>
-                        <div class="description">Publications annually</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="medium-term-faculty" class="goal-content">
-                <ul>
-                    <li>Nurture faculty members as role models in learning environments</li>
-                    <li>Build alternate career advancement pathways for faculty</li>
-                    <li>Establish university as center of excellence in teaching and research</li>
-                    <li>Promote faculty as thought leaders in their fields</li>
-                </ul>
-                
-                <div class="chart-container">
-                    <canvas id="mediumTermFacultyChart"></canvas>
-                </div>
-            </div>
-            
-            <div id="long-term-faculty" class="goal-content">
-                <ul>
-                    <li>Become globally recognized for faculty excellence</li>
-                    <li>Encourage international collaborations and faculty exchanges</li>
-                    <li>Attract international faculty to join the university</li>
-                </ul>
-                
-                <div class="chart-container">
-                    <canvas id="longTermFacultyChart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Pedagogy Section -->
-        <section class="pedagogy-section card">
-            <h2>16. Innovative Pedagogy Approaches</h2>
-            
-            <div class="tab-container">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="openTab('short-term-pedagogy')">
-                        <i class="fas fa-lightbulb"></i> Short-term
-                    </button>
-                    <button class="tab-btn" onclick="openTab('medium-term-pedagogy')">
-                        <i class="fas fa-cogs"></i> Medium-term
-                    </button>
-                    <button class="tab-btn" onclick="openTab('long-term-pedagogy')">
-                        <i class="fas fa-rocket"></i> Long-term
-                    </button>
-                </div>
-                
-                <div id="short-term-pedagogy" class="tab-content active">
-                    <ul>
-                        <li>SMART classrooms and blended learning approaches</li>
-                        <li>MOOCs integrated self learning</li>
-                        <li>Online synchronous and asynchronous learning</li>
-                        <li>Transdisciplinary project centric learning</li>
-                        <li>Group-activity based learning with peer feedback</li>
-                    </ul>
-                    
-                    <div class="chart-container">
-                        <canvas id="shortTermPedagogyChart"></canvas>
-                    </div>
-                </div>
-                
-                <div id="medium-term-pedagogy" class="tab-content">
-                    <ul>
-                        <li>Enquiry based learning and problem solving</li>
-                        <li>Virtual labs (AI/AR/VR/MR powered)</li>
-                        <li>Game assisted learning and capstone projects</li>
-                        <li>Self assessed/mentored self learning studies</li>
-                        <li>Portfolio based learning and jury-based assessment</li>
-                    </ul>
-                    
-                    <div class="chart-container">
-                        <canvas id="mediumTermPedagogyChart"></canvas>
-                    </div>
-                </div>
-                
-                <div id="long-term-pedagogy" class="tab-content">
-                    <ul>
-                        <li>Education 4.0 skills practice</li>
-                        <li>Technology assisted adaptive learning</li>
-                        <li>Digital Twin based learning</li>
-                        <li>Multi-disciplinary real-life problem solving</li>
-                        <li>Global multi-expert guided personalized learning</li>
-                    </ul>
-                    
-                    <div class="chart-container">
-                        <canvas id="longTermPedagogyChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Entrepreneurship Section -->
-        <section class="entrepreneurship-section card">
-            <h2>22. Entrepreneurship Development</h2>
-            
-            <div class="goal-timeline">
-                <div class="timeline-item active" onclick="showGoalContent('short-term-entrepreneurship')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-seedling"></i>
-                    </div>
-                    <h4>Short-term</h4>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('medium-term-entrepreneurship')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h4>Medium-term</h4>
-                </div>
-                <div class="timeline-item" onclick="showGoalContent('long-term-entrepreneurship')">
-                    <div class="timeline-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h4>Long-term</h4>
-                </div>
-            </div>
-            
-            <div id="short-term-entrepreneurship" class="goal-content active">
-                <ul>
-                    <li>Connect all Entrepreneurship Councils across the University</li>
-                    <li>Launch foundational entrepreneurship courses and bootcamps</li>
-                    <li>Establish mentorship and networking programs</li>
-                    <li>Host industry specific start-up challenges</li>
-                    <li>Provide internal funding and seed grants</li>
-                </ul>
-                
-                <div class="data-cards">
-                    <div class="data-card">
-                        <h4>Startups Launched</h4>
-                        <div class="value">100+</div>
-                        <div class="description">Target for short-term phase</div>
-                    </div>
-                    <div class="data-card">
-                        <h4>Funding Provided</h4>
-                        <div class="value">₹5 Cr+</div>
-                        <div class="description">Seed funding available</div>
-                    </div>
-                    <div class="data-card">
-                        <h4>Mentors</h4>
-                        <div class="value">50+</div>
-                        <div class="description">Industry experts engaged</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div id="medium-term-entrepreneurship" class="goal-content">
-                <ul>
-                    <li>Develop metrics for entrepreneurship impact</li>
-                    <li>Establish a Technology Transfer Office</li>
-                    <li>Organize Research-to-Market Hackathons</li>
-                    <li>Scale up the Incubation Centre</li>
-                    <li>Develop a University Venture Fund</li>
-                </ul>
-                
-                <div class="chart-container">
-                    <canvas id="mediumTermEntrepreneurshipChart"></canvas>
-                </div>
-            </div>
-            
-            <div id="long-term-entrepreneurship" class="goal-content">
-                <ul>
-                    <li>Create a sustainable ecosystem for job creators</li>
-                    <li>Become a global leader in entrepreneurship education</li>
-                    <li>Develop a Global Entrepreneurship Network</li>
-                    <li>Launch a Global Startup Fund</li>
-                    <li>Achieve recognition as a Startup University</li>
-                </ul>
-                
-                <div class="chart-container">
-                    <canvas id="longTermEntrepreneurshipChart"></canvas>
-                </div>
-            </div>
-        </section>
-    </div>
-    
-    
-    
-    <script>
-        // Function to show goal content based on timeline selection
-        function showGoalContent(contentId) {
-            // Hide all goal contents first
-            const allContents = document.querySelectorAll('.goal-content');
-            allContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Show selected content
-            document.getElementById(contentId).classList.add('active');
-            
-            // Update timeline item active state
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            timelineItems.forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Find the clicked item (parent of parent of the clicked element)
-            let clickedItem = event.target;
-            while (!clickedItem.classList.contains('timeline-item')) {
-                clickedItem = clickedItem.parentElement;
-                if (!clickedItem) return;
-            }
-            clickedItem.classList.add('active');
-        }
-        
-        // Tab functionality
-        function openTab(tabId) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Deactivate all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Activate selected tab and content
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-        
-        // Initialize charts when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Education Transformation Chart
-            const educationTransformationCtx = document.getElementById('educationTransformationChart').getContext('2d');
-            new Chart(educationTransformationCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Personalized Learning', 'Technology Integration', 'Industry Alignment', 'Flexible Pathways', 'Global Perspective'],
-                    datasets: [{
-                        label: 'Transformation Focus Areas',
-                        data: [85, 90, 75, 70, 65],
-                        backgroundColor: [
-                            'rgba(0, 51, 102, 0.7)',
-                            'rgba(52, 152, 219, 0.7)',
-                            'rgba(231, 76, 60, 0.7)',
-                            'rgba(46, 204, 113, 0.7)',
-                            'rgba(243, 156, 18, 0.7)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Implementation Priority (%)',
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 12,
-                                    weight: 'bold'
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Key Areas of Education Transformation',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-            
-            // Short-term Courses Chart
-            const shortTermCoursesCtx = document.getElementById('shortTermCoursesChart').getContext('2d');
-            new Chart(shortTermCoursesCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['AI/ML Programs', 'Data Science', 'Cybersecurity', 'Fintech', 'Healthcare'],
-                    datasets: [{
-                        data: [30, 25, 20, 15, 10],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Short-term New Program Focus Areas',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Medium-term Courses Chart
-            const mediumTermCoursesCtx = document.getElementById('mediumTermCoursesChart').getContext('2d');
-            new Chart(mediumTermCoursesCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Industry Relevance', 'Skill Integration', 'Flexibility', 'Global Standards', 'Innovation'],
-                    datasets: [{
-                        label: 'Curriculum Attributes',
-                        data: [90, 85, 80, 75, 85],
-                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                        borderColor: '#3498db',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#3498db'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 100
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Medium-term Curriculum Enhancement',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Long-term Courses Chart
-            const longTermCoursesCtx = document.getElementById('longTermCoursesChart').getContext('2d');
-            new Chart(longTermCoursesCtx, {
-                type: 'line',
-                data: {
-                    labels: ['2023', '2024', '2025', '2026', '2027', '2028'],
-                    datasets: [{
-                        label: 'Traditional Programs',
-                        data: [100, 90, 75, 60, 50, 40],
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                        fill: true
-                    }, {
-                        label: 'Future-focused Programs',
-                        data: [0, 10, 25, 40, 50, 60],
-                        borderColor: '#2ecc71',
-                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Program Distribution (%)',
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 12,
-                                    weight: 'bold'
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Long-term Program Evolution',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Medium-term Curriculum Chart
-            const mediumTermCurriculumCtx = document.getElementById('mediumTermCurriculumChart').getContext('2d');
-            new Chart(mediumTermCurriculumCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Core Subjects', 'Industry Skills', 'Flexible Electives', 'Research Components', 'Experiential Learning'],
-                    datasets: [{
-                        label: 'Curriculum Composition',
-                        data: [40, 30, 15, 10, 5],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 50,
-                            title: {
-                                display: true,
-                                text: 'Percentage of Curriculum',
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 12,
-                                    weight: 'bold'
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Medium-term Curriculum Structure',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-            
-            // Long-term Curriculum Chart
-            const longTermCurriculumCtx = document.getElementById('longTermCurriculumChart').getContext('2d');
-            new Chart(longTermCurriculumCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Industry Partnerships', 'Student Startups', 'Research Commercialization', 'Global Collaborations', 'Policy Influence'],
-                    datasets: [{
-                        data: [30, 25, 20, 15, 10],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Long-term Curriculum Impact Areas',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Medium-term Faculty Chart
-            const mediumTermFacultyCtx = document.getElementById('mediumTermFacultyChart').getContext('2d');
-            new Chart(mediumTermFacultyCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Teaching Excellence', 'Research Output', 'Industry Engagement', 'Student Mentoring', 'Innovation'],
-                    datasets: [{
-                        label: 'Faculty Development Areas',
-                        data: [90, 85, 75, 80, 70],
-                        backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Development Priority (%)',
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 12,
-                                    weight: 'bold'
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Medium-term Faculty Development Focus',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-            
-            // Long-term Faculty Chart
-            const longTermFacultyCtx = document.getElementById('longTermFacultyChart').getContext('2d');
-            new Chart(longTermFacultyCtx, {
-                type: 'polarArea',
-                data: {
-                    labels: ['Global Recognition', 'Thought Leadership', 'Research Impact', 'Innovation', 'Student Success'],
-                    datasets: [{
-                        data: [35, 25, 20, 15, 5],
-                        backgroundColor: [
-                            'rgba(0, 51, 102, 0.7)',
-                            'rgba(52, 152, 219, 0.7)',
-                            'rgba(231, 76, 60, 0.7)',
-                            'rgba(46, 204, 113, 0.7)',
-                            'rgba(243, 156, 18, 0.7)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Long-term Faculty Excellence Goals',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Short-term Pedagogy Chart
-            const shortTermPedagogyCtx = document.getElementById('shortTermPedagogyChart').getContext('2d');
-            new Chart(shortTermPedagogyCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Blended Learning', 'Project-Based', 'Flipped Classroom', 'Collaborative', 'Experiential'],
-                    datasets: [{
-                        data: [30, 25, 20, 15, 10],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Short-term Pedagogical Approaches',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Medium-term Pedagogy Chart
-            const mediumTermPedagogyCtx = document.getElementById('mediumTermPedagogyChart').getContext('2d');
-            new Chart(mediumTermPedagogyCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Virtual Labs', 'Gamification', 'Adaptive Learning', 'AI Integration', 'Immersive Tech'],
-                    datasets: [{
-                        label: 'Technology Integration',
-                        data: [80, 70, 75, 85, 65],
-                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                        borderColor: '#3498db',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#3498db'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(0, 0, 0, 0.1)'
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 100
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Medium-term Tech-Enabled Pedagogy',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Long-term Pedagogy Chart
-            const longTermPedagogyCtx = document.getElementById('longTermPedagogyChart').getContext('2d');
-            new Chart(longTermPedagogyCtx, {
-                type: 'line',
-                data: {
-                    labels: ['2023', '2025', '2027', '2029', '2031', '2033'],
-                    datasets: [{
-                        label: 'Traditional Methods',
-                        data: [90, 70, 50, 30, 20, 10],
-                        borderColor: '#e74c3c',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                        fill: true
-                    }, {
-                        label: 'Innovative Methods',
-                        data: [10, 30, 50, 70, 80, 90],
-                        borderColor: '#2ecc71',
-                        backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Usage Percentage (%)',
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 12,
-                                    weight: 'bold'
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Long-term Pedagogical Transformation',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Medium-term Entrepreneurship Chart
-            const mediumTermEntrepreneurshipCtx = document.getElementById('mediumTermEntrepreneurshipChart').getContext('2d');
-            new Chart(mediumTermEntrepreneurshipCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Startups Launched', 'Jobs Created', 'Funding Raised', 'Patents Filed', 'Industry Partnerships'],
-                    datasets: [{
-                        label: 'Entrepreneurship Metrics',
-                        data: [500, 2000, 50, 100, 75],
-                        backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Count/Amount (₹ Cr)',
-                                font: {
-                                    family: 'Montserrat',
-                                    size: 12,
-                                    weight: 'bold'
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Medium-term Entrepreneurship Targets',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        },
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-            
-            // Long-term Entrepreneurship Chart
-            const longTermEntrepreneurshipCtx = document.getElementById('longTermEntrepreneurshipChart').getContext('2d');
-            new Chart(longTermEntrepreneurshipCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Student Startups', 'Faculty Ventures', 'Alumni Businesses', 'Industry Spin-offs', 'Social Enterprises'],
-                    datasets: [{
-                        data: [40, 20, 15, 15, 10],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Long-term Entrepreneurship Ecosystem',
-                            font: {
-                                size: 16,
-                                family: 'Montserrat',
-                                weight: 'bold'
-                            },
-                            color: '#003366',
-                            padding: {
-                                top: 10,
-                                bottom: 20
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+  </section>
+
+  <!-- Key Indicator -->
+  <section class="key-indicator">
+    <h4>📊 Key Indicator</h4>
+    <p>A future-ready academic ecosystem that ensures flexible, technology-integrated learning, enhanced skill development, strong industry alignment, and measurable student success in national and global opportunities.</p>
+    <p style="margin-top: 10px; font-weight: 600; color:#475569;">
+      Outcome: Institutional readiness, transparency, inclusivity, and participatory governance.
+    </p>
+  </section>
+</main>
+
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.querySelectorAll('.indicator');
+  const termBtns = document.querySelectorAll('.term-btn');
+  const totalSlides = 3;
+
+  function updateCarousel() {
+    if (!track) return;
+    const container = track.parentElement;
+    const slideWidth = container.offsetWidth;
+    track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+
+    indicators.forEach((ind, i) => ind.classList.toggle('active', i === currentSlide));
+    termBtns.forEach((btn, i) => {
+      btn.classList.toggle('active', i === currentSlide);
+    });
+  }
+
+  function nextSlide() { 
+    currentSlide = (currentSlide + 1) % totalSlides; 
+    updateCarousel(); 
+  }
+  
+  function prevSlide() { 
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; 
+    updateCarousel(); 
+  }
+  
+  function goToSlide(i) { 
+    currentSlide = i; 
+    updateCarousel(); 
+  }
+
+  // Wire up term buttons
+  termBtns.forEach((btn, idx) => {
+    btn.addEventListener('click', () => {
+      const ds = btn.getAttribute('data-slide');
+      const target = ds !== null ? parseInt(ds, 10) : idx;
+      goToSlide(target);
+    });
+  });
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  // Auto-play
+  let autoplay = setInterval(nextSlide, 6000);
+  ['touchstart', 'mousedown'].forEach(ev => 
+    document.addEventListener(ev, () => {
+      clearInterval(autoplay);
+      autoplay = null;
+    }, { passive: true })
+  );
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window._resizeTimer);
+    window._resizeTimer = setTimeout(updateCarousel, 100);
+  });
+
+  window.addEventListener('load', updateCarousel);
+  document.addEventListener('DOMContentLoaded', updateCarousel);
+</script>
+{% endblock %}

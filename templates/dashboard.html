@@ -1,395 +1,623 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Institutional Development Plan</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+<meta charset="utf-8" />
+<title>IDP – Principal Committee</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --brand:#0b1220;
+    --muted:#64748b;
+    --accent:#ff8c00;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(circle at center, #f8fbff, #e9f0fb);
+    color:var(--brand);
+  }
+
+  /* ========== TOP LOGO ROW ========== */
+  .top-bar {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 1320px;
+    z-index: 1200;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    padding:10px 20px;
+    pointer-events: none;
+  }
+  .top-bar .logo {
+    pointer-events: all;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo-mark { height:42px; width:auto; display:block; }
+
+  /* ========== ROUNDED NAV BAR ========== */
+  .nav-row {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1150;
+    pointer-events: none;
+  }
+  nav.nav {
+    pointer-events: all;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 28px;
+    border-radius:50px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(15,23,42,0.12);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+  .nav-links {
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .nav-links a {
+    text-decoration:none;
+    color:#0f172a;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 20px;
+    border-radius:50px;
+    transition: all .2s ease;
+    white-space: nowrap;
+  }
+  .nav-links a:hover {
+    background: linear-gradient(135deg, #ff8c00, #ffa500);
+    color:white;
+    transform: translateY(-2px);
+  }
+
+  /* ========== HAMBURGER MENU ========== */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(15,23,42,0.1);
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1300;
+    pointer-events: all;
+  }
+
+  .hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #0f172a;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+  }
+
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+  }
+
+  /* ========== PAGE ========== */
+  .page {
+    max-width:1200px;
+    margin:0 auto;
+    padding:180px 22px 60px;
+  }
+
+  /* ========== CENTERED TITLE SECTION ========== */
+  .main-title-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  .main-title-section h1 {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #351d01 0%, #351d01 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    max-width: 90%;
+    letter-spacing: -0.5px;
+    position: relative;
+    padding-bottom: 15px;
+  }
+
+  .main-title-section h1::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #ff8c00, transparent);
+    border-radius: 2px;
+  }
+
+  /* ========== HERO SECTION ========== */
+  .hero {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    align-items:center;
+    position:relative;
+    margin-bottom: 80px;
+  }
+
+  .hero-text h2 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #0f172a;
+    margin-bottom: 20px;
+  }
+
+  .hero-text p {
+    font-size:16px;
+    line-height: 1.7;
+    color:var(--muted);
+    max-width:540px;
+  }
+
+  .hero-img {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+  }
+  .hero-img img {
+    max-width:520px;
+    width:100%;
+    height:auto;
+    display:block;
+  }
+
+  /* ========== SECTION TITLE ========== */
+  .section-title {
+    margin-top:60px;
+    margin-bottom: 50px;
+    text-align:center;
+    font-size:32px;
+    font-weight:800;
+    color:#0f172a;
+    position:relative;
+    padding-bottom: 20px;
+  }
+  .section-title::after{
+    content:"";
+    width:90px;
+    height:5px;
+    background:var(--accent);
+    border-radius:3px;
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+  }
+
+  /* ========== CARDS ========== */
+  .card-grid {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:24px;
+    max-width:1120px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .card {
+    height:220px;
+    border-radius:16px;
+    background:white;
+    box-shadow:0 8px 24px rgba(15,23,42,0.08);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px 14px;
+    text-align:center;
+    transition: all .3s ease;
+    position: relative;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow:0 16px 40px rgba(15,23,42,0.12);
+  }
+
+  .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 14px;
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #0b63ff 0%, #0849c7 100%);
+    border-radius: 16px;
+    color: white;
+  }
+
+  .name { 
+    font-weight:700; 
+    font-size:15px; 
+    color:#0f172a;
+    margin-bottom: 6px;
+  }
+  .designation { 
+    font-size:13px; 
+    color:#64748b;
+    margin-bottom: 12px;
+  }
+  .role { 
+    font-weight:700; 
+    color:#0b63ff;
+    font-size: 14px;
+  }
+
+  .card-back .name,
+  .card-back .designation,
+  .card-back .role {
+    color: white;
+  }
+
+  .card-back .role {
+    background: rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width:1000px){
+    .hero { 
+      grid-template-columns:1fr; 
+      text-align:center;
+      gap: 40px;
     }
-    
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-      100% { transform: translateY(0px); }
+    .hero-text h2 {
+      font-size: 36px;
     }
-    
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    .hero-text p {
+      margin-left: auto;
+      margin-right: auto;
     }
-    
-    .animate-fade-in {
-      animation: fadeIn 0.6s ease-out forwards;
+    .nav-links {
+      gap: 4px;
     }
-    
-    .animate-float {
-      animation: float 3s ease-in-out infinite;
+    .nav-links a {
+      padding: 8px 16px;
+      font-size: 13px;
     }
-    
-    .gradient-animation {
-      background-size: 200% 200%;
-      animation: gradientBG 8s ease infinite;
+    .main-title-section h1 { 
+      font-size: 32px;
     }
-    
-    .nav-link {
-      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-      position: relative;
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
     }
-    
-    .nav-link:hover {
-      transform: translateY(-3px);
-      text-shadow: 0 2px 8px rgba(0, 0, 255, 0.2);
+  }
+  
+  @media (max-width:700px){
+    .hamburger {
+      display: flex;
     }
-    
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -4px;
+
+    .nav-row {
+      top: 0;
       left: 0;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-      transition: width 0.4s ease, opacity 0.3s ease;
+      right: 0;
+      transform: none;
+      height: 100vh;
+      width: 100%;
+      background: rgba(11, 18, 32, 0.95);
+      backdrop-filter: blur(20px);
       opacity: 0;
-    }
-    
-    .nav-link:hover::after {
-      width: 100%;
-      opacity: 1;
-    }
-    
-    .dropdown-item {
-      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-    
-    .dropdown-item:hover {
-      background-color: #f0f4ff;
-      transform: translateX(8px);
-      box-shadow: -2px 0 8px rgba(59, 130, 246, 0.2);
-    }
-    
-    .table-row:hover {
-      background-color: #f7fafc;
-      transform: scale(1.008);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-    
-    .table-row {
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-    
-    .section-title {
-      position: relative;
-      display: inline-block;
-    }
-    
-    .section-title::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 3px;
-      bottom: -6px;
-      left: 0;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-    
-    .section-title:hover::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-    
-    .card-hover {
-      transition: all 0.4s ease;
-    }
-    
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    .icon-hover {
+      visibility: hidden;
       transition: all 0.3s ease;
     }
-    
-    .icon-hover:hover {
-      transform: scale(1.2);
-      color: #3b82f6;
-    }
-    
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-    }
-    
-    .glow {
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-    }
-    
-    .wave {
-      animation: wave 3s ease-in-out infinite;
-    }
-    
-    @keyframes wave {
-      0%, 100% { transform: rotate(0deg); }
-      25% { transform: rotate(5deg); }
-      50% { transform: rotate(-5deg); }
-      75% { transform: rotate(2deg); }
-    }
-    
-    @media (max-width: 768px) {
-      .nav-menu {
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-      
-      .dropdown-menu {
-        position: static;
-        width: 100%;
-        margin-top: 0.5rem;
-      }
-      
-      .section-title::after {
-        bottom: -3px;
-      }
-    }
-  </style>
-</head>
 
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+    .nav-row.active {
+      opacity: 1;
+      visibility: visible;
+    }
 
-  <!-- Navigation Bar -->
-  <nav class="bg-white p-4 text-blue-900 shadow-lg sticky top-0 z-50 border-b border-blue-100 transform transition-all duration-300 hover:shadow-xl">
-    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+    nav.nav {
+      height: 100%;
+      width: 100%;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+      padding: 100px 20px;
+    }
 
-      <!-- Logo + Title -->
-      <div class="flex items-center gap-3 animate-float">
-        <img src="/static/images/santhu123.png" alt="Logo" class="h-12 w-auto object-contain transform transition-all duration-500 hover:rotate-6">
-        <h1 class="text-2xl font-bold flex items-center gap-2">
-          <i class="fas fa-users-cog text-xl icon-hover"></i> 
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-            Institutional Development Plan
-          </span>
-        </h1>
-      </div>
+    .nav-links {
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
 
-      <!-- Navigation Links -->
-      <ul class="flex flex-col sm:flex-row items-center gap-6 text-sm font-medium">
-        <li>
-          <button onclick="toggleSection('principal')" class="nav-link flex items-center text-blue-800 hover:text-blue-600">
-            <i class="fas fa-user-shield mr-2 icon-hover"></i> Principal Committee
-          </button>
-        </li>
-        <li>
-          <a href="/enablers" class="nav-link flex items-center text-blue-800 hover:text-blue-600">
-            <i class="fas fa-cogs mr-2 icon-hover"></i> Enablers
-            <i class="fas fa-arrow-right ml-1 text-xs transform transition-all duration-300 group-hover:translate-x-1"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+    .nav-links a {
+      width: 100%;
+      padding: 18px 30px;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
-  <div class="p-6 max-w-7xl mx-auto space-y-10">
-    <!-- Principal Committee Section -->
-    <section id="principal" class="enabler-section animate-fade-in">
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-        <div class="gradient-animation bg-gradient-to-r from-blue-800 to-purple-700 p-6 text-white">
-          <h2 class="text-3xl font-bold section-title flex items-center">
-            <i class="fas fa-user-shield mr-3 wave"></i>Principal Coordination Committee
-          </h2>
-          <p class="mt-2 opacity-90">Leadership team guiding our institutional development journey</p>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gradient-to-r from-blue-50 to-purple-50">
-              <tr>
-                <th class="px-8 py-4 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">Name & Designation</th>
-                <th class="px-8 py-4 text-left text-sm font-medium text-gray-700 uppercase tracking-wider">Position in IDP Committee</th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <tr class="table-row hover:bg-blue-50">
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center pulse">
-                      <i class="fas fa-crown text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-lg font-semibold text-gray-900">Dr. Chenraj Roychand</div>
-                      <div class="text-sm text-gray-600">Chancellor</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gradient-to-r from-green-100 to-green-50 text-green-800 border border-green-200">Chairperson</span>
-                </td>
-              </tr>
-              <tr class="table-row hover:bg-blue-50">
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-user-graduate text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-lg font-semibold text-gray-900">Dr. Prof. Raj Singh</div>
-                      <div class="text-sm text-gray-600">Vice Chancellor</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 border border-blue-200">Vice Chairperson</span>
-                </td>
-              </tr>
-              <tr class="table-row hover:bg-blue-50">
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-user-md text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-lg font-semibold text-gray-900">Dr. Dinesh N.</div>
-                      <div class="text-sm text-gray-600">Pro Vice-Chancellor</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gradient-to-r from-gray-100 to-gray-50 text-gray-800 border border-gray-200">Member</span>
-                </td>
-              </tr>
-              <tr class="table-row hover:bg-blue-50">
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-user-edit text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-lg font-semibold text-gray-900">Dr. Jitendra Kumar Mishra</div>
-                      <div class="text-sm text-gray-600">Registrar</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gradient-to-r from-gray-100 to-gray-50 text-gray-800 border border-gray-200">Member</span>
-                </td>
-              </tr>
-              <tr class="table-row hover:bg-blue-50">
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <i class="fas fa-chalkboard-teacher text-blue-600 text-xl"></i>
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-lg font-semibold text-gray-900">Dr. Shradha Kanwar</div>
-                      <div class="text-sm text-gray-600">Chief Academic Officer</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-8 py-6 whitespace-nowrap">
-                  <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-gradient-to-r from-gray-100 to-gray-50 text-gray-800 border border-gray-200">Member</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-          <div class="flex justify-end">
-            <button class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
-              <a href="/enablers" class="nav-link flex items-center text-blue-800 hover:text-blue-600"> 
-              <span>View Full Committee</span></a>
-              <i class="fas fa-chevron-right ml-2 transform transition-transform duration-300 group-hover:translate-x-1"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+    .nav-links a:hover {
+      background: linear-gradient(135deg, #ff8c00, #ffa500);
+      transform: translateX(10px);
+    }
 
-   
-
+    .card-grid { 
+      grid-template-columns:repeat(2,1fr);
+      gap: 18px;
+    }
+    .top-bar { 
+      top:15px;
+      padding: 8px 16px;
+    }
+    .logo-mark { 
+      height: 36px;
+    }
+    .hero-text h2 {
+      font-size: 32px;
+    }
+    .main-title-section h1 { 
+      font-size: 28px;
+    }
+    .page {
+      padding: 150px 18px 50px;
+    }
+    .hero {
+      margin-bottom: 60px;
+      gap: 30px;
+    }
+    .card {
+      height: 200px;
+      padding: 16px 12px;
+    }
+    .name {
+      font-size: 14px;
+    }
+    .designation {
+      font-size: 12px;
+    }
+    .role {
+      font-size: 13px;
+    }
+  }
   
+  @media (max-width:520px){
+    .card-grid { 
+      grid-template-columns:1fr;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-text h2 {
+      font-size: 28px;
+    }
+    .main-title-section {
+      margin-bottom: 40px;
+    }
+    .main-title-section h1 { 
+      font-size: 24px;
+    }
+    .page {
+      padding: 140px 16px 40px;
+    }
+    .card {
+      height: 180px;
+    }
+    .section-title {
+      font-size: 26px;
+      margin-top: 40px;
+      margin-bottom: 30px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- TOP LOGO ROW -->
+  <div class="top-bar">
+    <div class="logo">
+      <img src="/static/images/jainl.png" class="logo-mark" alt="JAIN Logo">
+    </div>
+  </div>
+
+  <!-- HAMBURGER MENU -->
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- ROUNDED NAV BAR -->
+  <div class="nav-row" id="navMenu">
+    <nav class="nav" role="navigation" aria-label="main navigation">
+      <div class="nav-links">
+        <a href="#principal" onclick="closeMenu()">Principal Committee</a>
+        <a href="/enablers" onclick="closeMenu()">Enablers</a>
+        <a href="#about" onclick="closeMenu()">About IDP</a>
+      </div>
+    </nav>
+  </div>
 
   <script>
-    function toggleSection(id) {
-      const sections = document.querySelectorAll('.enabler-section');
-      sections.forEach(section => {
-        section.classList.add('hidden');
-      });
-      
-      const target = document.getElementById(id);
-      if (target) {
-        target.classList.remove('hidden');
-        target.classList.add('animate-fade-in');
-        
-        // Scroll to the section with some offset for the fixed header
-        window.scrollTo({
-          top: target.offsetTop - 30,
-          behavior: 'smooth'
-        });
-      }
+    function toggleMenu() {
+      const hamburger = document.querySelector('.hamburger');
+      const navMenu = document.getElementById('navMenu');
+      hamburger.classList.toggle('active');
+      navMenu.classList.toggle('active');
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initial animation
-      toggleSection('principal');
-      
-      // Add staggered animations to elements
-      const animateElements = (selector, delayIncrement = 0.1) => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach((el, index) => {
-          setTimeout(() => {
-            el.classList.add('animate-fade-in');
-          }, index * delayIncrement * 1000);
-        });
-      };
-      
-      animateElements('.table-row', 0.08);
-      animateElements('.card-hover', 0.15);
-      
-      // Highlight active nav item
-      document.querySelectorAll('nav button').forEach(button => {
-        button.addEventListener('click', function() {
-          document.querySelectorAll('nav button').forEach(btn => {
-            btn.classList.remove('font-bold', 'text-blue-300');
-          });
-          this.classList.add('font-bold', 'text-blue-300');
-        });
-      });
-      
-      // Add hover effect to cards
-      const cards = document.querySelectorAll('.card-hover');
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-          card.style.transform = 'translateY(-8px)';
-        });
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'translateY(0)';
-        });
-      });
-    });
-    
-    // Add wave animation to icons on hover
-    document.querySelectorAll('.icon-hover').forEach(icon => {
-      icon.addEventListener('mouseenter', () => {
-        icon.classList.add('wave');
-      });
-      icon.addEventListener('mouseleave', () => {
-        icon.classList.remove('wave');
-      });
-    });
+    function closeMenu() {
+      const hamburger = document.querySelector('.hamburger');
+      const navMenu = document.getElementById('navMenu');
+      hamburger.classList.remove('active');
+      navMenu.classList.remove('active');
+    }
   </script>
+
+  <!-- PAGE CONTENT -->
+  <div class="page">
+
+    <!-- CENTERED MAIN TITLE -->
+    <div class="main-title-section">
+      <h1>Institutional Development Plan (IDP)</h1>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+      <!-- left column: intro text -->
+      <div class="hero-text">
+        <h2>Goal Progress Overview</h2>
+        <p>
+          The Institutional Development Plan (IDP) of JAIN (Deemed-to-be University) delineates a
+          comprehensive roadmap for academic and institutional excellence through a phased
+          progression approach. It underscores strategic governance, financial sustainability,
+          academic innovation, and digital transformation aligned with NEP 2020.
+        </p>
+      </div>
+
+      <!-- right column: image -->
+      <div class="hero-img">
+        <img src="/static/images/1.png" alt="Team Illustration">
+      </div>
+    </div>
+
+    <!-- SECTION TITLE -->
+    <div id="principal" class="section-title">Principal Coordination Committee</div>
+
+    <!-- CARDS -->
+    <div class="card-grid">
+      <script>
+        const data = [
+          ["Dr. Chenraj Roychand", "Chancellor", "Chairperson"],
+          ["Dr. Prof. Raj Singh", "Vice Chancellor", "Vice Chairperson"],
+          ["Dr. Dinesh N.", "Pro Vice-Chancellor", "Member"],
+          ["Dr. Jitendra Kumar Mishra", "Registrar", "Member"],
+          ["Dr. Shradha Kanwar", "Chief Academic Officer", "Member"]
+        ];
+
+        const cardGrid = document.querySelector('.card-grid');
+        let flippedCard = null;
+
+        data.forEach((d, index) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <div class="card-inner">
+              <div class="card-front">
+                <div class="name">${d[0]}</div>
+                <div class="designation">${d[1]}</div>
+                <div class="role">${d[2]}</div>
+              </div>
+              <div class="card-back">
+                <div class="name">${d[0]}</div>
+                <div class="designation">${d[1]}</div>
+                <div class="role">${d[2]}</div>
+              </div>
+            </div>
+          `;
+          
+          card.addEventListener('click', () => {
+            if (flippedCard && flippedCard !== card) {
+              flippedCard.classList.remove('flipped');
+            }
+            card.classList.toggle('flipped');
+            flippedCard = card.classList.contains('flipped') ? card : null;
+          });
+
+          cardGrid.appendChild(card);
+        });
+
+        // Scroll animation - flip cards one by one
+        let currentIndex = 0;
+        let scrollTimeout;
+
+        window.addEventListener('wheel', (e) => {
+          clearTimeout(scrollTimeout);
+          
+          scrollTimeout = setTimeout(() => {
+            const cards = document.querySelectorAll('.card');
+            
+            if (e.deltaY > 0) {
+              // Scrolling down - flip next card
+              if (currentIndex < cards.length) {
+                cards[currentIndex].classList.add('flipped');
+                currentIndex++;
+              }
+            } else {
+              // Scrolling up - unflip previous card
+              if (currentIndex > 0) {
+                currentIndex--;
+                cards[currentIndex].classList.remove('flipped');
+              }
+            }
+          }, 50);
+        });
+      </script>
+    </div>
+
+  </div>
+
 </body>
 </html>

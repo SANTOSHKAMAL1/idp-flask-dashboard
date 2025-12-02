@@ -1,1422 +1,251 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Enablers - JAIN University</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #003366;
-            --primary-light: #3a5a8a;
-            --secondary-color: #e74c3c;
-            --accent-color: #3498db;
-            --light-color: #f8f9fa;
-            --dark-color: #343a40;
-            --success-color: #28a745;
-            --warning-color: #ffc107;
-            --danger-color: #dc3545;
-            --nav-text-color: #003366;
-            --text-color: #333;
-            --text-light: #6c757d;
-            --bg-color: #f8fafc;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Navigation Header */
-        .nav-header {
-            background-color: white;
-            padding: 1rem 0;
-            box-shadow: var(--card-shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 0 20px;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-        
-        .nav-logo:hover {
-            transform: translateY(-2px);
-        }
-        
-        .logo-icon {
-            height: 3.5rem;
-            width: 3.5rem;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0, 51, 102, 0.2);
-        }
-        
-        .logo-icon i {
-            color: white;
-            font-size: 1.5rem;
-        }
-        
-        .logo-text h2 {
-            margin: 0;
-            font-size: 1.25rem;
-            color: var(--nav-text-color);
-            font-weight: 600;
-        }
-        
-        .logo-text p {
-            margin: 0.25rem 0 0;
-            font-size: 0.875rem;
-            color: var(--nav-text-color);
-            opacity: 0.8;
-            font-weight: 300;
-        }
-        
-        .nav-back-link {
-            color: var(--nav-text-color);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            transition: var(--transition);
-            padding: 8px 16px;
-            border-radius: 4px;
-            background-color: rgba(0, 51, 102, 0.05);
-        }
-        
-        .nav-back-link:hover {
-            color: var(--accent-color);
-            background-color: rgba(0, 51, 102, 0.1);
-            transform: translateX(-3px);
-        }
-        
-        .nav-back-link i {
-            margin-right: 0.5rem;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: var(--secondary-color);
-        }
-        
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        h1, h2, h3, h4 {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: var(--secondary-color);
-        }
-        
-        h2 {
-            border-left: 5px solid var(--accent-color);
-            padding-left: 15px;
-            margin-top: 50px;
-            font-size: 1.8rem;
-        }
-        
-        h3 {
-            color: var(--secondary-color);
-            margin-top: 30px;
-            font-size: 1.4rem;
-        }
-        
-        h4 {
-            font-size: 1.2rem;
-            margin-top: 20px;
-            color: var(--primary-light);
-        }
-        
-        .card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: var(--card-shadow);
-            padding: 30px;
-            margin-bottom: 40px;
-            transition: var(--transition);
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
-        }
-        
-        .goal-section {
-            margin-bottom: 40px;
-        }
-        
-        .goal-timeline {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            background: rgba(0, 51, 102, 0.05);
-            border-radius: 10px;
-            padding: 5px;
-        }
-        
-        .timeline-item {
-            flex: 1;
-            text-align: center;
-            padding: 15px;
-            position: relative;
-            cursor: pointer;
-            transition: var(--transition);
-            border-radius: 8px;
-        }
-        
-        .timeline-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: 0;
-            width: 20px;
-            height: 2px;
-            background: var(--accent-color);
-            transform: translateY(-50%);
-        }
-        
-        .timeline-item.active {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
-        }
-        
-        .timeline-item h4 {
-            margin: 0 0 5px 0;
-            transition: var(--transition);
-        }
-        
-        .timeline-item.active h4 {
-            color: white;
-        }
-        
-        .timeline-item p {
-            margin: 0;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            transition: var(--transition);
-        }
-        
-        .timeline-item.active p {
-            opacity: 0.9;
-        }
-        
-        .goal-content {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .goal-content.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        ul {
-            padding-left: 20px;
-        }
-        
-        li {
-            margin-bottom: 12px;
-            position: relative;
-            padding-left: 15px;
-        }
-        
-        li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-        }
-        
-        .chart-container {
-            margin: 40px auto;
-            max-width: 100%;
-            height: 400px;
-            position: relative;
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .chart-container h4 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-        
-        .info-box {
-            background: linear-gradient(to right, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0.05) 100%);
-            border-left: 4px solid var(--accent-color);
-            padding: 20px;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .info-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233498db' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-        }
-        
-        .info-box h4 {
-            margin-top: 0;
-            color: var(--primary-color);
-        }
-        
-        footer {
-            background: linear-gradient(135deg, var(--dark-color) 0%, #212529 100%);
-            color: white;
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 50px;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-content p {
-            margin: 5px 0;
-            opacity: 0.8;
-            font-weight: 300;
-        }
-        
-        .footer-content p:first-child {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            opacity: 1;
-        }
-        
-        .tab-container {
-            margin-bottom: 30px;
-        }
-        
-        .tab-buttons {
-            display: flex;
-            border-bottom: 2px solid rgba(0, 51, 102, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .tab-btn {
-            padding: 12px 25px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--text-light);
-            position: relative;
-            transition: var(--transition);
-        }
-        
-        .tab-btn::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-color);
-            transition: var(--transition);
-        }
-        
-        .tab-btn:hover {
-            color: var(--primary-color);
-        }
-        
-        .tab-btn.active {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        .tab-btn.active::after {
-            width: 100%;
-        }
-        
-        .tab-content {
-            display: none;
-            padding: 20px;
-            background: white;
-            border-radius: 0 0 10px 10px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        
-        .status-satisfactory {
-            background-color: var(--success-color);
-            box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
-        }
-        
-        .status-needs-enhancement {
-            background-color: var(--warning-color);
-            box-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
-        }
-        
-        .status-stopgap {
-            background-color: var(--danger-color);
-            box-shadow: 0 0 8px rgba(220, 53, 69, 0.5);
-        }
-        
-        .status-not-exist {
-            background-color: #6c757d;
-            box-shadow: 0 0 8px rgba(108, 117, 125, 0.5);
-        }
-        
-        .action-plan-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: 30px 0;
-            font-size: 0.95rem;
-        }
-        
-        .action-plan-table th {
-            background: linear-gradient(to bottom, var(--primary-color), var(--primary-light));
-            color: white;
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: 500;
-            position: sticky;
-            top: 0;
-        }
-        
-        .action-plan-table th:first-child {
-            border-radius: 8px 0 0 0;
-        }
-        
-        .action-plan-table th:last-child {
-            border-radius: 0 8px 0 0;
-        }
-        
-        .action-plan-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            vertical-align: top;
-        }
-        
-        .action-plan-table tr:nth-child(even) {
-            background-color: rgba(0, 51, 102, 0.02);
-        }
-        
-        .action-plan-table tr:hover {
-            background-color: rgba(0, 51, 102, 0.05);
-        }
-        
-        .action-plan-table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .action-plan-table tr:last-child td:first-child {
-            border-radius: 0 0 0 8px;
-        }
-        
-        .action-plan-table tr:last-child td:last-child {
-            border-radius: 0 0 8px 0;
-        }
-        
-        .table-container {
-            overflow-x: auto;
-            margin-bottom: 40px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            position: relative;
-        }
-        
-        .table-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 30px;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
-            pointer-events: none;
-        }
-        
-        .progress-container {
-            margin: 30px 0;
-        }
-        
-        .progress-item {
-            margin-bottom: 15px;
-        }
-        
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            border-radius: 5px;
-            transition: width 1s ease-in-out;
-        }
-        
-        .progress-satisfactory {
-            background: linear-gradient(to right, #28a745, #5cb85c);
-        }
-        
-        .progress-needs-enhancement {
-            background: linear-gradient(to right, #ffc107, #f0ad4e);
-        }
-        
-        .progress-stopgap {
-            background: linear-gradient(to right, #fd7e14, #eb9316);
-        }
-        
-        .progress-not-exist {
-            background: linear-gradient(to right, #dc3545, #d9534f);
-        }
-        
-        .tech-pill {
-            display: inline-block;
-            padding: 4px 12px;
-            background-color: rgba(52, 152, 219, 0.1);
-            color: var(--primary-color);
-            border-radius: 20px;
-            margin: 5px 5px 5px 0;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        .tech-pill:hover {
-            background-color: rgba(52, 152, 219, 0.2);
-        }
-        
-        .timeline-marker {
-            position: absolute;
-            top: 50%;
-            right: -10px;
-            width: 20px;
-            height: 20px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .floating-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 5px 20px rgba(0, 51, 102, 0.3);
-            cursor: pointer;
-            transition: var(--transition);
-            z-index: 90;
-        }
-        
-        .floating-btn:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 8px 25px rgba(0, 51, 102, 0.4);
-        }
-        
-        @media (max-width: 992px) {
-            .chart-container {
-                height: 350px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            h2 {
-                font-size: 1.6rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .goal-timeline {
-                flex-direction: column;
-                background: none;
-                padding: 0;
-            }
-            
-            .timeline-item {
-                margin-bottom: 10px;
-                background: rgba(0, 51, 102, 0.05);
-                border-radius: 8px;
-            }
-            
-            .timeline-item:not(:last-child)::after {
-                display: none;
-            }
-            
-            .action-plan-table {
-                font-size: 0.85rem;
-            }
-            
-            .action-plan-table th, 
-            .action-plan-table td {
-                padding: 8px 10px;
-            }
-            
-            .nav-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .nav-back-link {
-                margin-top: 10px;
-                align-self: flex-end;
-            }
-            
-            .floating-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
-                bottom: 20px;
-                right: 20px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            h2 {
-                font-size: 1.4rem;
-            }
-            
-            .chart-container {
-                height: 300px;
-                padding: 15px;
-            }
-            
-            .tab-buttons {
-                overflow-x: auto;
-                white-space: nowrap;
-                padding-bottom: 5px;
-            }
-            
-            .tab-btn {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-        }
-        
-        /* Animation classes */
-        .fade-in {
-            animation: fadeIn 0.8s ease forwards;
-        }
-        
-        .slide-up {
-            animation: slideUp 0.8s ease forwards;
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Tooltip styles */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: var(--dark-color);
-            color: white;
-            text-align: center;
-            border-radius: 6px;
-            padding: 10px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.9rem;
-            font-weight: normal;
-        }
-        
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: var(--dark-color) transparent transparent transparent;
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-    </style>
-</head>
-<body>
-     <!-- Navigation Header -->
-<div class="nav-header" id="navHeader">
-  <div class="nav-container" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-    
-    <!-- Left: Logo -->
-    <a href="#" class="nav-logo">
-      <div class="logo-icon">
-        <i class="fas fa-graduation-cap"></i>
-      </div>
+{% extends "base.html" %}
 
-      <!-- Logo Text Section -->
-      <div class="logo-text" style="display: flex; align-items: center; gap: 1rem;">
-        <img src="/static/images/santhu123.png" alt="JAIN University Logo" style="height: 3.5rem; object-fit: contain;" />
-        <div>
-            <h2>Digital Enablers</h2>
-                    <p>Technology Strategy for JAIN University</p>
+{% block title %}Enabler H — Digital Ecosystem & Administration{% endblock %}
+
+{% block styles %}
+<style>
+  :root{
+    --bg-page: #f3f8fd;
+    --hero-bg: linear-gradient(180deg,#ffffff,#f7fbff);
+    --muted:#64748b;
+    --accent:#ff8c00;
+    --card-shadow: 0 20px 40px rgba(16,24,40,0.06);
+  }
+
+  html,body { height:100%; margin:0; }
+  body{
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    background: var(--bg-page);
+    color: #0b1220;
+  }
+
+  .page-wrap { max-width:1400px; margin:20px auto 60px; padding:0 20px; }
+
+  /* PAGE HEADER */
+  .page-header { text-align:center; margin-bottom:24px; padding:0 10px; }
+  .page-header .title {
+    font-size:32px; font-weight:900; margin:0 0 8px; line-height:1.2;
+    background: linear-gradient(135deg,#ff8c00,#07316a);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .page-header .subtitle { color:var(--muted); font-size:15px; margin:0; }
+
+  /* Vision */
+  .vision { text-align:center; margin:0 auto 32px; padding:22px; max-width:900px;
+    background: linear-gradient(135deg, rgba(255,140,0,0.05), rgba(255,255,255,0.8));
+    border-radius:16px; box-shadow:0 4px 16px rgba(0,0,0,0.04);
+  }
+  .vision h2{ font-size:20px; font-weight:800; margin:0 0 12px; color:#0b1220; }
+  .vision p{ color:#334155; margin:0; font-size:16px; line-height:1.7; }
+
+  /* HERO PANEL */
+  .hero-panel {
+    display:grid; grid-template-columns:480px 1fr; gap:32px;
+    background:var(--hero-bg); border-radius:24px; padding:40px; box-shadow:var(--card-shadow);
+    align-items:center;
+  }
+
+  .hero-left{ display:flex; align-items:center; justify-content:center; }
+  .hero-left img{ display:block; width:100%; max-width:460px; height:auto; object-fit:contain; background:transparent !important; }
+
+  .hero-right{ position:relative; }
+
+  /* Carousel header */
+  .carousel-header{ display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap; }
+  .carousel-title{ font-size:22px; font-weight:800; margin:0; color:#071029; }
+  .controls-wrapper{ display:flex; gap:12px; align-items:center; }
+
+  /* Term nav */
+  .term-nav{ display:flex; gap:8px; background:rgba(255,255,255,0.9); border-radius:12px; padding:6px; }
+  .term-btn{ border:0; background:transparent; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer; color:#475569; font-size:14px; transition:all .18s; }
+  .term-btn.active{ background: linear-gradient(135deg,#ff8c00,#ffb366); color:#fff; box-shadow:0 4px 12px rgba(255,140,0,0.18); }
+
+  .carousel-controls{ display:flex; gap:8px; }
+  .carousel-btn{ width:44px; height:44px; border-radius:50%; border:2px solid rgba(15,23,42,0.08); background:rgba(255,255,255,0.95); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .16s; }
+  .carousel-btn:hover{ transform:scale(1.05); background:linear-gradient(135deg,#ff8c00,#ffb366); border-color:#ff8c00; }
+  .carousel-btn:hover svg path{ stroke:#fff; }
+
+  /* Carousel content */
+  .carousel-container{ overflow:hidden; border-radius:16px; padding:6px; }
+  .carousel-track{ display:flex; gap:24px; transition:transform .5s cubic-bezier(.4,0,.2,1); }
+  .carousel-track > .goal-card{ flex:0 0 100%; background:white; border-radius:16px; padding:28px; box-shadow:0 8px 24px rgba(14,24,54,.08); }
+
+  .goal-card h3{ margin:0 0 16px; font-size:20px; font-weight:800; display:flex; gap:12px; align-items:center; }
+  .goal-card .timeline{ display:inline-block; padding:8px 14px; background:#f1f5f9; border-radius:20px; font-weight:700; color:#475569; font-size:13px; margin-bottom:14px; }
+  .goal-card ul{ padding-left:20px; color:#374151; line-height:1.8; margin:0; }
+  .goal-card li{ margin-bottom:12px; font-size:15px; }
+
+  .carousel-indicators{ display:flex; gap:8px; padding-top:16px; justify-content:center; }
+  .indicator{ width:12px; height:12px; border-radius:50%; background:#cbd5e1; cursor:pointer; transition:all .3s; }
+  .indicator.active{ width:32px; background:linear-gradient(90deg,#ff8c00,#ffb366); border-radius:6px; }
+
+  .key-indicator{ margin-top:28px; text-align:center; padding:24px; }
+  .key-indicator h4{ font-size:18px; font-weight:800; margin:0 0 10px; color:#0b1220; }
+  .key-indicator p{ color:#374151; max-width:900px; margin:0 auto; font-size:15px; line-height:1.7; }
+
+  /* Responsive */
+  @media (max-width:1100px){ .hero-panel{ grid-template-columns:420px 1fr; padding:28px; gap:20px } .hero-left img{ max-width:380px } }
+  @media (max-width:980px){
+    .hero-panel{ grid-template-columns:1fr; padding:24px; text-align:center; }
+    .hero-left{ order:1; margin-bottom:18px }
+    .hero-right{ order:2; }
+    .carousel-header{ flex-direction:column; align-items:center; gap:12px; }
+    .controls-wrapper{ width:100%; flex-direction:column; gap:12px; }
+    .term-nav{ width:100%; justify-content:center; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .carousel-controls{ justify-content:center; }
+  }
+  @media (max-width:480px){
+    .page-header .title{ font-size:22px }
+    .hero-left img{ max-width:260px }
+    .term-btn{ padding:8px 14px; font-size:13px; flex:1 }
+    .carousel-btn{ width:40px; height:40px }
+    .goal-card{ padding:18px }
+    .goal-card h3{ font-size:16px }
+    .goal-card li{ font-size:13px; margin-bottom:10px }
+    .key-indicator{ padding:18px }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- header -->
+  <header class="page-header">
+    <div class="title">Enabler H — Digital Ecosystem & Administration</div>
+    <div class="subtitle">Strategic Roadmap · Institutional Development Plan (IDP)</div>
+  </header>
+
+  <!-- vision -->
+  <section class="vision" aria-label="Vision">
+    <h2>🎯 Vision</h2>
+    <p>A unified, secure and AI-enabled digital ecosystem that enhances learning experiences, streamlines governance, drives data-based decisions, and ensures seamless connectivity across academic and administrative functions.</p>
+  </section>
+
+  <!-- hero: image + carousel -->
+  <section class="hero-panel" role="region" aria-label="Strategic goals hero">
+    <div class="hero-left" aria-hidden="false">
+      <img src="{{ url_for('static', filename='images/eh.png') }}" alt="Enabler H illustration">
+    </div>
+
+    <div class="hero-right">
+      <div class="carousel-header">
+        <h3 class="carousel-title">Strategic Goals Timeline</h3>
+
+        <div class="controls-wrapper" role="tablist" aria-label="Term navigation and carousel controls">
+          <nav class="term-nav" aria-label="Term navigation">
+            <button class="term-btn active" data-slide="0" type="button">Short</button>
+            <button class="term-btn" data-slide="1" type="button">Mid</button>
+            <button class="term-btn" data-slide="2" type="button">Long</button>
+          </nav>
+
+          <div class="carousel-controls" aria-hidden="false">
+            <button class="carousel-btn" onclick="prevSlide()" aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M12 16L6 10L12 4" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="carousel-btn" onclick="nextSlide()" aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
         </div>
       </div>
-    </a>
 
-    <!-- Right: Back Link -->
-    <a href="/enablers" class="nav-back-link" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 500;">
-      <i class="fas fa-arrow-left"></i> Back to Enablers
-    </a>
+      <div class="carousel-container" aria-live="polite">
+        <div class="carousel-track" id="carouselTrack">
+          <!-- SHORT -->
+          <div class="goal-card short-term" id="slide-0" role="tabpanel" aria-hidden="false">
+            <div class="timeline">0–2 years</div>
+            <h3>Short-Term Goals</h3>
+            <ul>
+              <li>Digitise core processes (ERP, LMS basics).</li>
+              <li>Boost Wi-Fi and smart classrooms; expand IT infrastructure.</li>
+              <li>Provide online study resources and digital library access.</li>
+              <li>Start cybersecurity & data policy initiatives.</li>
+              <li>Unified communication channels (messaging, website updates).</li>
+            </ul>
+          </div>
 
-  </div>
-                    
-    
-    <div class="container">
-        <section class="intro-section card slide-up">
-            <h1>Digital Transformation Roadmap</h1>
-            <p class="fade-in">In alignment with the University Grants Commission's (UGC) Institutional Development Plan (IDP) framework and the broader vision of NEP 2020, Jain University recognizes the transformative role of digital technologies in enhancing the quality, reach, and relevance of higher education. As we advance toward becoming a future-ready institution, digital enablers are central to reimagining learning experiences, improving institutional efficiency, and fostering innovation across academic and administrative functions.</p>
-            
-            <div class="chart-container fade-in">
-                <h4>Current Digital Infrastructure Status</h4>
-                <canvas id="currentScenarioChart"></canvas>
-            </div>
-            
-            <div class="progress-container fade-in">
-                <h4>Implementation Progress</h4>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Satisfactory Infrastructure</span>
-                        <span>23%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-satisfactory" style="width: 23%"></div>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Needs Enhancement</span>
-                        <span>46%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-needs-enhancement" style="width: 46%"></div>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Stop-gap Solutions</span>
-                        <span>19%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-stopgap" style="width: 19%"></div>
-                    </div>
-                </div>
-                <div class="progress-item">
-                    <div class="progress-label">
-                        <span>Does Not Exist</span>
-                        <span>12%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill progress-not-exist" style="width: 12%"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <section class="objectives-section card slide-up">
-            <h2>Strategic Digital Objectives</h2>
-            <p class="fade-in">JAIN University is a large, multi-disciplinary institution offering Traditional, Distance Learning, and Online education. Our technology strategy is built on five core pillars that will drive our digital transformation over the next decade.</p>
-            
-            <div class="chart-container fade-in">
-                <h4>Core Themes of Technology Enablement</h4>
-                <canvas id="coreThemesChart"></canvas>
-            </div>
-            
-            <div class="info-box fade-in">
-                <h4>Digital Transformation Vision</h4>
-                <p>We require a flexible, secure, and integrated University Management Platform that enables decentralized control, superior UX, comprehensive data analytics, and seamless engagement across all academic units and stakeholders. This platform will serve as the foundation for our digital ecosystem, supporting both current needs and future growth.</p>
-            </div>
-            
-            <div class="fade-in">
-                <h4>Key Technology Focus Areas</h4>
-                <div>
-                    <span class="tech-pill tooltip">AI & Machine Learning<span class="tooltiptext">Artificial Intelligence for personalized learning and automation</span></span>
-                    <span class="tech-pill tooltip">Cloud Computing<span class="tooltiptext">Scalable cloud infrastructure for all university systems</span></span>
-                    <span class="tech-pill tooltip">Data Analytics<span class="tooltiptext">Advanced analytics for decision making and student success</span></span>
-                    <span class="tech-pill tooltip">Blockchain<span class="tooltiptext">Secure credentialing and document verification</span></span>
-                    <span class="tech-pill tooltip">IoT<span class="tooltiptext">Smart campus infrastructure and connected devices</span></span>
-                    <span class="tech-pill tooltip">AR/VR<span class="tooltiptext">Immersive learning experiences and virtual labs</span></span>
-                    <span class="tech-pill tooltip">5G Connectivity<span class="tooltiptext">High-speed campus network infrastructure</span></span>
-                    <span class="tech-pill tooltip">Cybersecurity<span class="tooltiptext">Comprehensive data protection and privacy measures</span></span>
-                </div>
-            </div>
-        </section>
-        
-        <section class="assessment-section card slide-up">
-            <h2>Current State Assessment</h2>
-            <p class="fade-in">Our comprehensive evaluation of the existing digital infrastructure revealed both strengths and opportunities for improvement across 26 key digital infrastructure components.</p>
-            
-            <div class="chart-container fade-in">
-                <h4>Digital Infrastructure Assessment</h4>
-                <canvas id="infrastructureStatusChart"></canvas>
-            </div>
-            
-            <h3 class="fade-in">Interconnected Enablers</h3>
-            <p class="fade-in">Digital transformation cannot be achieved in isolation. Our analysis shows strong connections between digital enablers and other critical areas of institutional development.</p>
-            
-            <div class="chart-container fade-in">
-                <h4>Connected IDP Enablers</h4>
-                <canvas id="connectedEnablersChart"></canvas>
-            </div>
-            
-            <div class="info-box fade-in">
-                <h4>Integration Strategy</h4>
-                <p>Our digital enablement roadmap emphasizes interoperability with national initiatives like SWAYAM, NAD, NDEAR, and the Academic Bank of Credits (ABC). This ensures alignment with broader higher education ecosystem developments while meeting our institutional needs.</p>
-            </div>
-        </section>
-        
-        <section class="action-plan-section card slide-up">
-            <h2>Implementation Roadmap</h2>
-            <p class="fade-in">Our action plan balances immediate needs with long-term strategic objectives, recognizing that technology evolves rapidly and our approach must remain adaptable.</p>
-            
-            <div class="tab-container fade-in">
-                <div class="tab-buttons">
-                    <button class="tab-btn active" onclick="openTab('short-term-plan')">Short-term (<2 Yrs)</button>
-                    <button class="tab-btn" onclick="openTab('medium-term-plan')">Mid-term (2-5 Yrs)</button>
-                    <button class="tab-btn" onclick="openTab('long-term-plan')">Long-term (5-10 Yrs)</button>
-                </div>
-                
-                <div id="short-term-plan" class="tab-content active">
-                    <h4>Immediate Priorities</h4>
-                    <ul>
-                        <li>Identify and digitize manual processes across all university functions</li>
-                        <li>Standardize content management and website updates</li>
-                        <li>Implement unified communication systems within ERP</li>
-                        <li>Create program-specific digital content repositories</li>
-                        <li>Upgrade campus WiFi to enable smart classrooms</li>
-                    </ul>
-                </div>
-                
-                <div id="medium-term-plan" class="tab-content">
-                    <h4>Strategic Enhancements</h4>
-                    <ul>
-                        <li>Deploy comprehensive LMS solution integrated with ERP</li>
-                        <li>Expand digital library resources and access</li>
-                        <li>Implement blockchain for document verification</li>
-                        <li>Develop university-wide digital publication platform</li>
-                        <li>Complete transition to paperless workflows</li>
-                    </ul>
-                </div>
-                
-                <div id="long-term-plan" class="tab-content">
-                    <h4>Future-Ready Systems</h4>
-                    <ul>
-                        <li>Establish AI-powered learning analytics and support</li>
-                        <li>Implement AR/VR for immersive learning experiences</li>
-                        <li>Develop smart campus infrastructure with IoT integration</li>
-                        <li>Create adaptive learning pathways using machine learning</li>
-                        <li>Continuous review and adoption of emerging technologies</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="table-container fade-in">
-                <h4>Detailed Digital Infrastructure Action Plan</h4>
-                <table class="action-plan-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Digital Infrastructure</th>
-                            <th>Description</th>
-                            <th>Current Status</th>
-                            <th>Short-term Goals</th>
-                            <th>Mid-term Goals</th>
-                            <th>Long-term Vision</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Internet & Connectivity</td>
-                            <td>Campus-wide high-speed internet access</td>
-                            <td><span class="status-indicator status-satisfactory"></span> Basic connectivity exists</td>
-                            <td>Upgrade bandwidth, implement smart classrooms</td>
-                            <td>Seamless high-speed coverage across all campuses</td>
-                            <td>5G-enabled smart campus infrastructure</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>University Website</td>
-                            <td>Institutional information portal</td>
-                            <td><span class="status-indicator status-needs-enhancement"></span> Needs standardization</td>
-                            <td>Content review, update processes</td>
-                            <td>Real-time department updates</td>
-                            <td>AI-powered personalized content delivery</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Communication Systems</td>
-                            <td>Unified messaging platform</td>
-                            <td><span class="status-indicator status-stopgap"></span> Using WhatsApp/email groups</td>
-                            <td>ERP-integrated announcement system</td>
-                            <td></td>
-                            <td>AI-driven personalized notifications</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Course Microsites</td>
-                            <td>Program-specific information hubs</td>
-                            <td><span class="status-indicator status-not-exist"></span> Not implemented</td>
-                            <td>Create basic content on main site</td>
-                            <td>Develop dedicated microsites</td>
-                            <td>Interactive program portals</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Learning Management</td>
-                            <td>Online course delivery platform</td>
-                            <td><span class="status-indicator status-needs-enhancement"></span> Partial implementation</td>
-                            <td>Faculty training, resource upload</td>
-                            <td>Full LMS deployment</td>
-                            <td>AI-enhanced adaptive learning</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Digital Library</td>
-                            <td>Online academic resources</td>
-                            <td><span class="status-indicator status-needs-enhancement"></span> Limited subscriptions</td>
-                            <td>Awareness campaigns</td>
-                            <td>Expand digital collections</td>
-                            <td>Integrated knowledge ecosystem</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Digital Publications</td>
-                            <td>University journals and magazines</td>
-                            <td><span class="status-indicator status-needs-enhancement"></span> Departmental initiatives</td>
-                            <td>Launch university journal</td>
-                            <td></td>
-                            <td>Discipline-specific open access journals</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>Paperless Office</td>
-                            <td>Digital workflows and processes</td>
-                            <td><span class="status-indicator status-needs-enhancement"></span> Partial implementation</td>
-                            <td>Train staff, digitize key processes</td>
-                            <td>Blockchain verification</td>
-                            <td>Complete digital transformation</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>Digital Assessment</td>
-                            <td>Online exams and evaluation</td>
-                            <td><span class="status-indicator status-needs-enhancement"></span> Paper-based with digital grading</td>
-                            <td>Faculty training on digital tools</td>
-                            <td>Full digital assessment system</td>
-                            <td>AI-assisted evaluation</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>Data Security</td>
-                            <td>Information protection systems</td>
-                            <td><span class="status-indicator status-stopgap"></span> Basic measures in place</td>
-                            <td>Security audit, staff training</td>
-                            <td>Advanced protection systems</td>
-                            <td>University cloud infrastructure</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="info-box fade-in">
-                <h4>Agile Implementation Approach</h4>
-                <p>Our digital enablement strategy emphasizes continuous review and iterative updates to remain responsive to technological advancements. While we establish clear short and medium-term goals, our long-term approach focuses on adaptability rather than fixed milestones, ensuring we can incorporate emerging innovations as they become relevant to higher education.</p>
-            </div>
-        </section>
+          <!-- MID -->
+          <div class="goal-card mid-term" id="slide-1" role="tabpanel" aria-hidden="true">
+            <div class="timeline">2–5 years</div>
+            <h3>Mid-Term Goals</h3>
+            <ul>
+              <li>Full LMS with automated exams and admin workflows.</li>
+              <li>Integrated ERP with analytics dashboards for decision support.</li>
+              <li>Studios, MOOCs and structured digital content production.</li>
+              <li>Smart campus: high-speed internet, cloud systems and reliable services.</li>
+              <li>Adopt AI/ML in evaluation and student services.</li>
+            </ul>
+          </div>
+
+          <!-- LONG -->
+          <div class="goal-card long-term" id="slide-2" role="tabpanel" aria-hidden="true">
+            <div class="timeline">5–15 years</div>
+            <h3>Long-Term Goals</h3>
+            <ul>
+              <li>AI-driven university systems and campus automation.</li>
+              <li>University cloud and fully paperless workflows.</li>
+              <li>Robust digital ecosystem: global platforms and seamless access.</li>
+              <li>Advanced cybersecurity and enterprise-grade data resilience.</li>
+              <li>Deep analytics for strategic decision-making and institutional insight.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-indicators" role="tablist" aria-label="Carousel indicators">
+        <div class="indicator active" onclick="goToSlide(0)" aria-label="Show short term goals"></div>
+        <div class="indicator" onclick="goToSlide(1)" aria-label="Show mid term goals"></div>
+        <div class="indicator" onclick="goToSlide(2)" aria-label="Show long term goals"></div>
+      </div>
     </div>
-    
-    
-    
-    <div class="floating-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <i class="fas fa-arrow-up"></i>
-    </div>
-    
-    <script>
-        // Register plugins
-        Chart.register(ChartDataLabels);
-        
-        // Initialize charts when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Current Scenario Pie Chart
-            const currentScenarioCtx = document.getElementById('currentScenarioChart').getContext('2d');
-            new Chart(currentScenarioCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Satisfactory (23%)', 'Needs Enhancement (46%)', 'Stop-gap Solutions (19%)', 'Does Not Exist (12%)'],
-                    datasets: [{
-                        data: [23, 46, 19, 12],
-                        backgroundColor: [
-                            '#28a745',
-                            '#ffc107',
-                            '#fd7e14',
-                            '#dc3545'
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 15
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: false
-                        },
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.label + ': ' + context.raw + '%';
-                                }
-                            }
-                        },
-                        datalabels: {
-                            formatter: (value, ctx) => {
-                                return value + '%';
-                            },
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 12
-                            }
-                        }
-                    },
-                    cutout: '65%'
-                }
-            });
-            
-            // Core Themes Doughnut Chart
-            const coreThemesCtx = document.getElementById('coreThemesChart').getContext('2d');
-            new Chart(coreThemesCtx, {
-                type: 'pie',
-                data: {
-                    labels: ['Flexibility', 'Governance', 'User Experience', 'Data Analytics', 'Integration'],
-                    datasets: [{
-                        data: [20, 20, 20, 20, 20],
-                        backgroundColor: [
-                            '#003366',
-                            '#3498db',
-                            '#e74c3c',
-                            '#2ecc71',
-                            '#f39c12'
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 15
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle',
-                                font: {
-                                    size: 12
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.label + ': Core technology requirement';
-                                }
-                            }
-                        },
-                        datalabels: {
-                            formatter: (value, ctx) => {
-                                return ctx.chart.data.labels[ctx.dataIndex];
-                            },
-                            color: '#fff',
-                            font: {
-                                weight: 'bold',
-                                size: 12
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Infrastructure Status Bar Chart
-            const infrastructureStatusCtx = document.getElementById('infrastructureStatusChart').getContext('2d');
-            new Chart(infrastructureStatusCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Satisfactory', 'Needs Enhancement', 'Stop-gap', 'Not Existing'],
-                    datasets: [{
-                        label: 'Percentage',
-                        data: [23, 46, 19, 12],
-                        backgroundColor: [
-                            'rgba(40, 167, 69, 0.7)',
-                            'rgba(255, 193, 7, 0.7)',
-                            'rgba(253, 126, 20, 0.7)',
-                            'rgba(220, 53, 69, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(40, 167, 69, 1)',
-                            'rgba(255, 193, 7, 1)',
-                            'rgba(253, 126, 20, 1)',
-                            'rgba(220, 53, 69, 1)'
-                        ],
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Percentage of Infrastructure',
-                                font: {
-                                    weight: 'bold'
-                                }
-                            },
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.raw + '% of digital infrastructure';
-                                }
-                            }
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'top',
-                            formatter: (value, ctx) => {
-                                return value + '%';
-                            },
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Connected Enablers Bar Chart
-            const connectedEnablersCtx = document.getElementById('connectedEnablersChart').getContext('2d');
-            new Chart(connectedEnablersCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Academic', 'Governance', 'Finance', 'Research', 'Physical', 'Networking'],
-                    datasets: [{
-                        label: 'Connections',
-                        data: [16, 9, 8, 5, 2, 2],
-                        backgroundColor: 'rgba(0, 51, 102, 0.7)',
-                        borderColor: 'rgba(0, 51, 102, 1)',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Connections',
-                                font: {
-                                    weight: 'bold'
-                                }
-                            },
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.raw + ' connected infrastructure items';
-                                }
-                            }
-                        },
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'top',
-                            font: {
-                                weight: 'bold'
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Animate progress bars on scroll
-            const progressBars = document.querySelectorAll('.progress-fill');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const width = entry.target.style.width;
-                        entry.target.style.width = '0';
-                        setTimeout(() => {
-                            entry.target.style.width = width;
-                        }, 100);
-                    }
-                });
-            }, {threshold: 0.5});
-            
-            progressBars.forEach(bar => {
-                observer.observe(bar);
-            });
-            
-            // Add animation classes to elements when they come into view
-            const animateElements = document.querySelectorAll('.slide-up, .fade-in');
-            const elementObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate');
-                    }
-                });
-            }, {threshold: 0.1});
-            
-            animateElements.forEach(el => {
-                elementObserver.observe(el);
-            });
-        });
-        
-        // Tab functionality
-        function openTab(tabId) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Deactivate all tab buttons
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Activate selected tab and content
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-        
-        // Show/hide floating button based on scroll position
-        window.addEventListener('scroll', function() {
-            const floatingBtn = document.querySelector('.floating-btn');
-            if (window.pageYOffset > 300) {
-                floatingBtn.style.display = 'flex';
-            } else {
-                floatingBtn.style.display = 'none';
-            }
-        });
-        
-        // Initialize floating button as hidden
-        document.querySelector('.floating-btn').style.display = 'none';
-    </script>
-</body>
-</html>
+  </section>
+
+  <!-- key indicator -->
+  <section class="key-indicator" aria-label="Key indicator">
+    <h4>Key Indicator</h4>
+    <p>A unified, secure and AI-enabled digital ecosystem that enhances learning experiences, streamlines governance, drives data-based decisions, and ensures seamless connectivity across all academic and administrative functions.</p>
+    <p style="margin-top:10px;font-weight:600;color:#475569;">Outcome: Efficient administration, improved learning outcomes, and resilient digital operations.</p>
+  </section>
+</main>
+
+<script>
+  let currentSlide = 0;
+  const track = document.getElementById('carouselTrack');
+  const indicators = document.querySelectorAll('.indicator');
+  const termBtns = document.querySelectorAll('.term-btn');
+  const totalSlides = 3;
+
+  function updateCarousel() {
+    if (!track) return;
+    const container = track.parentElement;
+    const gap = 24;
+    const slideWidth = container.offsetWidth;
+    track.style.transform = `translateX(-${currentSlide * (slideWidth + gap)}px)`;
+
+    indicators.forEach((ind,i)=> ind.classList.toggle('active', i===currentSlide));
+    termBtns.forEach((btn,i)=> btn.classList.toggle('active', i===currentSlide));
+
+    for (let i=0;i<totalSlides;i++){
+      const p = document.getElementById(`slide-${i}`);
+      if (p) p.setAttribute('aria-hidden', i===currentSlide ? 'false' : 'true');
+    }
+  }
+
+  function nextSlide(){ currentSlide = (currentSlide + 1) % totalSlides; updateCarousel(); }
+  function prevSlide(){ currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; updateCarousel(); }
+  function goToSlide(i){ currentSlide = Math.max(0, Math.min(totalSlides-1, i)); updateCarousel(); }
+
+  termBtns.forEach((btn, idx) => btn.addEventListener('click', () => { const ds = btn.getAttribute('data-slide'); const target = ds !== null ? parseInt(ds,10) : idx; goToSlide(target); }));
+
+  window.addEventListener('keydown', e=> { if (e.key==='ArrowRight') nextSlide(); if (e.key==='ArrowLeft') prevSlide(); });
+
+  let autoplay = setInterval(nextSlide, 6000);
+  ['touchstart','mousedown'].forEach(ev => document.addEventListener(ev, ()=> { clearInterval(autoplay); autoplay = null; }, {passive:true}));
+
+  window.addEventListener('resize', ()=> { clearTimeout(window._resizeTimer); window._resizeTimer = setTimeout(updateCarousel,90); });
+  window.addEventListener('load', updateCarousel);
+  document.addEventListener('DOMContentLoaded', updateCarousel);
+</script>
+{% endblock %}
