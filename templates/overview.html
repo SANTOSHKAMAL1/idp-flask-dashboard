@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+
+{% block title %}Goal Progress — Overview{% endblock %}
+
+{% block styles %}
+<style>
+:root {
+  --bg: #f5f8fc;
+  --card: #ffffff;
+  --accent: #ff8c00;
+  --accent2: #ffb066;
+  --accent-light: rgba(255, 140, 0, 0.08);
+  --muted: #64748b;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.12);
+  --radius: 18px;
+  --transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  --container-w: 1200px;
+}
+
+* { box-sizing: border-box; }
+
+html,body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+/* page wrapper */
+.page-wrap {
+  max-width: var(--container-w);
+  margin: 16px auto 60px;
+  padding: 0 18px;
+}
+
+/* Top header (keeps compact) */
+.page-header {
+  background: linear-gradient(135deg, #071029 0%, #0f2746 100%);
+  color: #fff;
+  padding: 28px;
+  border-radius: 14px;
+  margin-bottom: 22px;
+  box-shadow: 0 12px 40px rgba(11,19,30,0.08);
+}
+.page-header > div { position: relative; z-index: 1; }
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 6px;
+  background: linear-gradient(90deg, #fff 0%, #ffb066 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle { margin: 0; color: rgba(255,255,255,0.9); font-size: 14px; }
+
+/* nav pills */
+.overview-nav {
+  margin-top: 16px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.overview-nav button {
+  border: none;
+  background: rgba(255,255,255,0.09);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: var(--transition);
+}
+.overview-nav button:hover { transform: translateY(-3px); background: rgba(255,255,255,0.12); }
+.overview-nav .active {
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  color: #fff;
+  box-shadow: 0 10px 28px rgba(255,140,0,0.12);
+}
+
+/* content container (cards) */
+.content-container {
+  margin-top: -28px; /* slight overlap */
+  position: relative;
+  z-index: 3;
+}
+
+/* panel - rounded, borderless */
+.panel {
+  display: none;
+  background: var(--card);
+  border-radius: calc(var(--radius) - 4px);
+  padding: 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: var(--transition);
+}
+.panel.focus { display: block; opacity: 1; transform: translateY(0); }
+
+/* panel header simplified (no border) */
+.panel-header {
+  padding: 24px 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+  border-radius: calc(var(--radius) - 6px) calc(var(--radius) - 6px) 0 0;
+}
+.panel-title {
+  font-weight: 800;
+  font-size: 22px;
+  margin: 0 0 6px;
+  color: #071029;
+}
+.panel-sub { color: var(--muted); font-size: 14px; margin: 0; }
+
+/* panel content */
+.panel-content {
+  padding: 20px 28px 28px;
+}
+
+/* enabler container and rows */
+.enabler-container { display: grid; gap: 16px; margin-top: 8px; }
+
+.enabler-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 14px;
+  align-items: start;
+  background: linear-gradient(180deg,#ffffff,#fbfdff);
+  padding: 16px;
+  border-radius: 12px;
+  transition: var(--transition);
+  box-shadow: 0 6px 16px rgba(11,19,30,0.03);
+  transform: translateY(0);
+}
+.enabler-row:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  background: linear-gradient(180deg,#fffaf6,#fbfdff);
+}
+
+.enabler-row b {
+  display:block;
+  margin-bottom:8px;
+  font-weight:800;
+  color:#071029;
+  font-size:15px;
+  padding-left:6px;
+}
+.enabler-row p { margin:0; color:#374151; line-height:1.6; font-size:15px; }
+
+/* SUMMARY card (rounded, no vertical bar) */
+.summary-card {
+  margin-top: 22px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: var(--transition);
+}
+#summary-heading { font-weight:800; color:#071029; font-size:18px; margin:0 0 12px; display:block; }
+
+/* table styling (clean, no heavy borders) */
+table { width:100%; border-collapse: collapse; margin-top:8px; }
+th, td { padding:12px 10px; text-align:left; font-size:14px; color:#213243; }
+th { background: transparent; font-weight:700; color:#0b1220; opacity:0.9; }
+
+/* outcome strip (rounded) */
+.outcome {
+  margin-top: 18px;
+  background: linear-gradient(90deg, #eef6ff 0%, #f8fbff 100%);
+  padding: 16px;
+  border-radius: 10px;
+  font-weight:700;
+  color:#071029;
+  font-size:15px;
+}
+
+/* scroll animations */
+.scroll-animate { opacity: 0; transform: translateY(18px); transition: var(--transition-slow); }
+.scroll-animate.visible { opacity: 1; transform: translateY(0); }
+
+/* responsiveness */
+@media (max-width: 980px) {
+  .enabler-row { grid-template-columns: 1fr; }
+  .page-wrap { padding: 0 14px; }
+  .panel-header { padding: 18px; }
+  .panel-content { padding: 16px; }
+  .title { font-size: 22px; }
+}
+@media (max-width: 520px) {
+  .page-header { padding: 20px 14px; border-radius: 10px; }
+  .overview-nav { justify-content: center; gap:8px; }
+  .overview-nav button { padding: 8px 14px; font-size: 13px; }
+  .enabler-row { padding: 12px; border-radius: 10px; }
+  .summary-card { padding: 14px; }
+}
+
+/* accessibility focus */
+button:focus { outline: 3px solid rgba(255,140,0,0.18); outline-offset: 3px; border-radius:999px; }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-wrap">
+  <div class="page-header">
+    <div>
+      <div class="title">GOAL PROGRESS OVERVIEW</div>
+      <div class="subtitle">Short · Mid · Long Term Strategy Plan</div>
+      <div class="overview-nav" role="tablist" aria-label="Overview navigation" style="margin-top:14px;">
+        <button class="active" data-target="panel-short" aria-controls="panel-short" aria-selected="true">Short Term</button>
+        <button data-target="panel-mid" aria-controls="panel-mid" aria-selected="false">Mid Term</button>
+        <button data-target="panel-long" aria-controls="panel-long" aria-selected="false">Long Term</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-container">
+    <!-- SHORT TERM PANEL -->
+    <div class="panel focus scroll-animate" id="panel-short" role="region" aria-labelledby="short-heading">
+      <div class="panel-header">
+        <div id="short-heading" class="panel-title">Short-Term Goals (0–2 Years)</div>
+        <div class="panel-sub">Focus Area: Foundation Building and Immediate Implementation — Guiding Principle: Establishing the Framework</div>
+      </div>
+
+      <div class="panel-content">
+        <div class="enabler-container">
+          <div class="enabler-row">
+            <div><b>Enabler A — Governance</b></div>
+            <div><p>Establish committees, feedback systems, audits, and Research & Innovation Council.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler B — Financial</b></div>
+            <div><p>Formulate funding policies, optimize budgets, initiate internal research grant (IRG) plans and seed funding.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler C — Academic</b></div>
+            <div><p>Curriculum redesign aligned to NEP 2020, launch MOOCs, Centres of Excellence and modular courses.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler D — Research & IP</b></div>
+            <div><p>Establish Research and Innovation Council, promote interdisciplinary research and early-stage IP awareness.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler E — HR & Support</b></div>
+            <div><p>Faculty induction programs, staff upskilling, digital literacy, and performance evaluation systems.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler F — Networking & Collaborations</b></div>
+            <div><p>Launch alumni engagement, industry connection and local partnerships.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler G — Physical / Infrastructure</b></div>
+            <div><p>Upgrade classrooms, labs and student facilities; begin green & energy-efficient projects.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler H — Digital Enablers</b></div>
+            <div><p>Deploy core LMS & ERP modules, boost campus Wi-Fi and digital repositories; start cybersecurity basics.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MID TERM PANEL -->
+    <div class="panel scroll-animate" id="panel-mid" role="region" aria-labelledby="mid-heading">
+      <div class="panel-header">
+        <div id="mid-heading" class="panel-title">Mid-Term Goals (2–5 Years)</div>
+        <div class="panel-sub">Focus Area: Expansion and Integration — Strengthening Systems</div>
+      </div>
+
+      <div class="panel-content">
+        <div class="enabler-container">
+          <div class="enabler-row">
+            <div><b>Enabler A — Governance</b></div>
+            <div><p>Establish Senate and Syndicate; strengthen leadership participation and governance transparency.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler B — Financial</b></div>
+            <div><p>Create endowments, CSR models and IP-based revenue streams; improve financial sustainability.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler C — Academic</b></div>
+            <div><p>Introduce dual-degree programmes, modular curriculum (MEME), experiential & skill-based learning.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler D — Research & IP</b></div>
+            <div><p>Expand international research collaborations, protect IPR, and grow commercialization pathways.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler E — HR & Support</b></div>
+            <div><p>Leadership pipeline programmes, international faculty exchanges and value-based evaluation systems.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler F — Networking & Collaborations</b></div>
+            <div><p>Forge global academic and industry partnerships, stronger incubator and startup linkages.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler G — Physical / Infrastructure</b></div>
+            <div><p>Enhance sustainable infrastructure, expand labs and feature innovation hubs and maker spaces.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler H — Digital Enablers</b></div>
+            <div><p>Centralize academic digital platforms, integrate ERP + analytics dashboards and hybrid teaching models.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LONG TERM PANEL -->
+    <div class="panel scroll-animate" id="panel-long" role="region" aria-labelledby="long-heading">
+      <div class="panel-header">
+        <div id="long-heading" class="panel-title">Long-Term Goals (5–15 Years)</div>
+        <div class="panel-sub">Focus Area: Sustainability & Global Leadership — Transforming for the Future</div>
+      </div>
+
+      <div class="panel-content">
+        <div class="enabler-container">
+          <div class="enabler-row">
+            <div><b>Enabler A — Governance</b></div>
+            <div><p>Continuous policy evolution, AI-assisted governance and high-integrity institutional decision analytics.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler B — Financial</b></div>
+            <div><p>Global alumni funding, green investments, endowments and financial autonomy for sustained growth.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler C — Academic</b></div>
+            <div><p>Research-driven lifelong learning, global-ready programmes and satellite campuses/partnerships.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler D — Research & IP</b></div>
+            <div><p>Strong international research networks, high-impact publications and innovation ecosystems.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler E — HR & Support</b></div>
+            <div><p>World-class HR systems, global faculty collaborations and leadership in education practice.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler F — Networking & Collaborations</b></div>
+            <div><p>Global alumni chapters and cross-border academic ecosystems that broaden reach and opportunity.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler G — Physical / Infrastructure</b></div>
+            <div><p>Smart campus with optimized resource management, net-zero initiatives and resilient built environment.</p></div>
+          </div>
+
+          <div class="enabler-row">
+            <div><b>Enabler H — Digital Enablers</b></div>
+            <div><p>AI-powered academic planning, immersive learning (metaverse) and enterprise-grade cybersecurity/resilience.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="summary-card scroll-animate" role="region" aria-labelledby="summary-heading">
+      <div id="summary-heading">Overall Progress Summary</div>
+      <table aria-label="overall progress table">
+        <thead>
+          <tr><th>Period</th><th>Strategic Focus</th><th>Outcome</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0–2 Years</td><td>Build Foundations</td><td>Transparency, Inclusivity, Readiness</td></tr>
+          <tr><td>2–5 Years</td><td>Integrate and Expand</td><td>Global Standards, Strong Ecosystem</td></tr>
+          <tr><td>5–15 Years</td><td>Lead and Sustain</td><td>Global Leadership, Sustainable Growth</td></tr>
+        </tbody>
+      </table>
+
+      <div class="outcome scroll-animate">Outcome: Institutional readiness, transparency, inclusivity, and participatory governance.</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const navButtons = document.querySelectorAll('.overview-nav button');
+  const panels = document.querySelectorAll('.panel');
+
+  function setActive(targetId, btn) {
+    panels.forEach(p => p.classList.remove('focus'));
+    navButtons.forEach(b => b.classList.remove('active'));
+    const target = document.getElementById(targetId);
+    if (target) target.classList.add('focus');
+    if (btn) btn.classList.add('active');
+    // update hash
+    history.replaceState(null, '', '#' + targetId);
+    // accessibility focus
+    if (target) {
+      const heading = target.querySelector('.panel-title');
+      if (heading) {
+        heading.setAttribute('tabindex', '-1');
+        heading.focus({preventScroll: true});
+      }
+    }
+    // reveal scroll-animate items (in case user switched tabs)
+    revealOnScroll();
+  }
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => setActive(btn.dataset.target, btn));
+    btn.addEventListener('keyup', (e) => { if (e.key === 'Enter' || e.key === ' ') setActive(btn.dataset.target, btn); });
+  });
+
+  // init from hash
+  if (window.location.hash) {
+    const id = window.location.hash.substring(1);
+    const btn = [...navButtons].find(b => b.dataset.target === id);
+    if (btn) setActive(btn.dataset.target, btn);
+  }
+
+  // simple reveal on scroll for .scroll-animate items
+  function revealOnScroll() {
+    const blocks = document.querySelectorAll('.scroll-animate');
+    blocks.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.85) el.classList.add('visible');
+    });
+  }
+  revealOnScroll();
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('resize', revealOnScroll);
+});
+</script>
+{% endblock %}

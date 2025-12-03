@@ -13,8 +13,11 @@
       --brand: #0b1220;
       --muted: #64748b;
       --accent: #ff8c00;
-      --nav-bg: rgba(255,255,255,0.95);
+      --nav-bg: rgba(255,255,255,0.85);
+      --glass: rgba(255,255,255,0.6);
+      --shadow-strong: 0 8px 32px rgba(15,23,42,0.12);
     }
+
     html, body { height: 100%; }
     body {
       margin: 0;
@@ -25,27 +28,75 @@
       color: var(--brand);
     }
 
-    /* ========== TOP LOGO (FIXED) ========== */
-    .base-top {
+    /* ========== TOP BAR (LOGO + NAV + HAMBURGER) ========== */
+    .topbar {
       position: fixed;
-      top: 16px;
-      left: 20px;
-      z-index: 1500;
-      pointer-events: all;
-    }
-    .base-logo img {
-      height: 42px;
-      width: auto;
-      display: block;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1200px, calc(100% - 36px));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      z-index: 1600;
+      transition: all 0.28s ease;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.75));
+      box-shadow: var(--shadow-strong);
+      pointer-events: auto;
     }
 
-    /* ========== HAMBURGER BUTTON ========== */
+    /* compact state when scrolled */
+    .topbar.scrolled {
+      top: 8px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 10px 30px rgba(11,19,30,0.12);
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* logo */
+    .base-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .base-logo img { height:42px; width:auto; display:block; transition:height .2s ease; }
+    .topbar.scrolled .base-logo img { height:34px; }
+
+    /* center nav */
+    .base-nav {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      pointer-events: auto;
+      flex: 1 1 auto;
+    }
+
+    .base-nav a {
+      text-decoration: none;
+      color: var(--brand);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: all 0.18s ease;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .base-nav a:hover {
+      background: linear-gradient(135deg, var(--accent), #ffa500);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* right area (hamburger or extra buttons) */
+    .top-actions { display:flex; align-items:center; gap:12px; }
+
+    /* hamburger (mobile) */
     .hamburger-btn {
-      display: none;
-      position: fixed;
-      top: 16px;
-      right: 20px;
-      z-index: 1600;
+      display:none;
       flex-direction: column;
       gap: 5px;
       cursor: pointer;
@@ -54,194 +105,74 @@
       border-radius: 10px;
       box-shadow: 0 4px 16px rgba(15,23,42,0.12);
       border: none;
-      transition: all 0.3s ease;
+      transition: all .2s ease;
+      align-items:center;
     }
-
     .hamburger-btn span {
       width: 26px;
       height: 3px;
       background: var(--brand);
       border-radius: 3px;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
+      display:block;
     }
+    .hamburger-btn.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+    .hamburger-btn.active span:nth-child(2) { opacity: 0; transform: translateX(-6px); }
+    .hamburger-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-    .hamburger-btn.active span:nth-child(1) {
-      transform: rotate(45deg) translate(7px, 7px);
-    }
-
-    .hamburger-btn.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger-btn.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(8px, -8px);
-    }
-
-    /* ========== DESKTOP NAV (ROUNDED CENTER) ========== */
-    .base-nav-wrap {
-      position: fixed;
-      top: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1400;
-      pointer-events: none;
-    }
-    
-    .base-nav {
-      pointer-events: all;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      justify-content: center;
-      background: var(--nav-bg);
-      border-radius: 50px;
-      padding: 12px 24px;
-      box-shadow: 0 8px 32px rgba(15,23,42,0.12);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      flex-wrap: wrap;
-    }
-    
-    .base-nav a {
-      text-decoration: none;
-      color: var(--brand);
-      font-weight: 600;
-      padding: 10px 18px;
-      border-radius: 50px;
-      transition: all 0.2s ease;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    
-    .base-nav a:hover {
-      background: linear-gradient(135deg, var(--accent), #ffa500);
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    /* ========== MOBILE OVERLAY NAV ========== */
+    /* mobile overlay nav - hidden by default; will be displayed on small screens via media query */
     .mobile-nav-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(11, 18, 32, 0.98);
-      backdrop-filter: blur(20px);
-      z-index: 1500;
+      background: rgba(11, 18, 32, 0.9);
+      z-index: 1700;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.3s ease;
+      transition: all 0.28s ease;
       overflow-y: auto;
     }
-
-    .mobile-nav-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .mobile-nav-content {
-      padding: 100px 30px 40px;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .mobile-nav-overlay nav {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
+    .mobile-nav-overlay.active { opacity: 1; visibility: visible; }
+    .mobile-nav-content { padding: 110px 24px 32px; max-width: 520px; margin: 0 auto; }
     .mobile-nav-overlay a {
-      text-decoration: none;
-      color: white;
-      font-weight: 600;
-      font-size: 18px;
-      padding: 16px 24px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      transition: all 0.2s ease;
-      display: block;
-      text-align: center;
+      display:block; text-decoration:none; color:white; font-weight:700; font-size:18px;
+      padding:14px 18px; margin-bottom:10px; border-radius:10px; background: rgba(255,255,255,0.04);
+      transition: all .18s ease;
+      text-align:center;
     }
+    .mobile-nav-overlay a:hover { transform: translateX(8px); background: linear-gradient(135deg, var(--accent), #ffa500); }
 
-    .mobile-nav-overlay a:hover,
-    .mobile-nav-overlay a:active {
-      background: linear-gradient(135deg, var(--accent), #ffa500);
-      border-color: var(--accent);
-      transform: translateX(8px);
-    }
+    /* content offset so main doesn't hide under topbar */
+    .content-offset { padding-top: 120px; }
 
-    /* ========== CONTENT SPACING ========== */
-    .content-offset {
-      padding-top: 160px;
-    }
-
-    /* ========== RESPONSIVE ========== */
+    /* responsive behavior */
     @media (max-width: 1024px) {
-      .base-nav {
-        gap: 6px;
-        padding: 10px 20px;
-      }
-      .base-nav a {
-        padding: 8px 14px;
-        font-size: 13px;
-      }
+      .topbar { width: min(1000px, calc(100% - 28px)); }
+      .base-nav a { padding: 8px 12px; font-size:13px; }
     }
 
     @media (max-width: 768px) {
-      .hamburger-btn {
-        display: flex;
-      }
+      .base-nav { display:none; }           /* hide center nav on mobile */
+      .hamburger-btn { display:flex; }     /* show hamburger */
+      .base-logo img { height:36px; }
+      .content-offset { padding-top: 96px; }
 
-      .base-top {
-        top: 14px;
-        left: 16px;
-      }
-
-      .base-logo img {
-        height: 36px;
-      }
-
-      .base-nav-wrap {
-        display: none !important;
-      }
-
-      .mobile-nav-overlay {
-        display: block;
-      }
-
-      .content-offset {
-        padding-top: 100px;
-      }
+      /* ensure overlay nav is available on mobile */
+      .mobile-nav-overlay { display: block; }
     }
 
     @media (max-width: 480px) {
-      .base-logo img {
-        height: 32px;
-      }
+      .topbar { left: 50%; transform: translateX(-50%); padding: 10px; }
+      .base-logo img { height:32px; }
+      .content-offset { padding-top: 80px; }
+      .mobile-nav-content { padding-top: 90px; }
+    }
 
-      .hamburger-btn {
-        top: 12px;
-        right: 16px;
-        padding: 8px;
-      }
-
-      .hamburger-btn span {
-        width: 22px;
-      }
-
-      .mobile-nav-content {
-        padding: 90px 20px 30px;
-      }
-
-      .mobile-nav-overlay a {
-        font-size: 16px;
-        padding: 14px 20px;
-      }
-
-      .content-offset {
-        padding-top: 90px;
-      }
+    /* focus states for accessibility */
+    .base-nav a:focus, .hamburger-btn:focus, .mobile-nav-overlay a:focus {
+      outline: 3px solid rgba(255,140,0,0.18);
+      outline-offset: 3px;
+      border-radius: 8px;
     }
   </style>
 
@@ -249,27 +180,17 @@
 </head>
 <body>
 
-  <!-- ========== TOP LOGO (ALWAYS VISIBLE) ========== -->
-  <div class="base-top" role="banner">
-    <div class="base-logo">
-      <a href="{{ url_for('dashboard') }}">
-        <img src="{{ url_for('static', filename='images/jainl.png') }}" alt="JAIN Logo">
-      </a>
-    </div>
-  </div>
+  <!-- TOP BAR: logo + nav + hamburger -->
+  <header class="topbar" id="topbar" role="banner" aria-label="Primary topbar">
+    <!-- left: logo -->
+    <a class="base-logo" href="{{ url_for('dashboard') }}" aria-label="Jain dashboard">
+      <img src="{{ url_for('static', filename='images/jainl.png') }}" alt="JAIN Logo">
+    </a>
 
-  <!-- ========== HAMBURGER BUTTON (MOBILE ONLY) ========== -->
-  <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle navigation">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
-  <!-- ========== DESKTOP NAV (ROUNDED CENTER) ========== -->
-  <div class="base-nav-wrap">
+    <!-- center: nav (desktop) -->
     <nav class="base-nav" role="navigation" aria-label="Primary navigation">
       <a href="{{ url_for('dashboard') }}">Home</a>
-      <a href="{{ url_for('view_section', section_id='principal') }}">Principal Committee</a>
+      <a href="{{ url_for('overview') }}">Overview</a>
       <a href="{{ url_for('enablersA') }}">A</a>
       <a href="{{ url_for('enablersb') }}">B</a>
       <a href="{{ url_for('enablersc') }}">C</a>
@@ -279,67 +200,128 @@
       <a href="{{ url_for('enablersg') }}">G</a>
       <a href="{{ url_for('enablersh') }}">H</a>
     </nav>
-  </div>
 
-  <!-- ========== MOBILE NAV OVERLAY ========== -->
-  <div id="mobileNav" class="mobile-nav-overlay">
-    <div class="mobile-nav-content">
-      <nav role="navigation" aria-label="Mobile navigation">
-        <a href="{{ url_for('dashboard') }}">🏠 Home</a>
-        <a href="{{ url_for('view_section', section_id='principal') }}">👥 Principal Committee</a>
-        <a href="{{ url_for('enablersA') }}">🅰️ Enabler A</a>
-        <a href="{{ url_for('enablersb') }}">🅱️ Enabler B</a>
-        <a href="{{ url_for('enablersc') }}">🅲 Enabler C</a>
-        <a href="{{ url_for('enablersd') }}">🅳 Enabler D</a>
-        <a href="{{ url_for('enablerse') }}">🅴 Enabler E</a>
-        <a href="{{ url_for('enablersf') }}">🅵 Enabler F</a>
-        <a href="{{ url_for('enablersg') }}">🅶 Enabler G</a>
-        <a href="{{ url_for('enablersh') }}">🅷 Enabler H</a>
-        <a href="{{ url_for('index') }}">ℹ️ About</a>
+    <!-- right: actions (hamburger for mobile) -->
+    <div class="top-actions">
+      <button id="hamburgerBtn" class="hamburger-btn" aria-expanded="false" aria-controls="mobileNav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div id="mobileNav" class="mobile-nav-overlay" aria-hidden="true">
+    <div class="mobile-nav-content" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+      <nav role="navigation" aria-label="Mobile navigation list">
+        <a href="{{ url_for('dashboard') }}">Home</a>
+        <a href="{{ url_for('overview') }}">Overview</a>
+        <a href="{{ url_for('enablersA') }}">Enabler A</a>
+        <a href="{{ url_for('enablersb') }}">Enabler B</a>
+        <a href="{{ url_for('enablersc') }}">Enabler C</a>
+        <a href="{{ url_for('enablersd') }}">Enabler D</a>
+        <a href="{{ url_for('enablerse') }}">Enabler E</a>
+        <a href="{{ url_for('enablersf') }}">Enabler F</a>
+        <a href="{{ url_for('enablersg') }}">Enabler G</a>
+        <a href="{{ url_for('enablersh') }}">Enabler H</a>
       </nav>
     </div>
   </div>
 
-  <!-- ========== MAIN CONTENT ========== -->
+  <!-- MAIN CONTENT -->
   <main class="content-offset" role="main">
     {% block content %}{% endblock %}
   </main>
 
-  <!-- ========== BASE SCRIPTS ========== -->
+  <!-- SCRIPTS: sticky behavior, mobile toggle, keyboard handling -->
   <script>
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const mobileNav = document.getElementById('mobileNav');
+    (function() {
+      const topbar = document.getElementById('topbar');
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const mobileNav = document.getElementById('mobileNav');
 
-    function toggleMobileNav() {
-      hamburgerBtn.classList.toggle('active');
-      mobileNav.classList.toggle('active');
-      
-      // Prevent body scroll when menu is open
-      if (mobileNav.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = '';
+      // Toggle mobile overlay
+      function toggleMobileNav(force) {
+        const open = typeof force === 'boolean' ? force : !mobileNav.classList.contains('active');
+        if (open) {
+          mobileNav.classList.add('active');
+          mobileNav.setAttribute('aria-hidden', 'false');
+          hamburgerBtn.classList.add('active');
+          hamburgerBtn.setAttribute('aria-expanded', 'true');
+          // prevent body scroll
+          document.documentElement.style.overflow = 'hidden';
+          document.body.style.overflow = 'hidden';
+          // set focus to first link for accessibility
+          const first = mobileNav.querySelector('a');
+          if (first) first.focus();
+        } else {
+          mobileNav.classList.remove('active');
+          mobileNav.setAttribute('aria-hidden', 'true');
+          hamburgerBtn.classList.remove('active');
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          document.documentElement.style.overflow = '';
+          document.body.style.overflow = '';
+          hamburgerBtn.focus();
+        }
       }
-    }
 
-    // Toggle menu on hamburger click
-    hamburgerBtn.addEventListener('click', toggleMobileNav);
+      // Hamburger click
+      hamburgerBtn.addEventListener('click', () => toggleMobileNav());
 
-    // Close menu when clicking a link
-    mobileNav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-          toggleMobileNav();
+      // Close nav when clicking a mobile link
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 768) toggleMobileNav(false);
+        });
+      });
+
+      // Close on ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+          toggleMobileNav(false);
         }
       });
-    });
 
-    // Close menu on escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
-        toggleMobileNav();
+      // sticky / compact topbar on scroll
+      const SCROLL_THRESHOLD = 32;
+      function handleScroll() {
+        // When pageY > threshold, add compact class
+        if (window.scrollY > SCROLL_THRESHOLD) {
+          if (!topbar.classList.contains('scrolled')) topbar.classList.add('scrolled');
+        } else {
+          topbar.classList.remove('scrolled');
+        }
       }
-    });
+
+      // Run on load + scroll
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('load', handleScroll);
+
+      // If user navigates via hash (so content may be scrolled), ensure topbar updates
+      window.addEventListener('hashchange', handleScroll);
+
+      // Accessibility: trap focus in mobile dialog while open (simple)
+      mobileNav.addEventListener('keydown', function(e) {
+        if (e.key !== 'Tab') return;
+        const focusable = mobileNav.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      });
+
+      // If viewport resizes to desktop, ensure mobile overlay closed
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && mobileNav.classList.contains('active')) {
+          toggleMobileNav(false);
+        }
+      });
+    })();
   </script>
 
   {% block scripts %}{% endblock %}
