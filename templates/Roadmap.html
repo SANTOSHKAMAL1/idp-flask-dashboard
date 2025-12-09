@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+{% block title %}Roadmap — Institutional Growth{% endblock %}
+
+{% block styles %}
+<style>
+:root{
+  --bg-1: #05292f;
+  --bg-2: #0b4f57;
+  --accent: #2ba0a0;
+  --card-bg: #ffffff;
+  --muted:#cfe9e7;
+  --shadow: 0 20px 60px rgba(2,18,20,0.36);
+  --radius:14px;
+}
+
+/* ====== Page spacing so fixed topbar doesn't overlap ====== */
+.page-wrap {
+  max-width:1200px;
+  margin:48px auto 80px;
+  padding:0 18px;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--card-bg);
+}
+
+/* ====== HERO ====== */
+.roadmap-hero {
+  display:flex;
+  gap:28px;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+  padding-top:8px;
+}
+.roadmap-hero .intro {
+  flex:1 1 100%;
+  color: #072027 !important;
+  z-index:2;
+  position:relative;
+  padding-right:12px;
+}
+.roadmap-hero .intro.visible { opacity: 1; transform: none; }
+.roadmap-hero h1 {
+  margin:0 0 8px;
+  font-weight:800;
+  font-size:34px;
+  color:#072027;
+  line-height:1.02;
+  text-shadow: 0 8px 24px rgba(2,18,20,0.04);
+}
+.roadmap-hero p.lead {
+  margin:0;
+  color: #0b1220 !important;
+  opacity: 1 !important;
+  font-size:15px;
+  line-height:1.6;
+}
+
+/* ====== ROADMAP PANEL ====== */
+.roadmap-panel {
+  
+
+  
+  
+  position: relative;
+  overflow: visible;
+  box-shadow: var(--shadow);
+  margin-top: -6px;
+}
+
+/* place the image INSIDE the timeline panel (top-right) */
+.timeline-image {
+  position: absolute;
+  right: 36px;
+  top: 28px;
+  width: 300px;
+  height: 200px;
+  
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 18px 46px rgba(2,18,20,0.20);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:14;
+  overflow:hidden;
+}
+.timeline-image img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+/* ====== ROAD AREA / TIMELINE ====== */
+.road-area { position:relative; min-height:820px; }
+
+/* center rail */
+.timeline-rail {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:8px;
+  top:44px;
+  bottom:44px;
+  border-radius:6px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(2, 2, 2, 0.04));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+}
+
+/* nodes */
+.node {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:var(--card-bg);
+  color:var(--bg-1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+  border:6px solid rgba(255,255,255,0.08);
+  z-index:20;
+}
+.node.n-2025 { top: 48px; }
+.node.n-2028 { top: 200px; }
+.node.n-2030 { top: 360px; }
+.node.n-2035 { top: 528px; }
+.node.n-2040 { top: 700px; }
+
+/* milestone cards */
+.milestone {
+  position:absolute;
+  width:420px;
+  max-width: calc(50% - 120px);
+  background: var(--card-bg);
+  color: #072027;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 18px 46px rgba(2,18,20,0.24);
+  transition: transform .28s ease, box-shadow .28s ease, top .2s ease;
+  overflow:visible;
+  z-index:10;
+  -webkit-backface-visibility: hidden;
+}
+.milestone .tag {
+  display:inline-block;
+  background: linear-gradient(90deg,var(--accent), #38bfbf);
+  color:rgb(7, 7, 7);
+  padding:6px 10px;
+  border-radius:10px;
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:10px;
+}
+.milestone .notch {
+  position:absolute;
+  width:12px;
+  height:12px;
+  transform: rotate(45deg);
+  background:var(--card-bg);
+  box-shadow: 0 6px 12px rgba(2,18,20,0.06);
+}
+.milestone.left { right: calc(50% + 48px); text-align:left; }
+.milestone.left .notch { right:-6px; top:22px; }
+.milestone.right { left: calc(50% + 48px); text-align:left; }
+.milestone.right .notch { left:-6px; top:22px; }
+.milestone:hover { transform: translateY(-6px); box-shadow: 0 28px 68px rgba(2,18,20,0.32); }
+
+/* tuned top offsets to avoid overlap */
+.m-2025.left  { top: 16px; z-index:12; }
+.m-2028.left  { top: 196px; z-index:11; }
+.m-2030.right { top: 336px; z-index:12; }
+.m-2035.left  { top: 520px; z-index:11; }
+.m-2040.right { top: 684px; z-index:12; }
+
+/* responsive */
+@media (max-width: 920px) {
+  .roadmap-hero { flex-direction:column-reverse; gap:12px; }
+  .timeline-image { position: relative; right: auto; top: auto; width:100%; height:160px; margin-bottom:8px; }
+  .road-area { min-height:920px; }
+  .milestone { position:absolute; width: calc(100% - 84px); left:42px; right:42px; max-width:none; }
+  .milestone.left, .milestone.right { left:42px; right:42px; }
+  .milestone .notch { display:none; }
+  .timeline-rail { left:36px; transform:none; width:6px; }
+  .node { left:36px; transform:none; }
+  .m-2025.left  { top: 24px; }
+  .m-2028.left  { top: 220px; }
+  .m-2030.right { top: 420px; }
+  .m-2035.left  { top: 620px; }
+  .m-2040.right { top: 820px; }
+}
+
+/* key indicator */
+.road-key {
+  margin-top:20px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  background: rgba(255,255,255,0.04);
+  padding:12px 16px;
+  border-radius:10px;
+  color:var(--muted);
+  font-weight:700;
+}
+
+/* fade helper */
+.fade { opacity:0; transform: translateY(8px); transition: all .55s ease; }
+.fade.visible { opacity:1; transform:none; }
+
+/* ====== OVERRIDE: remove nav hover look for this page (local override) ======
+   base.html may define a hover gradient. we turn it off here so nav stays static.
+   ====== */
+.base-nav a:hover {
+  background: none !important;
+  color: inherit !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* accessibility focus */
+.milestone:focus { outline: 3px solid rgba(43,160,160,0.14); outline-offset: 4px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="page-wrap">
+  <!-- HERO -->
+  <section class="roadmap-hero main-header-space">
+    <div class="intro">
+      <h1>Roadmap of Institutional Growth and Transformation</h1>
+      <p class="lead">Phased milestones from institutional launch through mid-term expansion to long-term global leadership — with governance, research, digital transformation and infrastructure as the backbone.</p>
+    </div>
+    <!-- removed right-side hero visual to place image inside the timeline -->
+  </section>
+
+  <!-- TIMELINE PANEL -->
+  <section class="roadmap-panel" role="region" aria-label="Roadmap timeline">   
+    <!-- Put the image INSIDE the timeline (top-right). Use your static image name -->
+    <div class="timeline-image" aria-hidden="true">
+      <img src="{{ url_for('static', filename='images/rm1.png') }}" alt="Roadmap illustration">
+    </div>
+
+    <div class="road-area">
+      <div class="timeline-rail" aria-hidden="true"></div>
+
+      <div class="node n-2025" aria-hidden="true">2025</div>
+      <div class="node n-2028" aria-hidden="true">2028</div>
+      <div class="node n-2030" aria-hidden="true">2030</div>
+      <div class="node n-2035" aria-hidden="true">2035</div>
+      <div class="node n-2040" aria-hidden="true">2040</div>
+
+      <article class="milestone left m-2025 fade" tabindex="0" aria-labelledby="m2025-title">
+        <div class="tag">2025</div>
+        <h3 id="m2025-title" style="margin:6px 0 8px;font-size:18px;font-weight:800;">Institutional Launch</h3>
+        <p style="margin:0;color:#234747;">Build strong governance,
+transparency, and
+accountability frameworks.</p>
+        <div class="notch" aria-hidden="true"></div>
+      </article>
+
+      <article class="milestone left m-2028 fade" tabindex="0" aria-labelledby="m2028-title">
+        <div class="tag">2028</div>
+        <h3 id="m2028-title" style="margin:6px 0 8px;font-size:18px;font-weight:800;">Short-Term Goal</h3>
+        <p style="margin:0;color:#234747;">Modernize infrastructure
+(digital, physical, research
+labs)
+Launch faculty development
+and student support
+programs
+Establish structured
+recruitment and onboarding</p>
+        <div class="notch" aria-hidden="true"></div>
+      </article>
+
+      <article class="milestone right m-2030 fade" tabindex="0" aria-labelledby="m2030-title">
+        <div class="tag">2030</div>
+        <h3 id="m2030-title" style="margin:6px 0 8px;font-size:18px;font-weight:800;">Mid-Term Goal</h3>
+        <p style="margin:0;color:#234747;">Expand research centers and global
+collaborations
+Institutionalize advanced digital
+learning and global career support
+Strengthen alumni engagement and
+fundraising.</p>
+        <div class="notch" aria-hidden="true"></div>
+      </article>
+
+      <article class="milestone left m-2035 fade" tabindex="0" aria-labelledby="m2035-title">
+        <div class="tag">2035</div>
+        <h3 id="m2035-title" style="margin:6px 0 8px;font-size:18px;font-weight:800;">Long-Term Goal</h3>
+        <p style="margin:0;color:#234747;">Achieve global recognition in entrepreneurship and
+research
+Establish endowments, think tanks, and innovation
+ecosystems
+Lead cross-disciplinary, sustainable, and inclusive
+education initiatives.</p>
+        <div class="notch" aria-hidden="true"></div>
+      </article>
+
+      
+
+    </div>
+
+    <div class="road-key" role="note" aria-label="Key indicator">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" style="flex:0 0 36px">
+        <circle cx="12" cy="12" r="6" stroke="#2ba0a0" stroke-width="2"></circle>
+        <path d="M12 6v-2" stroke="#2ba0a0" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <div>
+        
+    </div>
+  </section>
+</main>
+
+<script>
+// reveal fade elements when in view
+(function(){
+  const items = document.querySelectorAll('.fade');
+  function reveal() {
+    const trigger = window.innerHeight * 0.9;
+    items.forEach(it => {
+      const r = it.getBoundingClientRect();
+      if (r.top < trigger) it.classList.add('visible');
+    });
+  }
+  reveal();
+  window.addEventListener('scroll', reveal, { passive: true });
+  window.addEventListener('resize', reveal);
+})();
+
+// reveal hero intro after DOM loads
+document.addEventListener('DOMContentLoaded', function(){
+  const intro = document.querySelector('.roadmap-hero .intro');
+  if (intro) requestAnimationFrame(()=> intro.classList.add('visible'));
+});
+</script>
+{% endblock %}

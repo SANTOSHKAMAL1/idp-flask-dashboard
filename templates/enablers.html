@@ -69,18 +69,28 @@
     ["Mr. M.S. Parswanath, Director, Projects and Facilities, JGI","Member"]
   ] %}
 
-  {% set c_rows = [
-    ["Dr. Shradha Kanwar, Chief Academic Officer","Chairperson"],
-    ["Dr. Sridhara Murthi K R, Advisor, Chancellor’s Advisory Board","Member"],
-    ["Dr. S Kiran, Deputy Dean, Academics","Convenor"],
-    ["Dr. G Geetha, Director, School of CSE","Member"]
-  ] %}
+ {% set c_rows = [
+    ["Dr. Shradha Kanwar, Chief Academic Officer", "Chairperson"],
+    ["Dr. Sridhara Murthi K R, Advisor, Chancellor’s Advisory Board", "Member"],
+    ["Dr. S Kiran, Deputy Dean, Academics", "Convenor"],
+    ["Dr. G Geetha, Director, School of CSE", "Member"],
+    ["Dr. Srividya Shivakumar, Director, School of Allied Healthcare and Sciences", "Member"],
+    ["Dr. Sagar Gulati, Director, School of Computer Science and IT,T", "Member"],
+    ["Dr. Simmy Kurian, Deputy Director, CMS B-School, Off-Campus, Kochi", "Member"],
+    ["Dr. Neelima M, Deputy Director (In-Charge), School of Commerce", "Member"],
+    ["Dr. Beemkumar N, Professor, Mechanical Engineering, FET", "Member"]
+] %}
+
 
   {% set d_rows = [
-    ["Dr. S Srikanta Swamy, Director, CRTA","Chairperson"],
-    ["Dr. Harold Andrew Patrick, Dean, CMS","Member"],
-    ["Dr. Varalakshmi K. N, Director, CRPAS","Convenor"]
-  ] %}
+    ["Dr. S Srikanta Swamy, Director, Centre for Researcher Training and Administration (CRTA)", "Chairperson"],
+    ["Dr. Harold Andrew Patrick, Dean, Centre for Management Studies", "Member"],
+    ["Dr. Geetha Balakrishna, Director, Centre for Nano and Materials Science (CNMS)", "Member"],
+    ["Dr. Varalakshmi K. N, Director, Centre for Research in Pure and Applied Sciences", "Convenor"],
+    ["Dr. Chetan Nag K S, Deputy Director, Centre for Urban Ecology, Bio-Diversity, Evolution and Climate Change (CUBEC)", "Member"],
+    ["Dr. Simmy Kurian, Deputy Director, CMS B-School, Off-Campus, Kochi", "Member"]
+] %}
+
 
   {% set e_rows = [
     ["Dr. Dinesh N., Pro Vice-Chancellor","Chairperson"],
@@ -92,29 +102,34 @@
     ["Dr. Easwaran Iyer, Advisor, Chancellor’s Advisory Board","Chairperson"],
     ["Dr. Dinesh N., Pro Vice-Chancellor","Member"],
     ["Mr. M.S. Santhosh, Joint Registrar","Member"],
-    ["Ms. Preeti Bhandary, Sr. Manager, Placements","Convenor"]
+    ["Ms. Preeti Bhandary, Sr. Manager, Placements and Corporate Relations","Convenor"]
   ] %}
 
   {% set g_rows = [
     ["Mr. Ravindra Bhandary, Vice President, JGI","Chairperson"],
     ["Dr. N V H Krishnan, Advisor, Chancellor’s Advisory Board","Convenor"],
-    ["Mr. M.S. Parswanath, Director, Projects and Facilities","Member"]
+    ["Mr. M.S. Parswanath, Director, Projects and Facilities","Member"],
+    ["Mr. Vishal C, Director, Strategy and Development, JGI","Member"]
   ] %}
 
   {% set h_rows = [
-    ["Prof. N S Manjunath, Controller of Examinations","Chairperson"],
-    ["Dr. S Kiran, Deputy Dean, Academics","Convenor"],
-    ["Dr. Felix M. Philip, Deputy Director, CS & IT, Kochi","Member"]
-  ] %}
+    ["Prof. N S Manjunath, Controller of Examinations", "Chairperson"],
+    ["Dr. S Kiran, Deputy Dean, Academics", "Convenor"],
+    ["Dr. Felix M. Philip, Deputy Director, School of Computer Science and IT, Off-Campus, Kochi", "Member"],
+    ["Dr. Sangeeta Devanathan, Deputy Dean, Academics", "Member"],
+    ["Dr. Mahesh T. R., Programme Head, B.Tech, Computer Science and Engineering", "Member"]
+] %}
 
-  {{ enabler_section('a', 'Enabler A: Governance and Leadership', a_rows) }}
-  {{ enabler_section('b', 'Enabler B: Financial Enablers and Funding Models', b_rows) }}
-  {{ enabler_section('c', 'Enabler C: Academic Enablers', c_rows) }}
-  {{ enabler_section('d', 'Enabler D: Research and Intellectual Property', d_rows) }}
-  {{ enabler_section('e', 'Enabler E: Human Resources & Supportive Facilitative', e_rows) }}
-  {{ enabler_section('f', 'Enabler F: Networking and Collaborations', f_rows) }}
-  {{ enabler_section('g', 'Enabler G: Physical Enablers', g_rows) }}
-  {{ enabler_section('h', 'Enabler H: Digital Enablers', h_rows) }}
+
+  {{ enabler_section('a', 'Enabler A: Governance enablers', a_rows) }}
+{{ enabler_section('b', 'Enabler B: Financial enablers and funding models (resource generation)', b_rows) }}
+{{ enabler_section('c', 'Enabler C: Academic innovation and excellence', c_rows) }}
+{{ enabler_section('d', 'Enabler D: Research and intellectual property', d_rows) }}
+{{ enabler_section('e', 'Enabler E: Human resources and supportive–facilitative enablers', e_rows) }}
+{{ enabler_section('f', 'Enabler F: Networking and collaborations', f_rows) }}
+{{ enabler_section('g', 'Enabler G: Physical enablers – facilitative enablers', g_rows) }}
+{{ enabler_section('h', 'Enabler H: Digital transformation', h_rows) }}
+
 
   <footer class="mt-6 text-sm text-gray-500">
     <p>© {{ current_year if current_year is defined else '2025' }} IDP Committees Dashboard.</p>
